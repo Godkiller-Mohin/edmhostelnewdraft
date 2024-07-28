@@ -1,0 +1,27 @@
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #01231f;
+  color: white;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  margin-right: 1rem;
+  transition: 0.2s all;
+}
+
+.nav-links a:hover {
+  color: #c69947;
+}
+
+.reserve-button {
+  background-color: white;
+  color: #014e3e;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
