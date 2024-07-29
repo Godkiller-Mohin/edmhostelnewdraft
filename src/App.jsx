@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "./components/Navbar";
 import Routing from "./routing/routing";
-import Footer from "./components/footer";
+import VerticalSocialBar from "./components/verticalSocialBar";
 import "./App.css"; // You'll need to create this file for any global styles
 import Hero from "./components/hero";
 import AnimatedCursor from "react-animated-cursor";
@@ -25,7 +25,7 @@ function App() {
       />
       <Navbar />
       <Hero />
-      <Footer />
+      <VerticalSocialBar />
     </div>
   );
 }
