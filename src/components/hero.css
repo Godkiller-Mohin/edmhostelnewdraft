@@ -7,32 +7,15 @@
   align-items: center;
   background-color: #01231f;
   color: white;
+  overflow: hidden;
 }
 
 .hero-title {
   font-size: 7rem;
   font-weight: bold;
   text-align: center;
-  z-index: 1;
-}
-
-.image-grid {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 1rem;
-  padding: 1rem;
-}
-
-.grid-image {
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  z-index: 2;
+  line-height: 110%;
 }
 
 .explore-button {
@@ -42,7 +25,49 @@
   padding: 0.5rem 1rem;
   margin-top: 1rem;
   cursor: pointer;
+  z-index: 2;
+}
+
+.hero-image {
+  position: absolute;
+  object-fit: cover;
   z-index: 1;
+}
+
+.image1 {
+  width: 20%;
+  height: 30%;
+  top: 10%;
+  left: 5%;
+}
+
+.image2 {
+  width: 30%;
+  height: 40%;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.image3 {
+  width: 20%;
+  height: 30%;
+  top: 10%;
+  right: 5%;
+}
+
+.image4 {
+  width: 25%;
+  height: 20%;
+  bottom: 30%;
+  left: 20%;
+}
+
+.image5 {
+  width: 25%;
+  height: 20%;
+  bottom: 30%;
+  right: 20%;
 }
 
 @media (max-width: 768px) {
