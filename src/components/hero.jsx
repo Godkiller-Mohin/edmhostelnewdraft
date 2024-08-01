@@ -16,29 +16,12 @@ const Hero = () => {
         <br />
         HOSTEL
       </h1>
-      <div className="image-grid">
-        <div
-          className="grid-image"
-          style={{ backgroundImage: `url(${image1})` }}
-        ></div>
-        <div
-          className="grid-image"
-          style={{ backgroundImage: `url(${image2})` }}
-        ></div>
-        <div
-          className="grid-image"
-          style={{ backgroundImage: `url(${image3})` }}
-        ></div>
-        <div
-          className="grid-image"
-          style={{ backgroundImage: `url(${image4})` }}
-        ></div>
-        <div
-          className="grid-image"
-          style={{ backgroundImage: `url(${image5})` }}
-        ></div>
-      </div>
       <button className="explore-button">EXPLORE</button>
+      <img src={image1} alt="Image 1" className="hero-image image1" />
+      <img src={image2} alt="Image 2" className="hero-image image2" />
+      <img src={image3} alt="Image 3" className="hero-image image3" />
+      <img src={image4} alt="Image 4" className="hero-image image4" />
+      <img src={image5} alt="Image 5" className="hero-image image5" />
     </div>
   );
 };

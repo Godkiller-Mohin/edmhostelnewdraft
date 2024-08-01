@@ -4,6 +4,7 @@ import Routing from "./routing/routing";
 import VerticalSocialBar from "./components/verticalSocialBar";
 import "./App.css"; // You'll need to create this file for any global styles
 import Hero from "./components/hero";
+
 import AnimatedCursor from "react-animated-cursor";
 
 function App() {
