@@ -1,13 +1,13 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import "./verticalSocialBar.css";
 import facebookIcon from "../assets/facebook-icon.png";
 import instagramIcon from "../assets/instagram-icon.png";
 import twitterIcon from "../assets/twitter-icon.png";
 import linkedinIcon from "../assets/linkedin-icon.png";
 
-const VerticalSocialBar = () => {
+const VerticalSocialBar = forwardRef((props, ref) => {
   return (
-    <div className="social-bar-vertical">
+    <div className="social-bar-vertical" ref={ref}>
       <span>FOLLOW US</span>
       <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
         <img src={facebookIcon} alt="Facebook" />
@@ -23,6 +23,6 @@ const VerticalSocialBar = () => {
       </a>
     </div>
   );
-};
+});
 
 export default VerticalSocialBar;
