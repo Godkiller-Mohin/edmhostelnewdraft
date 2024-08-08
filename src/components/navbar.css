@@ -2,15 +2,27 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2rem 2rem;
-  background-color: #01231f;
+  padding: 0 2rem;
+  background-color: transparent;
   color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  z-index: 100;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
 }
 
 .nav-links a {
   color: white;
   text-decoration: none;
-  margin-right: 1rem;
+  margin-right: 2rem;
   transition: 0.2s all;
 }
 
@@ -22,10 +34,11 @@
   background-color: white;
   color: #014e3e;
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.5rem;
   cursor: pointer;
+  font-size: 1.1rem;
 }
 
-.logo {
-  background-image: url("");
+.logo img {
+  max-height: 380px;
 }

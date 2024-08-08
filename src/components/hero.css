@@ -6,6 +6,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
+  overflow-x: hidden;
 }
 
 .hero-container {
@@ -58,25 +59,27 @@ body {
   }
 }
 
-.explore-button {
-  position: absolute;
-  bottom: 10%;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: transparent;
-  border: 2px solid white;
-  color: white;
-  padding: 0.5rem 2rem;
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 11;
+.video-section {
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #01231f;
 }
 
-.explore-button:hover {
-  background-color: white;
-  color: #01231f;
-  transform: translateX(-50%) scale(1.05);
+.reduced-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 5s ease-in-out;
+}
+
+.video-section.in-view .reduced-video {
+  opacity: 1;
 }
 
 .image-container {
@@ -136,30 +139,68 @@ body {
   background-image: url('../assets/image5.jpg');
 }
 
-.video-section {
-  height: 100vh;
-  position: relative;
-  overflow: hidden;
+.hero-title-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  text-align: center;
+  font-size: 7rem;
+  font-weight: bold;
+  line-height: 1;
+  margin-bottom: 2rem;
+  color: white;
+}
+
+.navigation {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  background-color: #01231f;
+  padding: 2rem;
+  background-color: transparent;
+  color: white;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  z-index: 100;
 }
 
-.reduced-video {
-  width: 75%;
-  height: 75%;
-  object-fit: cover;
-  opacity: 0;
-  transition: opacity 5s ease-in-out;
+.logo img {
+  max-height: 380px;
+  margin-left: 20px;
 }
 
-.video-section.in-view .reduced-video {
-  opacity: 1;
+.nav-links {
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  margin-right: 2rem;
+  transition: 0.2s all;
+}
+
+.nav-links a:hover {
+  color: #c69947;
+}
+
+.reserve-button {
+  background-color: white;
+  color: #014e3e;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  cursor: pointer;
+  font-size: 1.1rem;
 }
 
 @media (max-width: 768px) {
-  .hero-title {
+  .hero-title,
+  .hero-title-overlay {
     font-size: 4rem;
   }
 }

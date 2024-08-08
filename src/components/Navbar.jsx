@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./navbar.css";
+import logoImage from "../assets/logo.png";
 
 function Navigation() {
   return (
     <nav className="navigation">
-      <div className="logo"></div>
+      <div className="logo">
+        <img src={logoImage} alt="Logo" style={{ maxHeight: "380px" }} />
+      </div>
       <div className="nav-links">
         <a href="#locations">LOCATIONS</a>
         <a href="#about">ABOUT</a>
