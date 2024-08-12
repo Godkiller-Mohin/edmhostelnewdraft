@@ -1,32 +1,49 @@
-import React from "react";
+import React, { useRef } from "react";
+import { LocomotiveScrollProvider } from "react-locomotive-scroll";
 import Navbar from "./components/Navbar";
 import Hero from "./components/hero";
 import VerticalSocialBar from "./components/verticalSocialBar";
 import "./App.css";
-
 import AnimatedCursor from "react-animated-cursor";
 
 function App() {
+  const containerRef = useRef(null);
+
   return (
-    <div className="App">
-      <AnimatedCursor
-        innerSize={8}
-        outerSize={50}
-        innerScale={1}
-        outerScale={1.5}
-        outerAlpha={0}
-        hasBlendMode={true}
-        innerStyle={{
-          backgroundColor: "#fff",
-        }}
-        outerStyle={{
-          border: "3px solid  #fff",
-        }}
-      />
-      <Navbar />
-      <Hero />
-      <VerticalSocialBar />
-    </div>
+    <LocomotiveScrollProvider
+      options={{
+        smooth: true,
+        // You can add more options here as needed
+      }}
+      watch={
+        [
+          // You can add dependencies here to watch for content changes
+        ]
+      }
+      containerRef={containerRef}
+    >
+      <div className="App" data-scroll-container ref={containerRef}>
+        <AnimatedCursor
+          innerSize={8}
+          outerSize={50}
+          innerScale={1}
+          outerScale={1.5}
+          outerAlpha={0}
+          hasBlendMode={true}
+          innerStyle={{
+            backgroundColor: "#fff",
+          }}
+          outerStyle={{
+            border: "3px solid  #fff",
+          }}
+        />
+        <Navbar />
+        <main data-scroll-section>
+          <Hero />
+          <VerticalSocialBar />
+        </main>
+      </div>
+    </LocomotiveScrollProvider>
   );
 }
 

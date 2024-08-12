@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import "./hero.css";
 import VerticalSocialBar from "./verticalSocialBar";
-import { LocomotiveScrollProvider } from 'react-locomotive-scroll';
+import { LocomotiveScrollProvider } from "react-locomotive-scroll";
 import Navigation from "./Navbar";
 
 const Hero = () => {
@@ -69,8 +69,12 @@ const Hero = () => {
       watch={[]}
       containerRef={scrollContainerRef}
     >
-      <div className="hero-container" data-scroll-container ref={scrollContainerRef}>
-        <Navigation />
+      <div
+        className="hero-container"
+        data-scroll-container
+        ref={scrollContainerRef}
+      >
+        {/* <Navigation /> */}
         <section className="video-section" ref={videoSectionRef}>
           <video
             ref={videoRef}
@@ -83,8 +87,8 @@ const Hero = () => {
             Your browser does not support the video tag.
           </video>
           <div className="hero-title-overlay">
-            <span>INDIA'S  FIRST</span>
-            <br/>
+            <span>INDIA'S FIRST</span>
+            <br />
             <span>PARTY HOSTEL</span>
           </div>
         </section>
@@ -95,11 +99,26 @@ const Hero = () => {
             </h1>
           </div>
 
-          <div className="image-container image1" ref={(el) => parallaxRefs.current[0] = el}></div>
-          <div className="image-container image2" ref={(el) => parallaxRefs.current[1] = el}></div>
-          <div className="image-container image3" ref={(el) => parallaxRefs.current[2] = el}></div>
-          <div className="image-container image4" ref={(el) => parallaxRefs.current[3] = el}></div>
-          <div className="image-container image5" ref={(el) => parallaxRefs.current[4] = el}></div>
+          <div
+            className="image-container image1"
+            ref={(el) => (parallaxRefs.current[0] = el)}
+          ></div>
+          <div
+            className="image-container image2"
+            ref={(el) => (parallaxRefs.current[1] = el)}
+          ></div>
+          <div
+            className="image-container image3"
+            ref={(el) => (parallaxRefs.current[2] = el)}
+          ></div>
+          <div
+            className="image-container image4"
+            ref={(el) => (parallaxRefs.current[3] = el)}
+          ></div>
+          <div
+            className="image-container image5"
+            ref={(el) => (parallaxRefs.current[4] = el)}
+          ></div>
         </section>
       </div>
     </LocomotiveScrollProvider>

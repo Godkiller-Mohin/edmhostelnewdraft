@@ -11,16 +11,28 @@ const VerticalSocialBar = forwardRef((props, ref) => {
     <div className="social-bar-vertical" ref={ref}>
       <span>FOLLOW US</span>
       <div className="social-icons">
-        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+        <a
+          href="https://facebook.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <img src={facebookIcon} alt="Facebook" />
         </a>
-        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+        <a
+          href="https://instagram.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <img src={instagramIcon} alt="Instagram" />
         </a>
         <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
           <img src={twitterIcon} alt="Twitter" />
         </a>
-        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+        <a
+          href="https://linkedin.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <img src={linkedinIcon} alt="LinkedIn" />
         </a>
       </div>
