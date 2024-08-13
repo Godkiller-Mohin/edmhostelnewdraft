@@ -1,6 +1,6 @@
 
 import express from "express";
-import roomImageUpload from "../middleware/room.image.upload.js";
+import roomImageUpload from "../middleware/room.image.uploader.js";
 import { isAuthenticatedUser, isAdmin } from "../middleware/app.authentication.js";
 
 import { 
