@@ -10,7 +10,7 @@ import {
   editRoomByAdmin, 
   deleteRoomById, 
   getFeaturedRoomsList 
-} from "../controllers/room.controllers.js";
+} from "../controllers/room.controller.js";
 
 const router = express.Router();
 
