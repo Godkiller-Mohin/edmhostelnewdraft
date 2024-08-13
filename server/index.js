@@ -6,7 +6,9 @@ import morgan from 'morgan';
 
 //routes
 import authRoutes from './routes/auth.js';
-
+import bookingroute from './routes/booking.route.js'
+import roomRoute from './routes/room.route.js'
+import appRoute from './routes/app.route.js'
 const app = express();
 dotenv.config();
 
@@ -23,7 +25,7 @@ const port = 8000;
 
 const connect = () => {
     mongoose.set('strictQuery', true);
-    mongoose.connect('mongodb://127.0.0.1:27017/Podcast').then(() => {
+    mongoose.connect('mongodb://127.0.0.1:27017/').then(() => {
         console.log('MongoDB connected');
     }).catch((err) => {
         console.log(err);
@@ -33,8 +35,10 @@ const connect = () => {
 
 app.use(express.json())
 
-
+app.use("/api/app",appRoute)
 app.use("/api/auth", authRoutes)
+app.use("/api/booking",bookingroute)
+app.use("/api/room",roomRoute)
 
 app.use((err, req, res, next) => {
     const status = err.status || 500;
