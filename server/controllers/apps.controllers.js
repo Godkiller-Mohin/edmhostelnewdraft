@@ -5,7 +5,7 @@ const Room = require('../models/room.model');
 const Booking = require('../models/booking.model');
 
 // TODO: Controller for get users list for admin
-exports.getDashboardData = async (req, res) => {
+const getDashboardData = async (req, res) => {
   try {
     const { user } = req;
 
@@ -92,3 +92,5 @@ exports.getDashboardData = async (req, res) => {
     ));
   }
 };
+module.exports=getDashboardData;
+

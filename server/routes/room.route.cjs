@@ -1,16 +1,16 @@
 
-import express from "express";
-import roomImageUpload from "../middleware/room.image.uploader.js";
-import { isAuthenticatedUser, isAdmin } from "../middleware/app.authentication.js";
+const express = require('express');
+const {roomImageUpload}=require  ("../middleware/room.image.uploader.js");
+const { isAuthenticatedUser, isAdmin }=require ("../middleware/app.authentication.js");
 
-import { 
+const  { 
   createRoom, 
   getRoomsList, 
   getRoomByIdOrSlugName, 
   editRoomByAdmin, 
   deleteRoomById, 
   getFeaturedRoomsList 
-} from "../controllers/room.controller.js";
+}=require ("../controllers/room.controller.js");
 
 const router = express.Router();
 

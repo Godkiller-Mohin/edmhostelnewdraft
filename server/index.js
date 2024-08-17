@@ -1,14 +1,16 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import mongoose from 'mongoose';
-import cors from 'cors';
-import morgan from 'morgan';
+// server/index.js (or server/index.cjs)
+const express = require('express');
+const dotenv = require('dotenv');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const morgan = require('morgan');
 
-//routes
-import authRoutes from './routes/auth.js';
-import bookingroute from './routes/booking.route.js'
-import roomRoute from './routes/room.route.js'
-import appRoute from './routes/app.route.js'
+// Import routes using CommonJS
+const authRoutes = require('./routes/auth.cjs');
+const bookingRoute = require('./routes/booking.route.cjs');
+const roomRoute = require('./routes/room.route.cjs');
+const appRoute = require('./routes/app.route.cjs');
+
 const app = express();
 dotenv.config();
 
@@ -19,26 +21,25 @@ const corsConfig = {
     origin: true,
 };
 app.use(cors(corsConfig));
-
+app.use(morgan('dev')); // Optional: Add logging middleware
 
 const port = 8000;
 
 const connect = () => {
     mongoose.set('strictQuery', true);
-    mongoose.connect('mongodb://127.0.0.1:27017/').then(() => {
-        console.log('MongoDB connected');
-    }).catch((err) => {
-        console.log(err);
-    });
+    mongoose.connect('mongodb://127.0.0.1:27017/')
+        .then(() => {
+            console.log('MongoDB connected');
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 };
 
-
-app.use(express.json())
-
-app.use("/api/app",appRoute)
-app.use("/api/auth", authRoutes)
-app.use("/api/booking",bookingroute)
-app.use("/api/room",roomRoute)
+app.use("/api/app", appRoute);
+app.use("/api/auth", authRoutes);
+app.use("/api/booking", bookingRoute);
+app.use("/api/room", roomRoute);
 
 app.use((err, req, res, next) => {
     const status = err.status || 500;
@@ -47,10 +48,10 @@ app.use((err, req, res, next) => {
         success: false,
         status,
         message
-    })
-})
+    });
+});
 
 app.listen(port, () => {
-    console.log("Connected")
+    console.log(`Server running on port ${port}`);
     connect();
-})
+});

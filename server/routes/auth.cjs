@@ -1,6 +1,7 @@
-import express from "express";
-import { signup,signin, logout, googleAuthSignIn, generateOTP, verifyOTP, createResetSession,findUserByEmail, resetPassword } from "../controllers/auth.js";
-import { localVariables } from "../middleware/auth.js";
+const express = require('express');
+
+const { signup,signin, logout, googleAuthSignIn, generateOTP, verifyOTP, createResetSession,findUserByEmail, resetPassword } from "../controllers/auth.js";
+const { localVariables }=rquie "../middleware/auth.js";
 
 const router = express.Router();
 

@@ -8,7 +8,7 @@ const { errorResponse, successResponse } = require('../configs/app.response');
 const MyQueryHelper = require('../configs/api.feature');
 
 // TODO: Controller for create new room
-exports.createRoom = async (req, res) => {
+const createRoom = async (req, res) => {
   try {
     const {
       room_name, room_slug, room_type, room_price, room_size, room_capacity, allow_pets, provide_breakfast, featured_room, room_description, extra_facilities
@@ -213,7 +213,7 @@ exports.createRoom = async (req, res) => {
 };
 
 // TODO: Controller for get all rooms list
-exports.getRoomsList = async (req, res) => {
+const getRoomsList = async (req, res) => {
   try {
     // finding all room data from database
     const rooms = await Room.find();
@@ -266,7 +266,7 @@ exports.getRoomsList = async (req, res) => {
 };
 
 // TODO: Controller for find a room by id or room slug_name
-exports.getRoomByIdOrSlugName = async (req, res) => {
+const getRoomByIdOrSlugName = async (req, res) => {
   try {
     let room = null;
 
@@ -337,7 +337,7 @@ exports.getRoomByIdOrSlugName = async (req, res) => {
 };
 
 // TODO: Controller for edit room
-exports.editRoomByAdmin = async (req, res) => {
+const editRoomByAdmin = async (req, res) => {
   try {
     const {
       room_name, room_slug, room_type, room_price, room_size, room_capacity, allow_pets, provide_breakfast, featured_room, room_description, extra_facilities
@@ -539,7 +539,7 @@ exports.editRoomByAdmin = async (req, res) => {
 };
 
 // TODO: Controller for delete room using ID by admin
-exports.deleteRoomById = async (req, res) => {
+const deleteRoomById = async (req, res) => {
   try {
     // check if room exists
     const room = await Room.findById(req.params.id);
@@ -579,7 +579,7 @@ exports.deleteRoomById = async (req, res) => {
 };
 
 // TODO: Controller for get featured rooms list
-exports.getFeaturedRoomsList = async (req, res) => {
+const getFeaturedRoomsList = async (req, res) => {
   try {
     // finding featured room data from database
     const rooms = await Room.find({ featured_room: true });
@@ -632,3 +632,11 @@ exports.getFeaturedRoomsList = async (req, res) => {
     ));
   }
 };
+module.exports ={
+  createRoom, 
+  getRoomsList, 
+  getRoomByIdOrSlugName, 
+  editRoomByAdmin, 
+  deleteRoomById, 
+  getFeaturedRoomsList
+}
