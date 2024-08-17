@@ -2,10 +2,10 @@
 
 const jwt = require('jsonwebtoken');
 const { errorResponse } = require('../configs/app.response');
-const User = require('../models/user.model');
+const User = require('../models/User.cjs');
 
 // TODO: Middleware for detect authenticated logging user
-exports.isAuthenticatedUser = async (req, res, next) => {
+const isAuthenticatedUser = async (req, res, next) => {
   try {
     // get access token form authorization headers
     const { authorization } = req.headers;
@@ -64,7 +64,7 @@ exports.isAuthenticatedUser = async (req, res, next) => {
 };
 
 // TODO: Middleware for login user JWT refresh-token validate
-exports.isRefreshTokenValid = async (req, res, next) => {
+const isRefreshTokenValid = async (req, res, next) => {
   try {
     // get refresh token form authorization headers
     const { authorization } = req.headers;
@@ -123,7 +123,7 @@ exports.isRefreshTokenValid = async (req, res, next) => {
 };
 
 // TODO: Middleware for check user is admin
-exports.isAdmin = async (req, res, next) => {
+const isAdmin = async (req, res, next) => {
   try {
     // get user from requested user
     const { user } = req;
@@ -156,7 +156,7 @@ exports.isAdmin = async (req, res, next) => {
 };
 
 // TODO: Middleware for check user is blocked
-exports.isBlocked = async (req, res, next) => {
+const isBlocked = async (req, res, next) => {
   try {
     // get user from requested user
     const { user } = req;
@@ -187,3 +187,8 @@ exports.isBlocked = async (req, res, next) => {
     ));
   }
 };
+module.exports={
+  isAuthenticatedUser, 
+  isBlocked, 
+  isAdmin 
+}

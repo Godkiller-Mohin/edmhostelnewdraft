@@ -1,11 +1,11 @@
 
 const { errorResponse, successResponse } = require('../configs/app.response');
-const User = require('../models/user.model');
-const Room = require('../models/room.model');
-const Booking = require('../models/booking.model');
+const User = require('../models/User.cjs');
+const Room = require('../models/room.model.cjs');
+const Booking = require('../models/booking.model.cjs');
 
 // TODO: Controller for get users list for admin
-exports.getDashboardData = async (req, res) => {
+const getDashboardData = async (req, res) => {
   try {
     const { user } = req;
 
@@ -92,3 +92,5 @@ exports.getDashboardData = async (req, res) => {
     ));
   }
 };
+module.exports={getDashboardData};
+

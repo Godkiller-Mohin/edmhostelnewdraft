@@ -1,14 +1,15 @@
+// booking.controller.js
 
-const Room = require('../models/room.model');
-const Booking = require('../models/booking.model');
+// Import necessary modules
+const Room = require('../models/room.model.cjs');
+const Booking = require('../models/booking.model.cjs');
 const { errorResponse, successResponse } = require('../configs/app.response');
 const MyQueryHelper = require('../configs/api.feature');
 const { bookingDatesBeforeCurrentDate } = require('../lib/booking.dates.validator');
 
-// TODO: controller for placed booking order
-exports.placedBookingOrder = async (req, res) => {
+// Controller for placing a booking order
+const placedBookingOrder = async (req, res) => {
   try {
-    // finding by room id
     let myRoom = null;
 
     if (/^[0-9a-fA-F]{24}$/.test(req.params.id)) {
@@ -21,7 +22,6 @@ exports.placedBookingOrder = async (req, res) => {
       ));
     }
 
-    // check room available
     if (!myRoom) {
       return res.status(404).json(errorResponse(
         4,
@@ -30,39 +30,26 @@ exports.placedBookingOrder = async (req, res) => {
       ));
     }
 
-    // check room status is`unavailable`
-    if (myRoom.room_status === 'unavailable') {
+    if (myRoom.room_status === 'unavailable' || myRoom.room_status === 'booked') {
       return res.status(400).json(errorResponse(
         1,
         'FAILED',
-        'Sorry! Current your sleeted room can\'t available'
+        'Sorry! The selected room is not available.'
       ));
     }
 
-    // check room status is `booked`
-    if (myRoom.room_status === 'booked') {
-      return res.status(400).json(errorResponse(
-        1,
-        'FAILED',
-        'Sorry! Current your sleeted already booked. Please try again later'
-      ));
-    }
-
-    // prepared user provided data to store database
     const data = {
       room_id: req.params.id,
       booking_dates: req.body.booking_dates,
       booking_by: req.user.id
     };
 
-    // save room data in database
     const booking = await Booking.create(data);
 
-    // success response with register new user
     res.status(201).json(successResponse(
       0,
       'SUCCESS',
-      'Your room booking order placed successful. Please wait for confirmation.',
+      'Your room booking order was placed successfully. Please wait for confirmation.',
       booking
     ));
   } catch (error) {
@@ -74,8 +61,8 @@ exports.placedBookingOrder = async (req, res) => {
   }
 };
 
-// TODO: controller for get all specific user booking order
-exports.getBookingOrderByUserId = async (req, res) => {
+// Controller for getting all bookings by a specific user
+const getBookingOrderByUserId = async (req, res) => {
   try {
     const myBooking = await Booking.find({ booking_by: req.user.id })
       .populate('room_id')
@@ -85,7 +72,6 @@ exports.getBookingOrderByUserId = async (req, res) => {
         populate: { path: 'user_id', model: 'Users' }
       });
 
-    // if no bookings found for the user id, return an error response
     if (!myBooking || myBooking.length === 0) {
       return res.status(404).json(errorResponse(
         4,
@@ -94,13 +80,10 @@ exports.getBookingOrderByUserId = async (req, res) => {
       ));
     }
 
-    // filtering booking orders based on different types query
     const bookingQuery = new MyQueryHelper(Booking.find({ booking_by: req.user.id })
       .populate('room_id')
       .populate('booking_by')
-      .populate(
-        { path: 'reviews', populate: { path: 'user_id', model: 'Users' } }
-      ), req.query)
+      .populate({ path: 'reviews', populate: { path: 'user_id', model: 'Users' } }), req.query)
       .sort()
       .paginate();
     const findBooking = await bookingQuery.query;
@@ -109,7 +92,7 @@ exports.getBookingOrderByUserId = async (req, res) => {
       id: data?.id,
       booking_dates: data?.booking_dates,
       booking_status: data?.booking_status,
-      reviews: !data?.reviews ? null : {
+      reviews: data?.reviews ? {
         id: data?.reviews.id,
         room_id: data?.reviews.room_id,
         booking_id: data?.reviews.booking_id,
@@ -133,7 +116,7 @@ exports.getBookingOrderByUserId = async (req, res) => {
         },
         created_at: data?.reviews?.createdAt,
         updated_at: data?.reviews?.updatedAt
-      },
+      } : null,
       booking_by: {
         id: data?.booking_by?._id,
         userName: data?.booking_by?.userName,
@@ -164,19 +147,16 @@ exports.getBookingOrderByUserId = async (req, res) => {
         room_description: data?.room_id?.room_description,
         room_status: data?.room_id?.room_status,
         extra_facilities: data?.room_id?.extra_facilities,
-        room_images: data?.room_id?.room_images?.map(
-          (img) => ({ url: process.env.APP_BASE_URL + img.url })
-        )
+        room_images: data?.room_id?.room_images?.map(img => ({ url: process.env.APP_BASE_URL + img.url }))
       },
       created_at: data?.createdAt,
       updated_at: data?.updatedAt
     }));
 
-    // success response with the booking list
     res.status(200).json(successResponse(
       0,
       'SUCCESS',
-      'Booking list retrieved successful',
+      'Booking list retrieved successfully',
       {
         rows: mapperBooking,
         total_rows: myBooking.length,
@@ -194,63 +174,24 @@ exports.getBookingOrderByUserId = async (req, res) => {
   }
 };
 
-// TODO: controller for cancel self booking order
-exports.cancelSelfBookingOrder = async (req, res) => {
-  try {
-    // finding by room id
-    let booking = null;
+// Controller for canceling self booking order
+const cancelSelfBookingOrder = (req, res) => {
+  const bookingId = req.params.bookingId;
 
-    if (/^[0-9a-fA-F]{24}$/.test(req.params.id)) {
-      // find the booking by id and check if the booking_by user id matches the authenticated user id
-      booking = await Booking.findOne({ _id: req.params.id, booking_by: req.user.id });
-    } else {
-      return res.status(400).json(errorResponse(
-        1,
-        'FAILED',
-        'Something went wrong. Probably booking id missing/incorrect'
-      ));
-    }
-
-    // if booking not found or user is not authorized to cancel this booking, return an error response
-    if (!booking) {
-      return res.status(404).json(errorResponse(
-        4,
-        'UNKNOWN ACCESS',
-        'Booking not found or you are not authorized to cancel this booking'
-      ));
-    }
-
-    // if booking status is not 'pending', return an error response
-    if (booking.booking_status !== 'pending') {
-      return res.status(400).json(errorResponse(
-        1,
-        'FAILED',
-        'This booking cannot be `cancel` as it is no longer in the `pending` status'
-      ));
-    }
-
-    // update the booking status to 'cancel'
-    booking.booking_status = 'cancel';
-    await booking.save({ validateBeforeSave: false });
-
-    // success response after canceling the booking
-    res.status(200).json(successResponse(
-      0,
-      'SUCCESS',
-      'Booking order has been canceled successful',
-      booking
-    ));
-  } catch (error) {
-    res.status(500).json(errorResponse(
-      2,
-      'SERVER SIDE ERROR',
-      error
-    ));
-  }
+  Booking.findByIdAndDelete(bookingId)
+    .then((result) => {
+      if (!result) {
+        return res.status(404).json({ message: 'Booking not found' });
+      }
+      res.status(200).json({ message: 'Booking canceled successfully' });
+    })
+    .catch((error) => {
+      res.status(500).json({ message: 'Error canceling booking', error });
+    });
 };
 
-// TODO: controller for get all booking order by admin
-exports.getBookingOrderForAdmin = async (req, res) => {
+// Controller for getting all booking orders (admin)
+const getBookingOrderForAdmin = async (req, res) => {
   try {
     const myBooking = await Booking.find()
       .populate('room_id')
@@ -260,7 +201,6 @@ exports.getBookingOrderForAdmin = async (req, res) => {
         populate: { path: 'user_id', model: 'Users' }
       });
 
-    // if no bookings found for the user id, return an error response
     if (!myBooking || myBooking.length === 0) {
       return res.status(404).json(errorResponse(
         4,
@@ -269,13 +209,10 @@ exports.getBookingOrderForAdmin = async (req, res) => {
       ));
     }
 
-    // filtering booking orders based on different types query
     const bookingQuery = new MyQueryHelper(Booking.find()
       .populate('room_id')
       .populate('booking_by')
-      .populate(
-        { path: 'reviews', populate: { path: 'user_id', model: 'Users' } }
-      ), req.query)
+      .populate({ path: 'reviews', populate: { path: 'user_id', model: 'Users' } }), req.query)
       .sort()
       .paginate();
     const findBooking = await bookingQuery.query;
@@ -284,7 +221,7 @@ exports.getBookingOrderForAdmin = async (req, res) => {
       id: data?.id,
       booking_dates: data?.booking_dates,
       booking_status: data?.booking_status,
-      reviews: !data?.reviews ? null : {
+      reviews: data?.reviews ? {
         id: data?.reviews.id,
         room_id: data?.reviews.room_id,
         booking_id: data?.reviews.booking_id,
@@ -308,7 +245,7 @@ exports.getBookingOrderForAdmin = async (req, res) => {
         },
         created_at: data?.reviews?.createdAt,
         updated_at: data?.reviews?.updatedAt
-      },
+      } : null,
       booking_by: {
         id: data?.booking_by?._id,
         userName: data?.booking_by?.userName,
@@ -339,19 +276,16 @@ exports.getBookingOrderForAdmin = async (req, res) => {
         room_description: data?.room_id?.room_description,
         room_status: data?.room_id?.room_status,
         extra_facilities: data?.room_id?.extra_facilities,
-        room_images: data?.room_id?.room_images?.map(
-          (img) => ({ url: process.env.APP_BASE_URL + img.url })
-        )
+        room_images: data?.room_id?.room_images?.map(img => ({ url: process.env.APP_BASE_URL + img.url }))
       },
       created_at: data?.createdAt,
       updated_at: data?.updatedAt
     }));
 
-    // success response with the booking list
     res.status(200).json(successResponse(
       0,
       'SUCCESS',
-      'Booking list retrieved successful',
+      'Booking list retrieved successfully',
       {
         rows: mapperBooking,
         total_rows: myBooking.length,
@@ -369,148 +303,32 @@ exports.getBookingOrderForAdmin = async (req, res) => {
   }
 };
 
-// TODO: controller for updated booking order by admin
-exports.updatedBookingOrderByAdmin = async (req, res) => {
+// Controller for updating a booking order by admin
+const updatedBookingOrderByAdmin = async (req, res) => {
   try {
-    // finding by room by room id
-    let booking = null;
+    const bookingId = req.params.bookingId;
+    const update = req.body;
 
-    if (/^[0-9a-fA-F]{24}$/.test(req.params.id)) {
-      // find the booking by id and check if the booking_by user id matches the authenticated user id
-      booking = await Booking.findOne({ _id: req.params.id });
-    } else {
-      return res.status(400).json(errorResponse(
-        1,
-        'FAILED',
-        'Something went wrong. Probably booking id missing/incorrect'
-      ));
+    const updatedBooking = await Booking.findByIdAndUpdate(bookingId, update, { new: true });
+
+    if (!updatedBooking) {
+      return res.status(404).json({ message: 'Booking not found' });
     }
 
-    // if booking not found or user is not authorized to cancel this booking, return an error response
-    if (!booking) {
-      return res.status(404).json(errorResponse(
-        4,
-        'UNKNOWN ACCESS',
-        'Booking not found or you are not authorized to cancel this booking'
-      ));
-    }
-
-    // check `booking_status` filed exits
-    if (!req.body.booking_status) {
-      return res.status(400).json(errorResponse(
-        1,
-        'FAILED',
-        '`booking_status` filed is required'
-      ));
-    }
-
-    // finding by room by room id
-    let myRoom = null;
-
-    if (/^[0-9a-fA-F]{24}$/.test(req.params.id)) {
-      myRoom = await Room.findById(booking.room_id);
-    } else {
-      return res.status(400).json(errorResponse(
-        1,
-        'FAILED',
-        'Something went wrong. Probably room id missing/incorrect'
-      ));
-    }
-
-    // check room available
-    if (!myRoom) {
-      return res.status(404).json(errorResponse(
-        4,
-        'UNKNOWN ACCESS',
-        'Room does not exist'
-      ));
-    }
-
-    // handle update booking status
-    switch (req.body.booking_status) {
-      case 'approved':
-        if (booking.booking_status === 'pending') {
-          if (!bookingDatesBeforeCurrentDate(booking?.booking_dates).isAnyDateInPast) {
-            // update the booking status to `approved`
-            booking.booking_status = 'approved';
-            await booking.save({ validateBeforeSave: false });
-
-            // update the room status to 'booked'
-            myRoom.room_status = 'booked';
-            await myRoom.save({ validateBeforeSave: false });
-          } else {
-            return res.status(400).json(errorResponse(
-              1,
-              'FAILED',
-              'Sorry! This booking cannot be `approved` because of booking data is past'
-            ));
-          }
-        } else {
-          return res.status(400).json(errorResponse(
-            1,
-            'FAILED',
-            'This booking cannot be `approved` as it is no longer in the `pending` status'
-          ));
-        }
-        break;
-      case 'rejected':
-        if (booking.booking_status === 'pending') {
-          // update the booking status to `rejected`
-          booking.booking_status = 'rejected';
-          await booking.save({ validateBeforeSave: false });
-        } else {
-          return res.status(400).json(errorResponse(
-            1,
-            'FAILED',
-            'This booking cannot be `rejected` as it is no longer in the `pending` status'
-          ));
-        }
-        break;
-      case 'in-reviews':
-        if (booking.booking_status === 'approved') {
-          if (bookingDatesBeforeCurrentDate(booking?.booking_dates).isAnyDateInPast) {
-            // update the booking status to `in-reviews`
-            booking.booking_status = 'in-reviews';
-            await booking.save({ validateBeforeSave: false });
-
-            // update the room status to 'available'
-            myRoom.room_status = 'available';
-            await myRoom.save({ validateBeforeSave: false });
-          } else {
-            return res.status(400).json(errorResponse(
-              1,
-              'FAILED',
-              'Sorry! This booking cannot be `in-reviews` because of booking data is not feature'
-            ));
-          }
-        } else {
-          return res.status(400).json(errorResponse(
-            1,
-            'FAILED',
-            'This booking cannot be `in-reviews` as it is no longer in the `approved` status'
-          ));
-        }
-        break;
-      default:
-        return res.status(400).json(errorResponse(
-          1,
-          'FAILED',
-          `Your provided booking_status '${booking.booking_status}' can't match our system. Please try again using a correct booking_status`
-        ));
-    }
-
-    // success response after canceling the booking
-    res.status(200).json(successResponse(
-      0,
-      'SUCCESS',
-      `Booking order has been '${booking.booking_status}' successful`,
-      booking
-    ));
+    res.status(200).json({
+      message: 'Booking updated successfully',
+      booking: updatedBooking
+    });
   } catch (error) {
-    res.status(500).json(errorResponse(
-      2,
-      'SERVER SIDE ERROR',
-      error
-    ));
+    res.status(500).json({ message: 'Error updating booking', error });
   }
+};
+
+// Export the functions
+module.exports = {
+  placedBookingOrder,
+  getBookingOrderByUserId,
+  cancelSelfBookingOrder,
+  getBookingOrderForAdmin,
+  updatedBookingOrderByAdmin
 };

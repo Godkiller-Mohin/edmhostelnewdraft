@@ -1,16 +1,16 @@
-import express from "express";
-import { 
+const express = require('express');
+const { 
   placedBookingOrder, 
   getBookingOrderByUserId, 
   cancelSelfBookingOrder, 
   getBookingOrderForAdmin, 
   updatedBookingOrderByAdmin 
-} from "../controllers/booking.controller.js";
-import { 
+} = require("../controllers/booking.controller.cjs");
+const { 
   isAuthenticatedUser, 
   isBlocked, 
   isAdmin 
-} from "../middleware/app.authentication.js";
+}= require ("../middleware/app.authentication.cjs");
 
 const router = express.Router();
 
@@ -25,4 +25,4 @@ router.put("/cancel-booking-order/:id", isAuthenticatedUser, isBlocked, cancelSe
 router.get("/get-all-booking-orders", isAuthenticatedUser, isBlocked, isAdmin, getBookingOrderForAdmin);
 router.put("/updated-booking-order/:id", isAuthenticatedUser, isBlocked, isAdmin, updatedBookingOrderByAdmin);
 
-export default router;
+module.exports= router;

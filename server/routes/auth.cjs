@@ -1,6 +1,15 @@
-import express from "express";
-import { signup,signin, logout, googleAuthSignIn, generateOTP, verifyOTP, createResetSession,findUserByEmail, resetPassword } from "../controllers/auth.js";
-import { localVariables } from "../middleware/auth.js";
+const express = require('express');
+
+const {  signup,
+    signin,
+    googleAuthSignIn,
+    logout,
+    generateOTP,
+    verifyOTP,
+    createResetSession,
+    findUserByEmail,
+    resetPassword }=require ("../controllers/auth.cjs");
+const { localVariables }=require ("../middleware/auth.cjs");
 
 const router = express.Router();
 
@@ -26,4 +35,4 @@ router.put("/forgetpassword", resetPassword);
 
 
 
-export default router;
+module.exports= router;

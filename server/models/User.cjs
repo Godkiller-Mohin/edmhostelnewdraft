@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import jwt from "jsonwebtoken";
+const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 
 const UserSchema = new mongoose.Schema({
     name: {
@@ -20,13 +20,13 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: "",
     },
-    googleSignIn:{
+    googleSignIn: {
         type: Boolean,
         required: true,
         default: false,
     },
-},
-    { timestamps: true }
+}, 
+{ timestamps: true }
 );
 
-export default mongoose.model("User", UserSchema);
+module.exports = mongoose.model('User', UserSchema);
