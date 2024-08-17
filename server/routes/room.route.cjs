@@ -1,6 +1,6 @@
 const express = require('express');
-const { roomImageUpload } = require('../middleware/room.image.uploader.js');
-const { isAuthenticatedUser, isAdmin } = require('../middleware/app.authentication.js');
+const { roomImageUpload } = require('../middleware/room.image.uploader.cjs');
+const { isAuthenticatedUser, isAdmin } = require('../middleware/app.authentication.cjs');
 const {
   createRoom,
   getRoomsList,
@@ -8,7 +8,7 @@ const {
   editRoomByAdmin,
   deleteRoomById,
   getFeaturedRoomsList
-} = require('../controllers/room.controller.js');
+} = require('../controllers/room.controller.cjs');
 
 const router = express.Router();
 

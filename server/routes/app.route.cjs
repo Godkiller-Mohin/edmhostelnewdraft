@@ -1,6 +1,6 @@
 const express = require('express');
-const { getDashboardData }=require ("../controllers/apps.controllers.js");
-const  { isAuthenticatedUser, isBlocked, isAdmin }=require ("../middleware/app.authentication.js");
+const { getDashboardData }=require ("../controllers/apps.controllers.cjs");
+const  { isAuthenticatedUser, isBlocked, isAdmin }=require ("../middleware/app.authentication.cjs");
 
 const router = express.Router();
 

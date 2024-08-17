@@ -1,7 +1,7 @@
 const express = require('express');
 
 const { signup,signin, logout, googleAuthSignIn, generateOTP, verifyOTP, createResetSession,findUserByEmail, resetPassword }=require ("../controllers/auth.cjs");
-const { localVariables }=require ("../middleware/auth.js");
+const { localVariables }=require ("../middleware/auth.cjs");
 
 const router = express.Router();
 

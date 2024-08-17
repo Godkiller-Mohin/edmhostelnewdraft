@@ -2,8 +2,8 @@
 
 const fs = require('fs');
 const appRoot = require('app-root-path');
-const Room = require('../models/room.model');
-const logger = require('../middleware/winston.logger');
+const Room = require('../models/room.model.cjs');
+const logger = require('../middleware/winston.logger.cjs');
 const { errorResponse, successResponse } = require('../configs/app.response');
 const MyQueryHelper = require('../configs/api.feature');
 

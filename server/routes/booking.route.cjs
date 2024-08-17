@@ -5,12 +5,12 @@ const {
   cancelSelfBookingOrder, 
   getBookingOrderForAdmin, 
   updatedBookingOrderByAdmin 
-} = require("../controllers/booking.controller.js");
+} = require("../controllers/booking.controller.cjs");
 const { 
   isAuthenticatedUser, 
   isBlocked, 
   isAdmin 
-}= require ("../middleware/app.authentication.js");
+}= require ("../middleware/app.authentication.cjs");
 
 const router = express.Router();
 
