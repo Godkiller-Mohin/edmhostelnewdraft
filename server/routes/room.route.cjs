@@ -1,16 +1,14 @@
-
 const express = require('express');
-const {roomImageUpload}=require  ("../middleware/room.image.uploader.js");
-const { isAuthenticatedUser, isAdmin }=require ("../middleware/app.authentication.js");
-
-const  { 
-  createRoom, 
-  getRoomsList, 
-  getRoomByIdOrSlugName, 
-  editRoomByAdmin, 
-  deleteRoomById, 
-  getFeaturedRoomsList 
-}=require ("../controllers/room.controller.js");
+const { roomImageUpload } = require('../middleware/room.image.uploader.js');
+const { isAuthenticatedUser, isAdmin } = require('../middleware/app.authentication.js');
+const {
+  createRoom,
+  getRoomsList,
+  getRoomByIdOrSlugName,
+  editRoomByAdmin,
+  deleteRoomById,
+  getFeaturedRoomsList
+} = require('../controllers/room.controller.js');
 
 const router = express.Router();
 
@@ -26,5 +24,4 @@ router.get("/featured-rooms-list", getFeaturedRoomsList);
 router.put("/edit-room/:id", isAuthenticatedUser, isAdmin, roomImageUpload.array('room_images', 5), editRoomByAdmin);
 router.delete("/delete-room/:id", isAuthenticatedUser, isAdmin, deleteRoomById);
 
-export default router;
-
+module.exports = router;
