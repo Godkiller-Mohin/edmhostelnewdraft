@@ -25,4 +25,4 @@ router.put("/cancel-booking-order/:id", isAuthenticatedUser, isBlocked, cancelSe
 router.get("/get-all-booking-orders", isAuthenticatedUser, isBlocked, isAdmin, getBookingOrderForAdmin);
 router.put("/updated-booking-order/:id", isAuthenticatedUser, isBlocked, isAdmin, updatedBookingOrderByAdmin);
 
-modeule.exports= router;
+module.exports= router;

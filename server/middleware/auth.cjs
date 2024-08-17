@@ -6,4 +6,4 @@ function localVariables(req, res, next) {
     next();
 }
 
-module.exports = localVariables;
+module.exports = {localVariables};

@@ -2,7 +2,7 @@
 
 const jwt = require('jsonwebtoken');
 const { errorResponse } = require('../configs/app.response');
-const User = require('../models/user.model');
+const User = require('../models/User.cjs');
 
 // TODO: Middleware for detect authenticated logging user
 const isAuthenticatedUser = async (req, res, next) => {

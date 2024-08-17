@@ -7,4 +7,4 @@ const router = express.Router();
 // Get dashboard info by admin
 router.get("/dashboard", isAuthenticatedUser, isBlocked, isAdmin, getDashboardData);
 
-export default router;
+module.exports= router;

@@ -51,4 +51,4 @@ const roomImageUpload = multer({
   }
 });
 
-module.exports = roomImageUpload;
+module.exports = {roomImageUpload};
