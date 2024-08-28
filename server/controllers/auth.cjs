@@ -1,253 +1,524 @@
-const mongoose = require('mongoose');
+const fs = require('fs');
+const crypto = require('crypto');
+const appRoot = require('app-root-path');
 const User = require('../models/User.cjs');
-const bcrypt = require('bcrypt');
-const { createError } = require('../error.cjs');
-const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
-const dotenv = require('dotenv');
-const otpGenerator = require('otp-generator');
+const logger = require('../middleware/winston.logger.cjs');
+const { errorResponse, successResponse } = require('../configs/app.response');
+const loginResponse = require('../configs/login.response');
+const sendEmail = require('../configs/send.mail');
 
-dotenv.config();
+// TODO: Controller for registration new user
+exports.register = async (req, res) => {
+  try {
+    const {
+      userName, fullName, email, phone, password, dob, address, gender, role
+    } = req.body;
 
-const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-        user: process.env.EMAIL_USERNAME,
-        pass: process.env.EMAIL_PASSWORD
-    },
-    port: 465,
-    host: 'smtp.gmail.com'
-});
+    if (userName && fullName && email && password && dob && address) {
+      // check if userName, email or phone already exists
+      const findUserName = await User.findOne({ userName });
+      const findEmail = await User.findOne({ email });
+      const findPhone = await User.findOne({ phone });
 
-const signup = async (req, res, next) => {
-    const { email } = req.body;
-    // Check we have an email
-    if (!email) {
-        return res.status(422).send({ message: "Missing email." });
-    }
-    try {
-        // Check if the email is in use
-        const existingUser = await User.findOne({ email }).exec();
-        if (existingUser) {
-            return res.status(409).send({
-                message: "Email is already in use."
-            });
-        }
-        // Create and save the user
-        const salt = bcrypt.genSaltSync(10);
-        const hashedPassword = bcrypt.hashSync(req.body.password, salt);
-        const newUser = new User({ ...req.body, password: hashedPassword });
-
-        newUser.save().then((user) => {
-            // Create JWT token
-            const token = jwt.sign({ id: user._id }, process.env.JWT, { expiresIn: "9999 years" });
-            res.status(200).json({ token, user });
-        }).catch((err) => {
-            next(err);
-        });
-    } catch (err) {
-        next(err);
-    }
-};
-
-const signin = async (req, res, next) => {
-    try {
-        const user = await User.findOne({ email: req.body.email });
-        if (!user) {
-            return next(createError(201, "User not found"));
-        }
-        if (user.googleSignIn) {
-            return next(createError(201, "Entered email is signed up with a Google account. Please sign in with Google."));
-        }
-        const validPassword = await bcrypt.compareSync(req.body.password, user.password);
-        if (!validPassword) {
-            return next(createError(201, "Wrong password"));
+      if (findUserName) {
+        // delete uploaded avatar image
+        if (req?.file?.filename) {
+          fs.unlink(`${appRoot}/public/uploads/users/${req.file.filename}`, (err) => {
+            if (err) { logger.error(err); }
+          });
         }
 
-        // Create JWT token
-        const token = jwt.sign({ id: user._id }, process.env.JWT, { expiresIn: "9999 years" });
-        res.status(200).json({ token, user });
+        return res.status(409).json(errorResponse(
+          9,
+          'ALREADY EXIST',
+          'Sorry, Username already exists'
+        ));
+      }
 
-    } catch (err) {
-        next(err);
-    }
-};
-
-const googleAuthSignIn = async (req, res, next) => {
-    try {
-        const user = await User.findOne({ email: req.body.email });
-
-        if (!user) {
-            try {
-                const newUser = new User({ ...req.body, googleSignIn: true });
-                await newUser.save();
-                const token = jwt.sign({ id: newUser._id }, process.env.JWT, { expiresIn: "9999 years" });
-                res.status(200).json({ token, user: newUser });
-            } catch (err) {
-                next(err);
-            }
-        } else if (user.googleSignIn) {
-            const token = jwt.sign({ id: user._id }, process.env.JWT, { expiresIn: "9999 years" });
-            res.status(200).json({ token, user });
-        } else if (user.googleSignIn === false) {
-            return next(createError(201, "User already exists with this email; can't do Google auth"));
+      if (findEmail) {
+        // delete uploaded avatar image
+        if (req?.file?.filename) {
+          fs.unlink(`${appRoot}/public/uploads/users/${req.file.filename}`, (err) => {
+            if (err) { logger.error(err); }
+          });
         }
-    } catch (err) {
-        next(err);
-    }
-};
 
-const logout = (req, res) => {
-    res.clearCookie("access_token").json({ message: "Logged out" });
-};
+        return res.status(409).json(errorResponse(
+          9,
+          'ALREADY EXIST',
+          'Sorry, Email already exists'
+        ));
+      }
 
-const generateOTP = async (req, res) => {
-    req.app.locals.OTP = await otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false, lowerCaseAlphabets: false, digits: true });
-    const { email, name, reason } = req.query;
+      if (findPhone) {
+        // delete uploaded avatar image
+        if (req?.file?.filename) {
+          fs.unlink(`${appRoot}/public/uploads/users/${req.file.filename}`, (err) => {
+            if (err) { logger.error(err); }
+          });
+        }
 
-    const verifyOtp = {
-        to: email,
-        subject: 'Account Verification OTP',
-        html: `
-        <div style="font-family: Poppins, sans-serif; max-width: 600px; margin: 0 auto; background-color: #f9f9f9; padding: 20px; border: 1px solid #ccc; border-radius: 5px;">
-            <h1 style="font-size: 22px; font-weight: 500; color: #854CE6; text-align: center; margin-bottom: 30px;">Verify Your Account</h1>
-            <div style="background-color: #FFF; border: 1px solid #e5e5e5; border-radius: 5px; box-shadow: 0px 3px 6px rgba(0,0,0,0.05);">
-                <div style="background-color: #854CE6; border-top-left-radius: 5px; border-top-right-radius: 5px; padding: 20px 0;">
-                    <h2 style="font-size: 28px; font-weight: 500; color: #FFF; text-align: center; margin-bottom: 10px;">Verification Code</h2>
-                    <h1 style="font-size: 32px; font-weight: 500; color: #FFF; text-align: center; margin-bottom: 20px;">${req.app.locals.OTP}</h1>
-                </div>
-                <div style="padding: 30px;">
-                    <p style="font-size: 14px; color: #666; margin-bottom: 20px;">Dear ${name},</p>
-                    <p style="font-size: 14px; color: #666; margin-bottom: 20px;">Thank you for creating an account. To activate your account, please enter the following verification code:</p>
-                    <p style="font-size: 20px; font-weight: 500; color: #666; text-align: center; margin-bottom: 30px; color: #854CE6;">${req.app.locals.OTP}</p>
-                    <p style="font-size: 12px; color: #666; margin-bottom: 20px;">Please enter this code in the PODSTREAM app to activate your account.</p>
-                    <p style="font-size: 12px; color: #666; margin-bottom: 20px;">If you did not create a PODSTREAM account, please disregard this email.</p>
-                </div>
-            </div>
-            <br>
-            <p style="font-size: 16px; color: #666; margin-bottom: 20px; text-align: center;">Best regards,<br>The Podstream Team</p>
-        </div>
-        `
-    };
+        return res.status(409).json(errorResponse(
+          9,
+          'ALREADY EXIST',
+          'Sorry, Phone number already exists'
+        ));
+      }
 
-    const resetPasswordOtp = {
-        to: email,
-        subject: 'Reset Password Verification',
-        html: `
-        <div style="font-family: Poppins, sans-serif; max-width: 600px; margin: 0 auto; background-color: #f9f9f9; padding: 20px; border: 1px solid #ccc; border-radius: 5px;">
-            <h1 style="font-size: 22px; font-weight: 500; color: #854CE6; text-align: center; margin-bottom: 30px;">Reset Your PODSTREAM Account Password</h1>
-            <div style="background-color: #FFF; border: 1px solid #e5e5e5; border-radius: 5px; box-shadow: 0px 3px 6px rgba(0,0,0,0.05);">
-                <div style="background-color: #854CE6; border-top-left-radius: 5px; border-top-right-radius: 5px; padding: 20px 0;">
-                    <h2 style="font-size: 28px; font-weight: 500; color: #FFF; text-align: center; margin-bottom: 10px;">Verification Code</h2>
-                    <h1 style="font-size: 32px; font-weight: 500; color: #FFF; text-align: center; margin-bottom: 20px;">${req.app.locals.OTP}</h1>
-                </div>
-                <div style="padding: 30px;">
-                    <p style="font-size: 14px; color: #666; margin-bottom: 20px;">Dear ${name},</p>
-                    <p style="font-size: 14px; color: #666; margin-bottom: 20px;">To reset your PODSTREAM account password, please enter the following verification code:</p>
-                    <p style="font-size: 20px; font-weight: 500; color: #666; text-align: center; margin-bottom: 30px; color: #854CE6;">${req.app.locals.OTP}</p>
-                    <p style="font-size: 12px; color: #666; margin-bottom: 20px;">Please enter this code in the PODSTREAM app to reset your password.</p>
-                    <p style="font-size: 12px; color: #666; margin-bottom: 20px;">If you did not request a password reset, please disregard this email.</p>
-                </div>
-            </div>
-            <br>
-            <p style="font-size: 16px; color: #666; margin-bottom: 20px; text-align: center;">Best regards,<br>The PODSTREAM Team</p>
-        </div>
-        `
-    };
+      // create new user and store in database
+      const user = await User.create({
+        userName,
+        fullName,
+        email,
+        phone,
+        password,
+        avatar: req.file ? `/uploads/users/${req.file.filename}` : '/avatar.png',
+        gender,
+        dob,
+        address,
+        role
+      });
 
-    if (reason === "FORGOTPASSWORD") {
-        transporter.sendMail(resetPasswordOtp, (err) => {
-            if (err) {
-                next(err);
-            } else {
-                return res.status(200).send({ message: "OTP sent" });
-            }
-        });
+      // success response with register new user
+      res.status(201).json(successResponse(
+        0,
+        'SUCCESS',
+        'User registered successful',
+        {
+          userName: user.userName,
+          fullName: user.fullName,
+          email: user.email,
+          phone: user.phone,
+          avatar: process.env.APP_BASE_URL + user.avatar,
+          gender: user.gender,
+          dob: user.dob,
+          address: user.address,
+          role: user.role,
+          verified: user.verified,
+          status: user.status,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt
+        }
+      ));
     } else {
-        transporter.sendMail(verifyOtp, (err) => {
-            if (err) {
-                next(err);
-            } else {
-                return res.status(200).send({ message: "OTP sent" });
-            }
+      // delete uploaded avatar image
+      if (req?.file?.filename) {
+        fs.unlink(`${appRoot}/public/uploads/users/${req.file.filename}`, (err) => {
+          if (err) { logger.error(err); }
         });
-    }
-};
+      }
 
-const verifyOTP = async (req, res, next) => {
-    const { code } = req.query;
-    if (parseInt(code) === parseInt(req.app.locals.OTP)) {
-        req.app.locals.OTP = null;
-        req.app.locals.resetSession = true;
-        res.status(200).send({ message: "OTP verified" });
-    } else {
-        return next(createError(201, "Wrong OTP"));
+      return res.status(400).json(errorResponse(
+        1,
+        'FAILED',
+        'Please enter all required fields'
+      ));
     }
-};
-
-const createResetSession = async (req, res, next) => {
-    if (req.app.locals.resetSession) {
-        req.app.locals.resetSession = false;
-        return res.status(200).send({ message: "Access granted" });
+  } catch (error) {
+    // delete uploaded avatar image
+    if (req?.file?.filename) {
+      fs.unlink(`${appRoot}/public/uploads/users/${req.file.filename}`, (err) => {
+        if (err) { logger.error(err); }
+      });
     }
 
-    return res.status(400).send({ message: "Session expired" });
+    res.status(500).json(errorResponse(
+      2,
+      'SERVER SIDE ERROR',
+      error
+    ));
+  }
 };
 
-const findUserByEmail = async (req, res, next) => {
-    const { email } = req.query;
-    try {
-        const user = await User.findOne({ email: email });
-        if (user) {
-            return res.status(200).send({
-                message: "User found"
-            });
-        } else {
-            return res.status(202).send({
-                message: "User not found"
-            });
-        }
-    } catch (err) {
-        next(err);
-    }
-};
-
-const resetPassword = async (req, res, next) => {
-    if (!req.app.locals.resetSession) return res.status(440).send({ message: "Session expired" });
-
+// TODO: Controller for login existing user
+exports.loginUser = async (req, res) => {
+  try {
     const { email, password } = req.body;
-    try {
-        await User.findOne({ email }).then(user => {
-            if (user) {
-                const salt = bcrypt.genSaltSync(10);
-                const hashedPassword = bcrypt.hashSync(password, salt);
-                User.updateOne({ email: email }, { $set: { password: hashedPassword } }).then(() => {
-                    req.app.locals.resetSession = false;
-                    return res.status(200).send({
-                        message: "Password reset successful"
-                    });
-                }).catch(err => {
-                    next(err);
-                });
-            } else {
-                return res.status(202).send({
-                    message: "User not found"
-                });
-            }
-        });
-    } catch (err) {
-        next(err);
+    const { loginType } = req.query;
+
+    // check if email or password is empty
+    if (!email || !password) {
+      return res.status(400).json(errorResponse(
+        1,
+        'FAILED',
+        'Please enter email and password'
+      ));
     }
+
+    // check user already exists
+    const user = await User.findOne({ email }).select('+password');
+
+    if (!user) {
+      return res.status(404).json(errorResponse(
+        4,
+        'UNKNOWN ACCESS',
+        'User does not exist'
+      ));
+    }
+
+    // if query loginType is "admin"
+    if (loginType === 'admin') {
+      if (user.role !== 'admin') {
+        return res.status(406).json(errorResponse(
+          6,
+          'UNABLE TO ACCESS',
+          'Accessing the page or resource you were trying to reach is forbidden'
+        ));
+      }
+    }
+
+    // check if user is "blocked"
+    if (user.status === 'blocked') {
+      return res.status(406).json(errorResponse(
+        6,
+        'UNABLE TO ACCESS',
+        'Accessing the page or resource you were trying to reach is forbidden'
+      ));
+    }
+
+    // check password matched
+    const isPasswordMatch = await user.comparePassword(password);
+    if (!isPasswordMatch) {
+      return res.status(400).json(errorResponse(
+        1,
+        'FAILED',
+        'User credentials are incorrect'
+      ));
+    }
+
+    // update user status & updateAt time
+    const logUser = await User.findByIdAndUpdate(
+      user._id,
+      { status: 'login', updatedAt: Date.now() },
+      { new: true }
+    );
+
+    // response user with JWT access token token
+    loginResponse(res, logUser);
+  } catch (error) {
+    res.status(500).json(errorResponse(
+      1,
+      'FAILED',
+      error
+    ));
+  }
 };
 
-module.exports = {
-    signup,
-    signin,
-    googleAuthSignIn,
-    logout,
-    generateOTP,
-    verifyOTP,
-    createResetSession,
-    findUserByEmail,
-    resetPassword
+// TODO: Controller for logout user
+exports.logoutUser = async (req, res) => {
+  try {
+    const { user } = req;
+
+    if (!user) {
+      return res.status(404).json(errorResponse(
+        4,
+        'UNKNOWN ACCESS',
+        'Unauthorized access. Please login to continue'
+      ));
+    }
+
+    // update user status & updateAt time
+    await User.findByIdAndUpdate(
+      user._id,
+      { status: 'logout', updatedAt: Date.now() },
+      { new: true }
+    );
+
+    // remove cookie
+    res.clearCookie('AccessToken');
+
+    // response user
+    res.status(200).json(successResponse(
+      0,
+      'SUCCESS',
+      'User logged out successful'
+    ));
+  } catch (error) {
+    res.status(500).json(errorResponse(
+      2,
+      'SERVER SIDE ERROR',
+      error
+    ));
+  }
+};
+
+// TODO: Controller for user forgot password
+exports.forgotPassword = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+
+    if (!user) {
+      return res.status(404).json(errorResponse(
+        4,
+        'UNKNOWN ACCESS',
+        'User does not exist'
+      ));
+    }
+
+    // reset password token
+    const resetToken = user.getResetPasswordToken();
+
+    // save update user
+    await user.save({ validateBeforeSave: false });
+
+    // mailing data
+    const url = `${process.env.APP_SERVICE_URL}/auth/forgot-password/${resetToken}`;
+    const subjects = 'Password Recovery Email';
+    const message = 'Click below link to reset your password. If you have not requested this email simply ignore this email.';
+    const title = 'Recovery Your Password';
+
+    // sending mail
+    sendEmail(res, user, url, subjects, message, title);
+  } catch (error) {
+    res.status(500).json(errorResponse(
+      2,
+      'SERVER SIDE ERROR',
+      error
+    ));
+  }
+};
+
+// TODO: Controller for user reset password
+exports.resetPassword = async (req, res) => {
+  try {
+    if (req.params.token && req.body.password && req.body.confirmPassword) {
+      // creating token crypto hash
+      const resetPasswordToken = crypto
+        .createHash('sha256')
+        .update(req.params.token)
+        .digest('hex');
+
+      const user = await User.findOne({
+        resetPasswordToken,
+        resetPasswordExpire: { $gt: Date.now() }
+      });
+
+      if (!user) {
+        return res.status(404).json(errorResponse(
+          4,
+          'UNKNOWN ACCESS',
+          'Reset Password Token is invalid or has been expired'
+        ));
+      }
+
+      if (req.body.password !== req.body.confirmPassword) {
+        return res.status(400).json(errorResponse(
+          1,
+          'FAILED',
+          'Password and Confirm password does not match'
+        ));
+      }
+
+      // reset user password in database
+      user.password = req.body.password;
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpire = undefined;
+      await user.save();
+
+      res.status(200).json(successResponse(
+        0,
+        'SUCCESS',
+        'User password reset successful'
+      ));
+    } else {
+      return res.status(400).json(errorResponse(
+        1,
+        'FAILED',
+        'Please enter all required fields'
+      ));
+    }
+  } catch (error) {
+    res.status(500).json(errorResponse(
+      2,
+      'SERVER SIDE ERROR',
+      error
+    ));
+  }
+};
+
+// TODO: Controller for user change password
+exports.changePassword = async (req, res) => {
+  try {
+    if (req.body.oldPassword && req.body.newPassword) {
+      const { user } = req;
+
+      if (!user) {
+        return res.status(404).json(errorResponse(
+          4,
+          'UNKNOWN ACCESS',
+          'User does not exist'
+        ));
+      }
+
+      const { email } = user;
+      const user2 = await User.findOne({ email }).select('+password');
+
+      // check old password matched
+      const isPasswordMatch = await user2.comparePassword(req.body.oldPassword.toString());
+      if (!isPasswordMatch) {
+        return res.status(400).json(errorResponse(
+          1,
+          'FAILED',
+          'User credentials are incorrect'
+        ));
+      }
+
+      // change user password in database
+      user.password = req.body.newPassword;
+      await user.save();
+
+      res.status(200).json(successResponse(
+        0,
+        'SUCCESS',
+        'User password reset successful'
+      ));
+    } else {
+      return res.status(400).json(errorResponse(
+        1,
+        'FAILED',
+        'Please enter all required fields'
+      ));
+    }
+  } catch (error) {
+    res.status(500).json(errorResponse(
+      2,
+      'SERVER SIDE ERROR',
+      error
+    ));
+  }
+};
+
+// TODO: Controller for user email verification link send
+exports.sendEmailVerificationLink = async (req, res) => {
+  try {
+    const { user } = req;
+
+    if (!user) {
+      return res.status(404).json(errorResponse(
+        4,
+        'UNKNOWN ACCESS',
+        'User does not exist'
+      ));
+    }
+
+    // check user already verified
+    if (user.verified) {
+      return res.status(400).json(errorResponse(
+        1,
+        'FAILED',
+        'Ops! Your mail already verified'
+      ));
+    }
+
+    // email verification token
+    const verificationToken = user.getEmailVerificationToken();
+
+    // save updated user
+    await user.save({ validateBeforeSave: false });
+
+    // mailing data
+    const url = `${process.env.APP_SERVICE_URL}/auth/verify-email/${verificationToken}`;
+    const subjects = 'User Email Verification';
+    const message = 'Click below link to verify your email. If you have not requested this email simply ignore this email.';
+    const title = 'Verify Your Email';
+
+    // sending mail
+    sendEmail(res, user, url, subjects, message, title);
+  } catch (error) {
+    res.status(500).json(errorResponse(
+      2,
+      'SERVER SIDE ERROR',
+      error
+    ));
+  }
+};
+
+// TODO: Controller for user email verification
+exports.emailVerification = async (req, res) => {
+  try {
+    if (req.params.token) {
+      // creating token crypto hash
+      const emailVerificationToken = crypto
+        .createHash('sha256')
+        .update(req.params.token)
+        .digest('hex');
+
+      const user = await User.findOne({
+        emailVerificationToken,
+        emailVerificationExpire: { $gt: Date.now() }
+      });
+
+      if (!user) {
+        return res.status(404).json(errorResponse(
+          4,
+          'UNKNOWN ACCESS',
+          'Email verification token is invalid or has been expired'
+        ));
+      }
+
+      // reset user password in database
+      user.emailVerificationToken = undefined;
+      user.emailVerificationExpire = undefined;
+      user.verified = true;
+      await user.save();
+
+      res.status(200).json(successResponse(
+        0,
+        'SUCCESS',
+        'User email verification successful'
+      ));
+    } else {
+      return res.status(400).json(errorResponse(
+        1,
+        'FAILED',
+        'Please enter all required fields'
+      ));
+    }
+  } catch (error) {
+    res.status(500).json(errorResponse(
+      2,
+      'SERVER SIDE ERROR',
+      error
+    ));
+  }
+};
+
+// TODO: Controller for user refresh-token
+exports.refreshToken = async (req, res) => {
+  try {
+    const { user } = req;
+
+    if (!user) {
+      return res.status(404).json(errorResponse(
+        4,
+        'UNKNOWN ACCESS',
+        'User does not exist'
+      ));
+    }
+
+    const accessToken = user.getJWTToken();
+    const refreshToken = user.getJWTRefreshToken();
+
+    // options for cookie
+    const options = {
+      expires: new Date(Date.now() + process.env.JWT_TOKEN_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
+      httpOnly: true
+    };
+
+    res
+      .status(200)
+      .cookie('AccessToken', accessToken, options)
+      .json(successResponse(
+        0,
+        'SUCCESS',
+        'JWT refreshToken generate successful',
+        { accessToken, refreshToken }
+      ));
+  } catch (error) {
+    res.status(500).json(errorResponse(
+      2,
+      'SERVER SIDE ERROR',
+      error
+    ));
+  }
 };
