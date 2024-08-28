@@ -1,25 +1,25 @@
-const router = require('express').Router();
+const express = require('express');
+const { register, loginUser, logoutUser, forgotPassword, resetPassword, changePassword, sendEmailVerificationLink, emailVerification, refreshToken } = require('../controllers/auth.cjs');
 const { apiLimiter } = require('../middleware/access.limiter');
 const { isAuthenticatedUser, isRefreshTokenValid, isBlocked } = require('../middleware/app.authentication.cjs');
-const {
-  register, loginUser, logoutUser, forgotPassword, resetPassword, changePassword, sendEmailVerificationLink, emailVerification, refreshToken
-} = require('../controllers/auth.cjs');
 
-// routes for register, login and logout user
-router.route('/auth/registration').post(register);
-router.route('/auth/login').post(apiLimiter, loginUser);
-router.route('/auth/logout').post(isAuthenticatedUser, isBlocked, logoutUser);
+const router = express.Router();
 
-// routes for forgot & change password
-router.route('/auth/forgot-password').post(forgotPassword);
-router.route('/auth/reset-password/:token').post(resetPassword);
-router.route('/auth/change-password').post(isAuthenticatedUser, isBlocked, changePassword);
+// Routes for register, login, and logout user
+router.post('/auth/registration', register);
+router.post('/auth/login', apiLimiter, loginUser);
+router.post('/auth/logout', isAuthenticatedUser, isBlocked, logoutUser);
 
-// routes for user email verification
-router.route('/auth/send-email-verification-link').post(isAuthenticatedUser, isBlocked, sendEmailVerificationLink);
-router.route('/auth/verify-email/:token').post(isAuthenticatedUser, isBlocked, emailVerification);
+// Routes for forgot & change password
+router.post('/auth/forgot-password', forgotPassword);
+router.post('/auth/reset-password/:token', resetPassword);
+router.post('/auth/change-password', isAuthenticatedUser, isBlocked, changePassword);
 
-// route for get user refresh JWT Token
-router.route('/auth/refresh-token').get(isRefreshTokenValid, refreshToken);
+// Routes for user email verification
+router.post('/auth/send-email-verification-link', isAuthenticatedUser, isBlocked, sendEmailVerificationLink);
+router.post('/auth/verify-email/:token', isAuthenticatedUser, isBlocked, emailVerification);
+
+// Route for getting user refresh JWT Token
+router.get('/auth/refresh-token', isRefreshTokenValid, refreshToken);
 
 module.exports = router;
