@@ -10,7 +10,7 @@ const authRoutes = require('./routes/auth.cjs');
 const bookingRoute = require('./routes/booking.route.cjs');
 const roomRoute = require('./routes/room.route.cjs');
 const appRoute = require('./routes/app.route.cjs');
-
+const userRoute =require('./routes/user.routes.cjs')
 const app = express();
 dotenv.config();
 
@@ -27,7 +27,7 @@ const port = 8000;
 
 const connect = () => {
     mongoose.set('strictQuery', true);
-    mongoose.connect('mongodb://127.0.0.1:27017/')
+    mongoose.connect('mongodb://127.0.0.1:27017/EDM')
         .then(() => {
             console.log('MongoDB connected');
         })
@@ -40,6 +40,7 @@ app.use("/api/app", appRoute);
 app.use("/api/auth", authRoutes);
 app.use("/api/booking", bookingRoute);
 app.use("/api/room", roomRoute);
+app.use("/api/user",userRoute);
 
 app.use((err, req, res, next) => {
     const status = err.status || 500;
