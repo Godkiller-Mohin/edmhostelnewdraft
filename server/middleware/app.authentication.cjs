@@ -189,6 +189,7 @@ const isBlocked = async (req, res, next) => {
 };
 module.exports={
   isAuthenticatedUser, 
-  isBlocked, 
+  isBlocked,
+  isRefreshTokenValid, 
   isAdmin 
 }

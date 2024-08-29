@@ -6,20 +6,20 @@ const { isAuthenticatedUser, isRefreshTokenValid, isBlocked } = require('../midd
 const router = express.Router();
 
 // Routes for register, login, and logout user
-router.post('/auth/registration', register);
-router.post('/auth/login', apiLimiter, loginUser);
-router.post('/auth/logout', isAuthenticatedUser, isBlocked, logoutUser);
+router.post('/registration', register);
+router.post('/login', apiLimiter, loginUser);
+router.post('/logout', isAuthenticatedUser, isBlocked, logoutUser);
 
 // Routes for forgot & change password
-router.post('/auth/forgot-password', forgotPassword);
-router.post('/auth/reset-password/:token', resetPassword);
-router.post('/auth/change-password', isAuthenticatedUser, isBlocked, changePassword);
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password/:token', resetPassword);
+router.post('/change-password', isAuthenticatedUser, isBlocked, changePassword);
 
 // Routes for user email verification
-router.post('/auth/send-email-verification-link', isAuthenticatedUser, isBlocked, sendEmailVerificationLink);
-router.post('/auth/verify-email/:token', isAuthenticatedUser, isBlocked, emailVerification);
+router.post('/send-email-verification-link', isAuthenticatedUser, isBlocked, sendEmailVerificationLink);
+router.post('/verify-email/:token', isAuthenticatedUser, isBlocked, emailVerification);
 
 // Route for getting user refresh JWT Token
-router.get('/auth/refresh-token', isRefreshTokenValid, refreshToken);
+router.get('/refresh-token', isRefreshTokenValid, refreshToken);
 
 module.exports = router;
