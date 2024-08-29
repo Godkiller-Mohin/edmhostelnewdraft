@@ -25,7 +25,7 @@ function Login() {
   const onFinish = async (values) => {
     try {
       setLoading(true);
-      const response = await ApiService.post('/api/v1/auth/login?loginType=admin', values);
+      const response = await ApiService.post('/api/auth/auth/login', values);
 
       if (response?.result_code === 0) {
         setSessionUserAndToken(response?.result?.data, response?.access_token, response?.refresh_token);

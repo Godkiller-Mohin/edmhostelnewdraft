@@ -1,8 +1,8 @@
 const fs = require('fs');
 const appRoot = require('app-root-path');
 const { errorResponse, successResponse } = require('../configs/app.response');
-const User = require('../models/user.model');
-const logger = require('../middleware/winston.logger');
+const User = require('../models/User.cjs');
+const logger = require('../middleware/winston.logger.cjs');
 const MyQueryHelper = require('../configs/api.feature');
 
 // TODO: Controller for get user info
