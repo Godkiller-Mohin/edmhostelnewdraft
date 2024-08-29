@@ -23,7 +23,7 @@ const corsConfig = {
 app.use(cors(corsConfig));
 app.use(morgan('dev')); // Optional: Add logging middleware
 
-const port = 8000;
+const port = 4000;
 
 const connect = () => {
     mongoose.set('strictQuery', true);
