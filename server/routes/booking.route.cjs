@@ -5,7 +5,7 @@ const {
   cancelSelfBookingOrder, 
   getBookingOrderForAdmin, 
   updatedBookingOrderByAdmin 
-} = require("../controllers/booking.controller.cjs");
+} = require("../controllers/booking.room.controller.cjs");
 const { 
   isAuthenticatedUser, 
   isBlocked, 
