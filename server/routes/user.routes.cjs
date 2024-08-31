@@ -1,4 +1,6 @@
 const express = require('express');
+const dotenv = require('dotenv');
+dotenv.config();
 const { isAuthenticatedUser, isAdmin, isBlocked } = require('../middleware/app.authentication.cjs');
 const {
   getUser,
