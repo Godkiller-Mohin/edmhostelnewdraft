@@ -1,20 +1,24 @@
-// server/index.js (or server/index.cjs)
 const express = require('express');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const morgan = require('morgan');
-
+dotenv.config();
 // Import routes using CommonJS
 const authRoutes = require('./routes/auth.cjs');
 const bookingRoute = require('./routes/booking.route.cjs');
 const roomRoute = require('./routes/room.route.cjs');
 const appRoute = require('./routes/app.route.cjs');
-const userRoute =require('./routes/user.routes.cjs')
+const userRoute = require('./routes/user.routes.cjs');
 const app = express();
-dotenv.config();
 
-/** Middlewares */
+// Load environment variables
+
+
+// Debug environment variables
+console.log('JWT_SECRET:', process.env.JWT_SECRET);
+console.log('JWT_REFRESH_SECRET:', process.env.JWT_REFRESH_SECRET);
+
 app.use(express.json());
 const corsConfig = {
     credentials: true,
@@ -40,7 +44,7 @@ app.use("/api/app", appRoute);
 app.use("/api/auth", authRoutes);
 app.use("/api/booking", bookingRoute);
 app.use("/api/room", roomRoute);
-app.use("/api/user",userRoute);
+app.use("/api/user", userRoute);
 
 app.use((err, req, res, next) => {
     const status = err.status || 500;

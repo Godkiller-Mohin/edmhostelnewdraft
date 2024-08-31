@@ -2,7 +2,7 @@
 
 // Import necessary modules
 const Room = require('../models/room.model.cjs');
-const Booking = require('../models/booking.model.cjs');
+const Booking = require('../models/booking.room.model.cjs');
 const { errorResponse, successResponse } = require('../configs/app.response');
 const MyQueryHelper = require('../configs/api.feature');
 const { bookingDatesBeforeCurrentDate } = require('../lib/booking.dates.validator');

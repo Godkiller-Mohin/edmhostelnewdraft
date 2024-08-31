@@ -1,4 +1,6 @@
 const express = require('express');
+const dotenv = require('dotenv');
+dotenv.config();
 const { getDashboardData }=require ("../controllers/apps.controllers.cjs");
 const  { isAuthenticatedUser, isBlocked, isAdmin }=require ("../middleware/app.authentication.cjs");
 

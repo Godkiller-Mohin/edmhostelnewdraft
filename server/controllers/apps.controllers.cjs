@@ -2,7 +2,7 @@
 const { errorResponse, successResponse } = require('../configs/app.response');
 const User = require('../models/User.cjs');
 const Room = require('../models/room.model.cjs');
-const Booking = require('../models/booking.model.cjs');
+const Booking = require('../models/booking.room.model.cjs');
 
 // TODO: Controller for get users list for admin
 const getDashboardData = async (req, res) => {

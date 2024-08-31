@@ -32,7 +32,7 @@ function Main() {
   // function to handle user logout
   const userLogout = async () => {
     try {
-      const response = await ApiService.post('/api/v1/auth/logout');
+      const response = await ApiService.post('/api/auth/logout');
       if (response?.result_code === 0) {
         removeSessionAndLogoutUser();
       } else {
