@@ -1,8 +1,11 @@
+/* eslint-disable no-unused-vars */
 import React, { useRef } from "react";
 import { LocomotiveScrollProvider } from "react-locomotive-scroll";
 import Navbar from "./components/Navbar";
 import Hero from "./components/hero";
 import VerticalSocialBar from "./components/verticalSocialBar";
+import Footer from "./components/footer";
+import EventSelector from "./components/eventCard";
 import "./App.css";
 import AnimatedCursor from "react-animated-cursor";
 
@@ -40,8 +43,11 @@ function App() {
         <Navbar />
         <main data-scroll-section>
           <Hero />
+          <EventSelector />
+
           <VerticalSocialBar />
         </main>
+        <Footer />
       </div>
     </LocomotiveScrollProvider>
   );
