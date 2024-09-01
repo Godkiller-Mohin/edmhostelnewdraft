@@ -5,12 +5,18 @@
   padding: 0 2rem;
   background-color: transparent;
   color: white;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  position: absolute;
+  top: 20px;
+  left: -100px;
+  right: 20px;
   height: 80px;
-  z-index: 100;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.logo,
+.nav-links {
+  pointer-events: auto;
 }
 
 .nav-links {
@@ -41,4 +47,5 @@
 
 .logo img {
   max-height: 380px;
+  width: auto;
 }

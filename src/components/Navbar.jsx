@@ -1,12 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./navbar.css";
 import logoImage from "../assets/logo.png";
 
 function Navigation() {
   return (
-    <nav className="navigation">
+    <nav
+      className="navigation"
+      data-scroll
+      data-scroll-sticky
+      data-scroll-target=".App"
+    >
       <div className="logo">
-        <img src={logoImage} alt="Logo" style={{ maxHeight: "380px" }} />
+        <img src={logoImage} alt="Logo" />
       </div>
       <div className="nav-links">
         <a href="#locations">LOCATIONS</a>
