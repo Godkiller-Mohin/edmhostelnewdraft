@@ -1,15 +1,110 @@
-.event-selector {
-  background-color: #0a2f1f;
+/* .event-selector {
+  background-color: #01231f;
   color: white;
   padding: 2rem;
   text-align: center;
 }
 
-.event-selector h2 {
-  font-size: 40px;
-  margin: 100px;
+.heading-container {
+  position: relative;
+  margin: 100px 0;
 }
 
+.background-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 200px;
+  opacity: 0.1;
+  margin: 0;
+  z-index: 1;
+}
+
+.main-heading {
+  position: relative;
+  font-size: 40px;
+  margin: 0;
+  z-index: 2;
+}
+
+.event-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.event-card {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.event-card img {
+  width: 100%;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.event-card:hover img {
+  transform: scale(1.05);
+}
+
+.event-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.subtitle {
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+h3 {
+  margin: 0;
+} */
+
+.event-selector {
+  background-color: #01231f;
+  color: white;
+  padding: 2rem;
+  text-align: center;
+  overflow: hidden;
+}
+
+.heading-container {
+  position: relative;
+  margin: 100px 0;
+  height: auto; /* Remove fixed height */
+}
+
+.background-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  transform: translate(-50%, -50%);
+  font-size: 200px;
+  opacity: 0.1;
+  margin: 0;
+  z-index: 1;
+  transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+  white-space: nowrap;
+}
+
+.main-heading {
+  position: relative;
+  font-size: 40px;
+  margin: 0;
+  z-index: 2;
+  /* Add padding to create space around the text and prevent overlap */
+  padding: 20px 0;
+}
 .event-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
