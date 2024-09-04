@@ -7,12 +7,12 @@ import UsersCard from '../dashboard/UsersCard';
 
 function Dashboard() {
   // fetch dashboard API data
-  const [loading, error, response] = useFetchData('/api/v1/dashboard');
+  const [loading, error, response] = useFetchData('/api/app/dashboard');
 
   return (
     <div>
       <h2 className='text-[20px] text-center font-text-font font-medium py-4'>
-        Welcome to Beach Resort — Dashboard
+        Welcome to EDM hostel — Dashboard
       </h2>
 
       {error ? (

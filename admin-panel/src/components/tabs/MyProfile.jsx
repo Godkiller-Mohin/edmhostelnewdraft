@@ -15,7 +15,7 @@ function MyProfile() {
   const [editProfileModal, setEditProfileModal] = useState(false);
 
   // fetch user profile API data
-  const [loading, error, response] = useFetchData('/api/v1/get-user');
+  const [loading, error, response] = useFetchData('/api/user/get-user');
 
   // handle to change user avatar upload
   const props = {

@@ -10,7 +10,7 @@ import ApiService from '../utils/apiService';
 import { setSessionUserAndToken } from '../utils/authentication';
 
 function Login() {
-  window.document.title = 'Beach Resort — Login';
+  window.document.title = 'EDm hostel — Login';
   const [loading, setLoading] = useState(false);
   const [errMsg, setErrMsg] = useState('');
 

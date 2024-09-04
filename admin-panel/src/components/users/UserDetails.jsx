@@ -18,7 +18,7 @@ function UserDetails({ id }) {
   const user = getSessionUser();
 
   // fetch user-details API data
-  const [loading, error, response] = useFetchData(`/api/v1/get-user/${id}`);
+  const [loading, error, response] = useFetchData(`/api/user/get-user/${id}`);
 
   // function to handle blocked user
   const blockedUser = () => {
@@ -28,7 +28,7 @@ function UserDetails({ id }) {
       content: 'Are you sure blocked this user?',
       onOk() {
         return new Promise((resolve, reject) => {
-          ApiService.put(`/api/v1/blocked-user/${id}`)
+          ApiService.put(`/api/user/blocked-user/${id}`)
             .then((res) => {
               if (res?.result_code === 0) {
                 notificationWithIcon('success', 'SUCCESS', res?.result?.message || 'User blocked successful');
@@ -56,7 +56,7 @@ function UserDetails({ id }) {
       content: 'Are you sure unblocked this user?',
       onOk() {
         return new Promise((resolve, reject) => {
-          ApiService.put(`/api/v1/unblocked-user/${id}`)
+          ApiService.put(`/api/user/unblocked-user/${id}`)
             .then((res) => {
               if (res?.result_code === 0) {
                 notificationWithIcon('success', 'SUCCESS', res?.result?.message || 'User unblocked successful');

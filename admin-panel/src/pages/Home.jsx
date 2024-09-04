@@ -4,7 +4,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 function Home() {
-  window.document.title = 'Beach Resort — Home';
+  window.document.title = 'EDM hostel — Home';
 
   return (
     <div className='h-screen flex flex-col items-center justify-center'>

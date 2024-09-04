@@ -6,6 +6,7 @@ import Hero from "./components/hero";
 import VerticalSocialBar from "./components/verticalSocialBar";
 import Footer from "./components/footer";
 import EventSelector from "./components/eventCard";
+import Testimonials from "./components/TestimonialCard";
 import "./App.css";
 import AnimatedCursor from "react-animated-cursor";
 
@@ -44,7 +45,7 @@ function App() {
         <main data-scroll-section>
           <Hero />
           <EventSelector />
-
+          <Testimonials/>
           <VerticalSocialBar />
         </main>
         <Footer />

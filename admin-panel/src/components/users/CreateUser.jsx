@@ -31,7 +31,7 @@ function CreateUser() {
       password: values.password
     };
 
-    ApiService.post('/api/v1/auth/registration', data)
+    ApiService.post('/api/auth/registration', data)
       .then((response) => {
         setLoading(false);
         if (response?.result_code === 0) {

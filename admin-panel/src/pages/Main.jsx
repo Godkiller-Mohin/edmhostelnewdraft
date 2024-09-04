@@ -23,7 +23,7 @@ const {
 } = Layout;
 
 function Main() {
-  window.document.title = 'Beach Resort — Main';
+  window.document.title = 'EDM hostel — Main';
   const { isFullscreen, toggleFullScreen } = useFullScreen();
   const [selectedKeys, setSelectedKeys] = useState('1');
   const navigate = useNavigate();
@@ -228,7 +228,7 @@ function Main() {
           {' '}
           <a
             className='text-color-primary hover:text-color-secondary'
-            href='https://srmukul.com'
+            href='https://anantsharmaportfolio.vercel.app'
             target='_blank'
             rel='noreferrer'
           >

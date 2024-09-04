@@ -19,7 +19,7 @@ function Orders() {
   );
 
   // fetch booking-list API data
-  const [loading, error, response] = useFetchData(`/api/v1/get-all-booking-orders?keyword=${query.search}&limit=${query.rows}&page=${query.page}&sort=${query.sort}`, fetchAgain);
+  const [loading, error, response] = useFetchData(`/api/booking/get-all-booking-orders?keyword=${query.search}&limit=${query.rows}&page=${query.page}&sort=${query.sort}`, fetchAgain);
 
   // reset query options
   useEffect(() => {

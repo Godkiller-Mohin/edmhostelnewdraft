@@ -44,7 +44,7 @@ function CreateRoom() {
     }
 
     setLoading(true);
-    ApiService.post('/api/v1/create-room', formdata, {
+    ApiService.post('/api/room/create-room', formdata, {
       headers: { 'Content-Type': 'multipart/form-data' }
     })
       .then((response) => {

@@ -23,7 +23,7 @@ function RoomsList({ add }) {
   const [fetchAgain, setFetchAgain] = useState(false);
 
   // fetch room-list API data
-  const [loading, error, response] = useFetchData(`/api/v1/all-rooms-list?keyword=${query.search}&limit=${query.rows}&page=${query.page}&sort=${query.sort}`, fetchAgain);
+  const [loading, error, response] = useFetchData(`/api/room/all-rooms-list?keyword=${query.search}&limit=${query.rows}&page=${query.page}&sort=${query.sort}`, fetchAgain);
 
   // reset query options
   useEffect(() => {

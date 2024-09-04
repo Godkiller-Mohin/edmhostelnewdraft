@@ -1,7 +1,8 @@
-
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const dotenv = require('dotenv');
+dotenv.config();
 
 const uploadPath = () => {
   const UPLOADS_FOLDER = './public/uploads/rooms';

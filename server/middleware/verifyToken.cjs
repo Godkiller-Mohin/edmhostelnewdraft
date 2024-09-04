@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { createError } = require('../error.cjs');
+const dotenv = require('dotenv');
+dotenv.config();
 
 const verifyToken = async (req, res, next) => {
   try {

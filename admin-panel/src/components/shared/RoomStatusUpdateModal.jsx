@@ -29,7 +29,7 @@ function RoomStatusUpdateModal({ statusUpdateModal, setStatusUpdateModal, setFet
     } else {
       setLoading(true);
       ApiService.put(
-        `/api/v1/updated-booking-order/${statusUpdateModal?.roomId}`,
+        `/api/booking/updated-booking-order/${statusUpdateModal?.roomId}`,
         { booking_status: status }
       )
         .then((res) => {

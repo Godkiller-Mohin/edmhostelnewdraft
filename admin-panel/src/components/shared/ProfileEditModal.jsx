@@ -20,7 +20,7 @@ function ProfileEditModal({ editProfileModal, setEditProfileModal }) {
   const [form] = Form.useForm();
 
   // fetch user profile API data
-  const [fetchLoading, fetchError, fetchResponse] = useFetchData('/api/v1/get-user');
+  const [fetchLoading, fetchError, fetchResponse] = useFetchData('/api/user/get-user');
 
   // set form data from API data
   useEffect(() => {
@@ -38,7 +38,7 @@ function ProfileEditModal({ editProfileModal, setEditProfileModal }) {
   // function to handle edit user profile
   const onFinish = (values) => {
     setLoading(true);
-    ApiService.put('/api/v1/update-user', values)
+    ApiService.put('/api/user/update-user', values)
       .then((response) => {
         setLoading(false);
         if (response?.result_code === 0) {

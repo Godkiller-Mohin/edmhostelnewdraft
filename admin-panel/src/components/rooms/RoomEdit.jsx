@@ -19,7 +19,7 @@ function RoomEdit({ roomEditModal, setRoomEditModal }) {
 
   // fetch room-details API data
   const [fetchLoading, fetchError, fetchResponse] = useFetchData(
-    `/api/v1/get-room-by-id-or-slug-name/${roomEditModal.roomId}`
+    `/api/room/get-room-by-id-or-slug-name/${roomEditModal.roomId}`
   );
 
   // set form data from API data

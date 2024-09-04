@@ -21,7 +21,7 @@ function UsersList({ add }) {
   });
 
   // fetch user-list API data
-  const [loading, error, response] = useFetchData(`/api/v1/all-users-list?keyword=${query.search}&limit=${query.rows}&page=${query.page}&sort=${query.sort}`, fetchAgain);
+  const [loading, error, response] = useFetchData(`/api/user/all-users-list?keyword=${query.search}&limit=${query.rows}&page=${query.page}&sort=${query.sort}`, fetchAgain);
 
   // reset query options
   useEffect(() => {
@@ -36,7 +36,7 @@ function UsersList({ add }) {
       content: 'Are you sure delete this User permanently?',
       onOk() {
         return new Promise((resolve, reject) => {
-          ApiService.delete(`/api/v1/delete-user/${id}`)
+          ApiService.delete(`/api/user/delete-user/${id}`)
             .then((res) => {
               if (res?.result_code === 0) {
                 notificationWithIcon('success', 'SUCCESS', res?.result?.message || 'Room delete successful');

@@ -8,7 +8,7 @@ import { roomStatusAsResponse, roomTypeAsColor } from '../../utils/responseAsSta
 
 function RoomDetails({ id }) {
   // fetch room-details API data
-  const [loading, error, response] = useFetchData(`/api/v1/get-room-by-id-or-slug-name/${id}`);
+  const [loading, error, response] = useFetchData(`/api/room/get-room-by-id-or-slug-name/${id}`);
 
   return (
     <Skeleton loading={loading} paragraph={{ rows: 10 }} active avatar>

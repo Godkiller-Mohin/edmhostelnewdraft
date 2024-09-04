@@ -1,4 +1,6 @@
 const winston = require('winston');
+const dotenv = require('dotenv');
+dotenv.config();
 
 const {
   combine, timestamp, printf, colorize

@@ -6,6 +6,8 @@ const FileStreamRotator = require('file-stream-rotator');
 const { errorResponse } = require('../configs/app.response');
 const currentDateTime = require('../lib/current.date.time');
 const logger = require('./winston.logger.cjs');
+const dotenv = require('dotenv');
+dotenv.config();
 
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 minutes
