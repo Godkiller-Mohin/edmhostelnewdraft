@@ -1,5 +1,6 @@
 .footer {
-  background-color: #022a1f;
+  /* background-color: #022a1f; */
+  background-color: #01231f;
   color: #ffffff;
   padding: 2rem 0;
   font-family: Arial, sans-serif;
@@ -7,16 +8,18 @@
 
 .footer-content {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   flex-wrap: wrap;
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 2rem;
 }
 
 .footer-section {
   flex: 1;
   min-width: 200px;
   margin-bottom: 1rem;
+  padding-right: 1rem;
 }
 
 .footer-section h3 {
@@ -87,4 +90,10 @@
 
 .social-icon:hover {
   opacity: 0.8;
+}
+
+.footer-section:not(:last-child) {
+  border-right: 1px solid rgb(229, 231, 235);
+  padding-right: 2rem;
+  margin-right: 2rem;
 }

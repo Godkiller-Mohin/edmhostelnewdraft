@@ -10,6 +10,7 @@ const VerticalSocialBar = forwardRef((props, ref) => {
   return (
     <div className="social-bar-vertical" ref={ref}>
       <span>FOLLOW US</span>
+      <div className="divider"></div>
       <div className="social-icons">
         <a
           href="https://facebook.com"
