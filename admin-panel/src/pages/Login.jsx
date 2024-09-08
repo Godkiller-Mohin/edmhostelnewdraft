@@ -4,7 +4,6 @@ import {
 } from 'antd';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-// import Logo from '../assets/images/logo.svg';
 import useTimeout from '../hooks/useTimeout';
 import ApiService from '../utils/apiService';
 import { setSessionUserAndToken } from '../utils/authentication';
@@ -14,33 +13,72 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const [errMsg, setErrMsg] = useState('');
 
-  // timeout callback
+  // Timeout callback to clear the error message
   const [timeout] = useTimeout(() => {
     setErrMsg('');
   }, 2000);
 
   timeout();
-
-  // function to handle user login
-  const onFinish = async (values) => {
+  const handleLogin = async (loginData) => {
     try {
-      setLoading(true);
-      const response = await ApiService.post('/api/auth/login', values);
-
-      if (response?.result_code === 0) {
-        setSessionUserAndToken(response?.result?.data, response?.access_token, response?.refresh_token);
-        window.location.href = '/main/dashboard';
-        setLoading(false);
+      const res = await ApiService.post('/api/auth/login', loginData);
+      console.log('Login response:', res);
+  
+      // Extract token, refreshToken, and user from response
+      const token = res?.result?.data?.accessToken;
+      const refreshToken = res?.result?.data?.refreshToken;
+      const user = res?.result?.data?.user;
+  
+      // Save tokens and user data to localStorage
+      if (token) {
+        localStorage.setItem('token', token);
+        console.log('Access token saved to localStorage');
       } else {
-        setErrMsg('Sorry! Something went wrong. App server error');
-        setLoading(false);
+        console.log('Access token not found in the response');
+        setErrMsg('Login failed. Access token not found.');
+        return; // Exit early if access token is not found
       }
-      setLoading(false);
-    } catch (error) {
-      setErrMsg(error?.response?.data?.result?.error || 'Sorry! Something went wrong. App server error');
+  
+      if (refreshToken) {
+        localStorage.setItem('refreshToken', refreshToken);
+        console.log('Refresh token saved to localStorage');
+      } else {
+        console.log('Refresh token not found in the response');
+        setErrMsg('Login failed. Refresh token not found.');
+      }
+  
+      if (user) {
+        localStorage.setItem('user', JSON.stringify(user));
+        console.log('User data saved to localStorage');
+      } else {
+        console.log('User data not found in the response');
+      }
+  
+      // Set session user and token, and redirect on successful login
+      setSessionUserAndToken(user, token);
+      window.location.href = '/main/dashboard';
+  
+    } catch (err) {
+      setErrMsg(err?.response?.data?.message || 'Login failed');
+      console.error('Login error:', err);
+    } finally {
       setLoading(false);
     }
   };
+  
+  
+
+  
+  
+  
+  
+
+  // Function to handle user login
+  const onFinish = async (values) => {
+    setLoading(true);
+    handleLogin(values);
+  };
+
 
   return (
     <section className='flex flex-col h-screen items-center justify-center'>

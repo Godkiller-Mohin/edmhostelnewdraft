@@ -14,7 +14,8 @@ exports.getUser = async (req, res) => {
       return res.status(404).json(errorResponse(
         4,
         'UNKNOWN ACCESS',
-        'User does not exist'
+        'User does not exist',
+        err.message
       ));
     }
 

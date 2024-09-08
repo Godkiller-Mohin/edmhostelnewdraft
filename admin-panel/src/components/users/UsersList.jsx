@@ -20,26 +20,56 @@ function UsersList({ add }) {
     search: '', sort: 'asce', page: '1', rows: '10'
   });
 
-  // fetch user-list API data
-  const [loading, error, response] = useFetchData(`/api/user/all-users-list?keyword=${query.search}&limit=${query.rows}&page=${query.page}&sort=${query.sort}`, fetchAgain);
+  // Ensure token is retrieved properly from localStorage
+  const token = 'ajerngnrtg'; // Replace with a valid token for testing
 
-  // reset query options
+  useEffect(() => {
+    if (!token) {
+      console.error('Authorization token is missing from localStorage');
+    } else {
+      console.log('Authorization token retrieved successfully:', token);
+    }
+  }, [token]);
+
+  // Fetch user-list API data with token in headers
+  const [loading, error, response] = useFetchData(
+    `/api/user/all-users-list?keyword=${query.search}&limit=${query.rows}&page=${query.page}&sort=${query.sort}`,
+    {
+      headers: {
+        'Authorization': token ? `Bearer ${token}` : undefined // Ensure the token is passed only if it exists
+      }
+    },
+    fetchAgain
+  );
+
+  // Debugging: Log headers to check if they are set correctly
+  useEffect(() => {
+    console.log('Headers:', {
+      'Authorization': token ? `Bearer ${token}` : 'No Token Provided'
+    });
+  }, [token]);
+
+  // Reset query options on change
   useEffect(() => {
     setQuery((prevState) => ({ ...prevState, page: '1' }));
   }, [query.rows, query.search]);
 
-  // function to handle delete user
+  // Function to handle delete user
   const handleDeleteUser = (id) => {
     confirm({
       title: 'DELETE USER',
       icon: <ExclamationCircleFilled />,
-      content: 'Are you sure delete this User permanently?',
+      content: 'Are you sure you want to delete this user permanently?',
       onOk() {
         return new Promise((resolve, reject) => {
-          ApiService.delete(`/api/user/delete-user/${id}`)
+          ApiService.delete(`/api/user/delete-user/${id}`, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          })
             .then((res) => {
               if (res?.result_code === 0) {
-                notificationWithIcon('success', 'SUCCESS', res?.result?.message || 'Room delete successful');
+                notificationWithIcon('success', 'SUCCESS', res?.result?.message || 'User deleted successfully');
                 setFetchAgain(!fetchAgain);
                 resolve();
               } else {
@@ -51,11 +81,10 @@ function UsersList({ add }) {
               notificationWithIcon('error', 'ERROR', err?.response?.data?.result?.error?.message || err?.response?.data?.result?.error || 'Sorry! Something went wrong. App server error');
               reject();
             });
-        }).catch(() => notificationWithIcon('error', 'ERROR', 'Oops errors!'));
+        }).catch(() => notificationWithIcon('error', 'ERROR', 'Oops! There were errors.'));
       }
     });
   };
-
   return (
     <div>
       {/* user list ― query section */}

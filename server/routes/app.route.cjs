@@ -7,6 +7,6 @@ const  { isAuthenticatedUser, isBlocked, isAdmin }=require ("../middleware/app.a
 const router = express.Router();
 
 // Get dashboard info by admin
-router.get("/dashboard", isAuthenticatedUser, isBlocked, isAdmin, getDashboardData);
+router.get("/dashboard",isAuthenticatedUser, isBlocked, isAdmin, getDashboardData);
 
 module.exports= router;

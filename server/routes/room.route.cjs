@@ -1,4 +1,6 @@
 const express = require('express');
+const dotenv = require('dotenv');
+dotenv.config();
 const { roomImageUpload } = require('../middleware/room.image.uploader.cjs');
 const { isAuthenticatedUser, isAdmin } = require('../middleware/app.authentication.cjs');
 const {

@@ -7,18 +7,18 @@ const User = require('../models/User.cjs');
 // Middleware for detecting authenticated logged-in users
 const isAuthenticatedUser = async (req, res, next) => {
   try {
-    // Get access token from authorization headers
     const { authorization } = req.headers;
+
+    console.log("Received Headers:", req.headers); // Log all headers
 
     if (!authorization) {
       return res.status(403).json(errorResponse(
         3,
         'ACCESS FORBIDDEN',
-        'Authorization headers is required'
+        'Authorization header is required'
       ));
     }
 
-    // Ensure authorization header is in the correct format
     if (!authorization.startsWith('Bearer ')) {
       return res.status(400).json(errorResponse(
         4,
@@ -27,10 +27,16 @@ const isAuthenticatedUser = async (req, res, next) => {
       ));
     }
 
-    // Extract the token from the authorization header
     const token = authorization.split(' ')[1];
 
-    // Verify token
+    if (!token) {
+      return res.status(400).json(errorResponse(
+        4,
+        'INVALID TOKEN',
+        'Token not found in the Authorization header'
+      ));
+    }
+
     jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decoded) => {
       if (err) {
         return res.status(401).json(errorResponse(
@@ -40,28 +46,17 @@ const isAuthenticatedUser = async (req, res, next) => {
         ));
       }
 
-      // Check if user exists
       const user = await User.findById(decoded.id);
-
       if (!user) {
         return res.status(404).json(errorResponse(
           4,
-          'UNKNOWN ACCESS',
-          'Authorization headers is missing/invalid'
+          'USER NOT FOUND',
+          'User associated with the provided JWT token does not exist'
         ));
       }
 
-      // Check if user is logged in
-      if (user.status === 'login') {
-        req.user = user;
-        next();
-      } else {
-        return res.status(401).json(errorResponse(
-          1,
-          'FAILED',
-          'Unauthorized access. Please login to continue'
-        ));
-      }
+      req.user = user;
+      next();
     });
   } catch (error) {
     res.status(500).json(errorResponse(
@@ -71,6 +66,9 @@ const isAuthenticatedUser = async (req, res, next) => {
     ));
   }
 };
+
+
+
 
 // Middleware for validating user's JWT refresh token
 const isRefreshTokenValid = async (req, res, next) => {
@@ -96,7 +94,7 @@ const isRefreshTokenValid = async (req, res, next) => {
     }
 
     // Extract the token from the authorization header
-    const token = authorization.split(' ')[1];
+    const token = authorization.split(' ')[1];  // Don't hardcode the token
 
     // Verify refresh token
     jwt.verify(token, process.env.JWT_REFRESH_TOKEN_SECRET_KEY, async (err, decoded) => {

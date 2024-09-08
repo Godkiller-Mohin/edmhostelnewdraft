@@ -1,0 +1,21 @@
+{
+    "keepSettings": {
+        "type": 2,
+        "amount": 10
+    },
+    "auditFilename": "audit.json",
+    "hashType": "md5",
+    "extension": "",
+    "files": [
+        {
+            "date": 1725637500722,
+            "name": "C:\\Users\\Asus\\Desktop\\i\\react-crypto-app-master\\react-crypto-app-master\\edmhostelnewdraft\\server\\logs\\limiter\\api-limiter-2024-09-06.log",
+            "hash": "95e8536a9d44a4299d93c4ec2979231c"
+        },
+        {
+            "date": 1725735380901,
+            "name": "C:\\Users\\Asus\\Desktop\\i\\react-crypto-app-master\\react-crypto-app-master\\edmhostelnewdraft\\server\\logs\\limiter\\api-limiter-2024-09-08.log",
+            "hash": "8b779d69ff3a852a670d8432acc4c7d9"
+        }
+    ]
+}

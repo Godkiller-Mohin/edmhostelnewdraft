@@ -1,4 +1,3 @@
-
 const { errorResponse, successResponse } = require('../configs/app.response');
 const User = require('../models/User.cjs');
 const Room = require('../models/room.model.cjs');

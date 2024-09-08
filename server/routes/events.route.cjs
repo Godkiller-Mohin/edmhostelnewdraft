@@ -1,4 +1,6 @@
 const express = require('express');
+const dotenv = require('dotenv');
+dotenv.config();
 const { createEvent, getEventsList, getEventByIdOrSlugName, editEventByAdmin, deleteEventById, getFeaturedEventsList } = require('../controllers/event.vontroller.cjs');
 //const { upload } = require('../middleware/file.upload.cjs'); // Assuming you have middleware for file uploads
 const router = express.Router();
