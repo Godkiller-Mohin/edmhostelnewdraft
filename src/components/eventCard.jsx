@@ -1,50 +1,5 @@
-// import React from "react";
-// import "./eventSelector.css";
-
-// const EventSelector = () => {
-//   const events = [
-//     {
-//       name: "NEW YORK, NYC",
-//       image: "src/assets/image2.jpg",
-//       subtitle: "WELCOME HOME",
-//     },
-//     {
-//       name: "AUSTIN, TX",
-//       image: "src/assets/image1.jpg",
-//       subtitle: "CÉAD MÍLE FÁILTE Y",
-//     },
-//     {
-//       name: "WASHINGTON, D.C.",
-//       image: "src/assets/image3.jpg",
-//       subtitle: "COMING SOON",
-//     },
-//   ];
-
-//   return (
-//     <div className="event-selector">
-//       <div className="heading-container">
-//         <h2 className="background-text">EVENTS</h2>
-//         <h2 className="main-heading">CHOOSE AN EVENT</h2>
-//       </div>
-//       <div className="event-grid">
-//         {events.map((event, index) => (
-//           <div key={index} className="event-card">
-//             <a href="#">
-//               <img src={event.image} alt={event.name} />
-//             </a>
-//             <div className="event-info">
-//               <p className="subtitle">{event.subtitle}</p>
-//               <h3>{event.name}</h3>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default EventSelector;
 import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import "./eventSelector.css";
 
 const EventSelector = () => {
@@ -86,16 +41,19 @@ const EventSelector = () => {
 
   const events = [
     {
+      id: 1,
       name: "NEW YORK, NYC",
       image: "src/assets/image2.jpg",
       subtitle: "WELCOME HOME",
     },
     {
+      id: 2,
       name: "AUSTIN, TX",
       image: "src/assets/image1.jpg",
       subtitle: "CÉAD MÍLE FÁILTE Y",
     },
     {
+      id: 3,
       name: "WASHINGTON, D.C.",
       image: "src/assets/image3.jpg",
       subtitle: "COMING SOON",
@@ -110,15 +68,15 @@ const EventSelector = () => {
         <h2 className="main-heading">CHOOSE AN EVENT</h2>
       </div>
       <div className="event-grid">
-        {events.map((event, index) => (
-          <div key={index} className="event-card">
-            <a href="#">
+        {events.map((event) => (
+          <div key={event.id} className="event-card">
+            <Link to={`/event/${event.id}`}>
               <img src={event.image} alt={event.name} />
-            </a>
-            <div className="event-info">
-              <p className="subtitle">{event.subtitle}</p>
-              <h3>{event.name}</h3>
-            </div>
+              <div className="event-info">
+                <p className="subtitle">{event.subtitle}</p>
+                <h3>{event.name}</h3>
+              </div>
+            </Link>
           </div>
         ))}
       </div>

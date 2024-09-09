@@ -1,0 +1,110 @@
+.event-detail {
+  background-color: #01231f;
+  color: #f0e6d3;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5rem;
+  font-family: Arial, sans-serif;
+}
+
+.event-content {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: left;
+  padding-right: 2rem;
+}
+
+.event-name {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.event-description {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  max-width: 600px;
+}
+
+.event-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.reserve-button,
+.directions-button {
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  text-transform: uppercase;
+  border: 1px solid #f0e6d3;
+  background-color: transparent;
+  color: #f0e6d3;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.reserve-button:hover,
+.directions-button:hover {
+  background-color: #f0e6d3;
+  color: #01231f;
+}
+
+.event-info {
+  flex: 1;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  border-radius: 8px;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.opening-times-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.opening-times-title::after {
+  content: "";
+  display: block;
+  width: 100px;
+  height: 1px;
+  background-color: #f0e6d3;
+  margin: 0.5rem auto;
+}
+
+.taproom-info h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.taproom-info p {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .event-detail {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .event-content {
+    margin-bottom: 2rem;
+    padding-right: 0;
+  }
+
+  .event-info {
+    width: 100%;
+  }
+}
