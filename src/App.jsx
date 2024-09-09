@@ -1,11 +1,12 @@
-/* eslint-disable no-unused-vars */
 import React, { useRef } from "react";
+import { Routes, Route } from "react-router-dom";
 import { LocomotiveScrollProvider } from "react-locomotive-scroll";
 import Navbar from "./components/Navbar";
 import Hero from "./components/hero";
 import VerticalSocialBar from "./components/verticalSocialBar";
 import Footer from "./components/footer";
 import EventSelector from "./components/eventCard";
+import EventDetail from "./components/eventDetail";
 import Testimonials from "./components/TestimonialCard";
 import "./App.css";
 import AnimatedCursor from "react-animated-cursor";
@@ -42,11 +43,21 @@ function App() {
           }}
         />
         <Navbar />
+        <VerticalSocialBar />
         <main data-scroll-section>
-          <Hero />
-          <EventSelector />
-          <Testimonials/>
-          <VerticalSocialBar />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <Hero />
+                  <EventSelector />
+                  <Testimonials />
+                </>
+              }
+            />
+            <Route path="/event/:id" element={<EventDetail />} />
+          </Routes>
         </main>
         <Footer />
       </div>
