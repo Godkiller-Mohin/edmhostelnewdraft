@@ -12,6 +12,7 @@ import Dashboard from '../components/tabs/Dashboard';
 import MyProfile from '../components/tabs/MyProfile';
 import Orders from '../components/tabs/Orders';
 import Rooms from '../components/tabs/Rooms';
+import Events from '../components/tabs/Event';  // Corrected import path
 import Users from '../components/tabs/Users';
 import useFullScreen from '../hooks/useFullScreen';
 import ApiService from '../utils/apiService';
@@ -29,7 +30,7 @@ function Main() {
   const navigate = useNavigate();
   const { tab } = useParams();
 
-  // function to handle user logout
+  // Function to handle user logout
   const userLogout = async () => {
     try {
       const response = await ApiService.post('/api/auth/logout');
@@ -60,14 +61,18 @@ function Main() {
         break;
       }
       case '4': {
-        navigate('/main/booking-orders');
+        navigate('/main/events');  // Updated navigation path for events
         break;
       }
       case '5': {
-        navigate('/main/profile');
+        navigate('/main/booking-orders');  // Updated navigation path for orders
         break;
       }
       case '6': {
+        navigate('/main/profile');
+        break;
+      }
+      case '7': {
         userLogout();
         break;
       }
@@ -92,16 +97,20 @@ function Main() {
           setSelectedKeys('3');
           break;
         }
+        case 'events': {
+          setSelectedKeys('4');  // Updated key for events
+          break;
+        }
         case 'booking-orders': {
-          setSelectedKeys('4');
+          setSelectedKeys('5');  // Updated key for orders
           break;
         }
         case 'profile': {
-          setSelectedKeys('5');
+          setSelectedKeys('6');
           break;
         }
         case 'logout': {
-          setSelectedKeys('6');
+          setSelectedKeys('7');
           break;
         }
         default: {
@@ -126,14 +135,18 @@ function Main() {
         break;
       }
       case '4': {
-        window.document.title = 'EDM hostel — Booking Orders';
+        window.document.title = 'EDM hostel — Events';  // Updated title for events
         break;
       }
       case '5': {
-        window.document.title = 'EDM hostel — Profile';
+        window.document.title = 'EDM hostel — Booking Orders';  // Updated title for orders
         break;
       }
       case '6': {
+        window.document.title = 'EDM hostel — Profile';
+        break;
+      }
+      case '7': {
         window.document.title = 'EDM hostel — Logout';
         break;
       }
@@ -174,15 +187,20 @@ function Main() {
             {
               key: '4',
               icon: <FileProtectOutlined />,
-              label: 'Booking Orders'
+              label: 'Events'  // Updated label
             },
             {
               key: '5',
               icon: <UserOutlined />,
-              label: 'My Profile'
+              label: 'Booking Orders'  // Updated label for orders
             },
             {
               key: '6',
+              icon: <UserOutlined />,
+              label: 'My Profile'
+            },
+            {
+              key: '7',
               icon: <LogoutOutlined />,
               label: 'Logout'
             }
@@ -200,7 +218,7 @@ function Main() {
             />
           </Link>
 
-          {/* full screen toggle button */}
+          {/* Full screen toggle button */}
           <Tooltip title='Click to toggle Full Screen' placement='left'>
             <Button
               className='absolute right-5 top-5'
@@ -219,8 +237,9 @@ function Main() {
           {selectedKeys === '1' && (<Dashboard />)}
           {selectedKeys === '2' && (<Users />)}
           {selectedKeys === '3' && (<Rooms />)}
-          {selectedKeys === '4' && (<Orders />)}
-          {selectedKeys === '5' && (<MyProfile />)}
+          {selectedKeys === '4' && (<Events />)}  {/* Updated component */}
+          {selectedKeys === '5' && (<Orders />)}  {/* Added component for Orders */}
+          {selectedKeys === '6' && (<MyProfile />)}
         </Content>
 
         <Footer className='text-center font-text-font font-medium '>
@@ -232,7 +251,7 @@ function Main() {
             target='_blank'
             rel='noreferrer'
           >
-            Anant sharma
+            Anant Sharma
           </a>
         </Footer>
       </Layout>

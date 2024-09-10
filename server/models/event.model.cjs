@@ -61,7 +61,7 @@ const eventSchema = new mongoose.Schema({
     default: 'scheduled'
   },
   organized_by: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: 'Users',
     required: [true, 'Organizer is required']
   },

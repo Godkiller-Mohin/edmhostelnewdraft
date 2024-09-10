@@ -112,3 +112,55 @@ export const bookingStatusAsResponse = (status) => {
     level: 'UNKNOWN'
   };
 };
+
+// Event Status Mapping
+export const eventStatusAsResponse = (status) => {
+  if (status === 'scheduled') {
+    return {
+      level: 'SCHEDULED'
+    };
+  }
+  if (status === 'ongoing') {
+    return {
+      level: 'ONGOING'
+    };
+  }
+  if (status === 'completed') {
+    return {
+      level: 'COMPLETED'
+    };
+  }
+  if (status === 'cancelled') {
+    return {
+      level: 'CANCELLED'
+    };
+  }
+  if (status === 'postponed') {
+    return {
+      level: 'POSTPONED'
+    };
+  }
+  return {
+    level: 'UNKNOWN'
+  };
+};
+
+// Event Color Mapping
+export const eventColorAsResponse = (type) => {
+  if (type === 'scheduled') {
+    return '#1890ff'; // Blue
+  }
+  if (type === 'ongoing') {
+    return '#52c41a'; // Green
+  }
+  if (type === 'completed') {
+    return '#73d13d'; // Light Green
+  }
+  if (type === 'cancelled') {
+    return '#ff4d4f'; // Red
+  }
+  if (type === 'postponed') {
+    return '#faad14'; // Yellow
+  }
+  return 'default';
+};

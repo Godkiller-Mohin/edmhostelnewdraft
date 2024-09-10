@@ -1,29 +1,35 @@
 const fs = require('fs');
+const path = require('path');
 const appRoot = require('app-root-path');
 const Event = require('../models/event.model.cjs');
 const logger = require('../middleware/winston.logger.cjs');
 const { errorResponse, successResponse } = require('../configs/app.response');
 const MyQueryHelper = require('../configs/api.feature');
+const multer = require('multer');
 
-// TODO: Controller for create new event
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(appRoot.path, 'uploads/events'));
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({ storage });
+
+// Controller for creating a new event
 const createEvent = async (req, res) => {
   try {
     const {
-      event_name, event_slug, event_type, event_date, event_location, event_description, event_organizer
+      event_name, event_slug, event_type, event_date, event_duration, event_capacity, allow_guests, provide_meals,
+      featured_event, event_description, organized_by
     } = req.body;
 
     // Validate required fields
-    if (!event_name) {
-      return res.status(400).json(errorResponse(1, 'FAILED', '`event_name` field is required'));
-    }
-    if (!event_slug) {
-      return res.status(400).json(errorResponse(1, 'FAILED', '`event_slug` field is required'));
-    }
-    if (!event_type) {
-      return res.status(400).json(errorResponse(1, 'FAILED', '`event_type` field is required'));
-    }
-    if (!event_date) {
-      return res.status(400).json(errorResponse(1, 'FAILED', '`event_date` field is required'));
+    if (!event_name || !event_slug || !event_type || !event_date) {
+      return res.status(400).json(errorResponse(1, 'FAILED', '`event_name`, `event_slug`, `event_type`, and `event_date` fields are required'));
     }
 
     // Check if event already exists
@@ -38,10 +44,14 @@ const createEvent = async (req, res) => {
       event_slug,
       event_type,
       event_date,
-      event_location,
+      event_duration: Number(event_duration),
+      event_capacity: Number(event_capacity),
+      allow_guests: Boolean(allow_guests),
+      provide_meals: Boolean(provide_meals),
+      featured_event: Boolean(featured_event),
       event_description,
-      event_organizer,
-      event_images: req?.files?.map((file) => ({ url: `/uploads/events/${file.filename}` })),
+      organized_by,
+      event_images: req.files.map((file) => ({ url: `/uploads/events/${file.filename}` })),
       created_by: req.user.id
     };
 
@@ -56,14 +66,14 @@ const createEvent = async (req, res) => {
   }
 };
 
-// TODO: Controller for get all events list
+// Controller for getting all events list
 const getEventsList = async (req, res) => {
   try {
-    // Finding all event data from the database
-    const events = await Event.find();
-
     // Filtering events based on different types of queries
-    const eventQuery = new MyQueryHelper(Event.find(), req.query).search('event_name').sort().paginate();
+    const eventQuery = new MyQueryHelper(Event.find(), req.query)
+      .search('event_name')
+      .sort()
+      .paginate();
     const findEvents = await eventQuery.query;
 
     const mappedEvents = findEvents.map((data) => ({
@@ -72,9 +82,13 @@ const getEventsList = async (req, res) => {
       event_slug: data.event_slug,
       event_type: data.event_type,
       event_date: data.event_date,
-      event_location: data.event_location,
+      event_duration: data.event_duration,
+      event_capacity: data.event_capacity,
+      allow_guests: data.allow_guests,
+      provide_meals: data.provide_meals,
+      featured_event: data.featured_event,
       event_description: data.event_description,
-      event_images: data?.event_images?.map((img) => ({ url: process.env.APP_BASE_URL + img.url })),
+      event_images: data.event_images.map((img) => ({ url: process.env.APP_BASE_URL + img.url })),
       created_by: data.created_by,
       created_at: data.createdAt,
       updated_at: data.updatedAt
@@ -83,17 +97,17 @@ const getEventsList = async (req, res) => {
     // Success response
     res.status(200).json(successResponse(0, 'SUCCESS', 'Events list found successfully', {
       rows: mappedEvents,
-      total_rows: events.length,
+      total_rows: mappedEvents.length,
       response_rows: findEvents.length,
-      total_page: req?.query?.keyword ? Math.ceil(findEvents.length / req.query.limit) : Math.ceil(events.length / req.query.limit),
-      current_page: req?.query?.page ? parseInt(req.query.page, 10) : 1
+      total_page: Math.ceil(findEvents.length / (req.query.limit || 10)),
+      current_page: parseInt(req.query.page, 10) || 1
     }));
   } catch (error) {
     res.status(500).json(errorResponse(2, 'SERVER SIDE ERROR', error));
   }
 };
 
-// TODO: Controller for find an event by id or event slug
+// Controller for finding an event by ID or event slug
 const getEventByIdOrSlugName = async (req, res) => {
   try {
     let event = null;
@@ -114,27 +128,31 @@ const getEventByIdOrSlugName = async (req, res) => {
       event_slug: event.event_slug,
       event_type: event.event_type,
       event_date: event.event_date,
-      event_location: event.event_location,
+      event_duration: event.event_duration,
+      event_capacity: event.event_capacity,
+      allow_guests: event.allow_guests,
+      provide_meals: event.provide_meals,
+      featured_event: event.featured_event,
       event_description: event.event_description,
-      event_images: event?.event_images?.map((img) => ({ url: process.env.APP_BASE_URL + img.url })),
-      created_by: {
-        id: event?.created_by._id,
-        userName: event?.created_by.userName,
-        fullName: event?.created_by.fullName,
-        email: event?.created_by.email,
-        phone: event?.created_by.phone,
-        avatar: process.env.APP_BASE_URL + event?.created_by.avatar,
-        gender: event?.created_by.gender,
-        dob: event?.created_by.dob,
-        address: event?.created_by.address,
-        role: event?.created_by.role,
-        verified: event?.created_by.verified,
-        status: event?.created_by.status,
-        createdAt: event?.created_by.createdAt,
-        updatedAt: event?.created_by.updatedAt
-      },
-      created_at: event?.createdAt,
-      updated_at: event?.updatedAt
+      event_images: event.event_images.map((img) => ({ url: process.env.APP_BASE_URL + img.url })),
+      created_by: event.created_by ? {
+        id: event.created_by._id,
+        userName: event.created_by.userName,
+        fullName: event.created_by.fullName,
+        email: event.created_by.email,
+        phone: event.created_by.phone,
+        avatar: process.env.APP_BASE_URL + event.created_by.avatar,
+        gender: event.created_by.gender,
+        dob: event.created_by.dob,
+        address: event.created_by.address,
+        role: event.created_by.role,
+        verified: event.created_by.verified,
+        status: event.created_by.status,
+        createdAt: event.created_by.createdAt,
+        updatedAt: event.created_by.updatedAt
+      } : null,
+      created_at: event.createdAt,
+      updated_at: event.updatedAt
     };
 
     // Success response
@@ -144,34 +162,21 @@ const getEventByIdOrSlugName = async (req, res) => {
   }
 };
 
-// TODO: Controller for edit event
+// Controller for editing an event by admin
 const editEventByAdmin = async (req, res) => {
   try {
     const {
-      event_name, event_slug, event_type, event_date, event_location, event_description, event_organizer
+      event_name, event_slug, event_type, event_date, event_duration, event_capacity, allow_guests, provide_meals,
+      featured_event, event_description, organized_by
     } = req.body;
 
     // Validate required fields
-    if (!event_name) {
-      return res.status(400).json(errorResponse(1, 'FAILED', '`event_name` field is required'));
-    }
-    if (!event_slug) {
-      return res.status(400).json(errorResponse(1, 'FAILED', '`event_slug` field is required'));
-    }
-    if (!event_type) {
-      return res.status(400).json(errorResponse(1, 'FAILED', '`event_type` field is required'));
-    }
-    if (!event_date) {
-      return res.status(400).json(errorResponse(1, 'FAILED', '`event_date` field is required'));
+    if (!event_name || !event_slug || !event_type || !event_date) {
+      return res.status(400).json(errorResponse(1, 'FAILED', '`event_name`, `event_slug`, `event_type`, and `event_date` fields are required'));
     }
 
     // Check if event exists
-    let event = null;
-
-    if (/^[0-9a-fA-F]{24}$/.test(req.params.id)) {
-      event = await Event.findById(req.params.id);
-    }
-
+    const event = await Event.findById(req.params.id);
     if (!event) {
       return res.status(404).json(errorResponse(4, 'UNKNOWN ACCESS', 'Event does not exist'));
     }
@@ -184,10 +189,14 @@ const editEventByAdmin = async (req, res) => {
         event_slug,
         event_type,
         event_date,
-        event_location,
+        event_duration: Number(event_duration),
+        event_capacity: Number(event_capacity),
+        allow_guests: Boolean(allow_guests),
+        provide_meals: Boolean(provide_meals),
+        featured_event: Boolean(featured_event),
         event_description,
-        event_organizer,
-        event_images: req?.files?.map((file) => ({ url: `/uploads/events/${file.filename}` })),
+        organized_by,
+        event_images: req.files.map((file) => ({ url: `/uploads/events/${file.filename}` })),
         updatedAt: Date.now()
       },
       { runValidators: true, new: true }
@@ -200,18 +209,17 @@ const editEventByAdmin = async (req, res) => {
   }
 };
 
-// TODO: Controller for delete event using ID by admin
+// Controller for deleting an event by ID
 const deleteEventById = async (req, res) => {
   try {
     // Check if event exists
     const event = await Event.findById(req.params.id);
-
     if (!event) {
       return res.status(404).json(errorResponse(4, 'UNKNOWN ACCESS', 'Event does not exist'));
     }
 
     // Delete event from the database
-    await Event.findByIdAndDelete(event.id);
+    await Event.findByIdAndDelete(req.params.id);
 
     res.status(200).json(successResponse(0, 'SUCCESS', 'Event deleted successfully'));
   } catch (error) {
@@ -219,16 +227,14 @@ const deleteEventById = async (req, res) => {
   }
 };
 
-// TODO: Controller for get featured events list
+// Controller for getting featured events list
 const getFeaturedEventsList = async (req, res) => {
   try {
-    // Finding featured event data from the database
-    const events = await Event.find({ featured_event: true });
-
-    // Filtering events based on different types of queries
-    const eventQuery = new MyQueryHelper(Event.find(
-      { featured_event: true }
-    ), req.query).search('event_name').sort().paginate();
+    // Filtering featured events based on different types of queries
+    const eventQuery = new MyQueryHelper(Event.find({ featured_event: true }), req.query)
+      .search('event_name')
+      .sort()
+      .paginate();
     const findEvents = await eventQuery.query;
 
     const mappedEvents = findEvents.map((data) => ({
@@ -237,9 +243,13 @@ const getFeaturedEventsList = async (req, res) => {
       event_slug: data.event_slug,
       event_type: data.event_type,
       event_date: data.event_date,
-      event_location: data.event_location,
+      event_duration: data.event_duration,
+      event_capacity: data.event_capacity,
+      allow_guests: data.allow_guests,
+      provide_meals: data.provide_meals,
+      featured_event: data.featured_event,
       event_description: data.event_description,
-      event_images: data?.event_images?.map((img) => ({ url: process.env.APP_BASE_URL + img.url })),
+      event_images: data.event_images.map((img) => ({ url: process.env.APP_BASE_URL + img.url })),
       created_by: data.created_by,
       created_at: data.createdAt,
       updated_at: data.updatedAt
@@ -248,10 +258,10 @@ const getFeaturedEventsList = async (req, res) => {
     // Success response
     res.status(200).json(successResponse(0, 'SUCCESS', 'Featured events list found successfully', {
       rows: mappedEvents,
-      total_rows: events.length,
+      total_rows: mappedEvents.length,
       response_rows: findEvents.length,
-      total_page: req?.query?.keyword ? Math.ceil(findEvents.length / req.query.limit) : Math.ceil(events.length / req.query.limit),
-      current_page: req?.query?.page ? parseInt(req.query.page, 10) : 1
+      total_page: Math.ceil(findEvents.length / (req.query.limit || 10)),
+      current_page: parseInt(req.query.page, 10) || 1
     }));
   } catch (error) {
     res.status(500).json(errorResponse(2, 'SERVER SIDE ERROR', error));
@@ -264,5 +274,6 @@ module.exports = {
   getEventByIdOrSlugName,
   editEventByAdmin,
   deleteEventById,
-  getFeaturedEventsList
+  getFeaturedEventsList,
+  upload
 };

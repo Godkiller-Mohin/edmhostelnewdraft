@@ -7,7 +7,7 @@ import { v4 as uniqueId } from 'uuid';
 import useFetchData from '../../hooks/useFetchData';
 import ApiService from '../../utils/apiService';
 import notificationWithIcon from '../../utils/notification';
-import { eventStatusAsResponse, eventTypeAsColor } from '../../utils/responseAsStatus';
+import { eventColorAsResponse, eventStatusAsResponse } from '../../utils/responseAsStatus'; // Ensure this import is correct
 import QueryOptions from '../shared/QueryOptions';
 import EventEdit from './EventEdit';
 
@@ -23,7 +23,7 @@ function EventsList({ add }) {
   const [fetchAgain, setFetchAgain] = useState(false);
 
   // fetch event-list API data
-  const [loading, error, response] = useFetchData(`/api/event/all-events-list?keyword=${query.search}&limit=${query.rows}&page=${query.page}&sort=${query.sort}`, fetchAgain);
+  const [loading, error, response] = useFetchData(`/api/event/list?keyword=${query.search}&limit=${query.rows}&page=${query.page}&sort=${query.sort}`, fetchAgain);
 
   // reset query options
   useEffect(() => {
@@ -76,7 +76,7 @@ function EventsList({ add }) {
             {response?.data?.rows?.length === 0 ? (
               <Empty
                 className='mt-10'
-                description={(<span>Sorry! No data was found.</span>)}
+                description={<span>Sorry! No data was found.</span>}
               />
             ) : (
               <div className='table-layout'>
@@ -131,7 +131,7 @@ function EventsList({ add }) {
                           <td className='data-table-body-tr-td text-center'>
                             <Tag
                               className='text-center uppercase'
-                              color={eventTypeAsColor(data?.event_type)}
+                              color={eventColorAsResponse(data?.event_type)}
                             >
                               {data?.event_type}
                             </Tag>

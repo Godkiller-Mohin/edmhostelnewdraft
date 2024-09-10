@@ -1,5 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Form, Input, InputNumber, Select, Upload } from 'antd';
+import { Button, Form, Input, InputNumber, Select, Upload, Switch, notification } from 'antd';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import ApiService from '../../utils/apiService';
@@ -26,14 +26,32 @@ function CreateEvent() {
     formdata.append('event_slug', values.event_slug);
     formdata.append('event_type', values.event_type);
     formdata.append('event_date', values.event_date);
-    formdata.append('event_location', values.event_location);
+    formdata.append('event_duration', values.event_duration);
+    formdata.append('event_capacity', values.event_capacity);
+    formdata.append('allow_guests', values.allow_guests);
+    formdata.append('provide_meals', values.provide_meals);
+    formdata.append('featured_event', values.featured_event);
     formdata.append('event_description', values.event_description);
-    formdata.append('event_organizer', values.event_organizer);
+    formdata.append('organized_by', values.organized_by);
 
     // Attach event images
     values.event_images.forEach((image) => {
       formdata.append('event_images', image.originFileObj);
     });
+
+    // Validate required fields
+    if (!values.organized_by) {
+      notification.error({ message: 'Validation Error', description: 'Organizer is required.' });
+      return;
+    }
+    if (!values.event_capacity) {
+      notification.error({ message: 'Validation Error', description: 'Event capacity is required.' });
+      return;
+    }
+    if (!values.event_duration) {
+      notification.error({ message: 'Validation Error', description: 'Event duration is required.' });
+      return;
+    }
 
     setLoading(true);
     ApiService.post('/api/event/create', formdata, {
@@ -93,8 +111,11 @@ function CreateEvent() {
           <Select
             placeholder='-- Select Event Type --'
             options={[
-              { value: 'online', label: 'Online' },
-              { value: 'offline', label: 'Offline' }
+              { value: 'conference', label: 'Conference' },
+              { value: 'workshop', label: 'Workshop' },
+              { value: 'seminar', label: 'Seminar' },
+              { value: 'webinar', label: 'Webinar' },
+              { value: 'meetup', label: 'Meetup' }
             ]}
             size='large'
             allowClear
@@ -114,30 +135,71 @@ function CreateEvent() {
       <div className='two-grid-column'>
         <Form.Item
           className='w-full md:w-1/2'
-          label='Event Location'
-          name='event_location'
-          rules={[{ required: true, message: 'Please input the Event Location!' }]}
+          label='Event Duration (hours)'
+          name='event_duration'
+          rules={[{ required: true, message: 'Please input the Event Duration!' }]}
         >
-          <Input placeholder='Event Location' size='large' allowClear />
+          <InputNumber min={0} placeholder='Event Duration' size='large' style={{ width: '100%' }} />
         </Form.Item>
 
         <Form.Item
           className='w-full md:w-1/2'
-          label='Event Organizer'
-          name='event_organizer'
-          rules={[{ required: true, message: 'Please input the Event Organizer!' }]}
+          label='Event Capacity'
+          name='event_capacity'
+          rules={[{ required: true, message: 'Please input the Event Capacity!' }]}
         >
-          <Input placeholder='Event Organizer' size='large' allowClear />
+          <InputNumber min={0} placeholder='Event Capacity' size='large' style={{ width: '100%' }} />
+        </Form.Item>
+      </div>
+
+      <div className='two-grid-column'>
+        <Form.Item
+          className='w-full md:w-1/2'
+          label='Allow Guests'
+          name='allow_guests'
+          valuePropName='checked'
+        >
+          <Switch />
+        </Form.Item>
+
+        <Form.Item
+          className='w-full md:w-1/2'
+          label='Provide Meals'
+          name='provide_meals'
+          valuePropName='checked'
+        >
+          <Switch />
         </Form.Item>
       </div>
 
       <Form.Item
-        label='Event Description'
-        name='event_description'
-        rules={[{ required: true, message: 'Please input the Event Description!' }]}
+        className='w-full'
+        label='Featured Event'
+        name='featured_event'
+        valuePropName='checked'
       >
-        <Input.TextArea placeholder='Type here Event Description' rows={4} />
+        <Switch />
       </Form.Item>
+
+      <div className='two-grid-column'>
+        <Form.Item
+          className='w-full md:w-1/2'
+          label='Event Description'
+          name='event_description'
+          rules={[{ required: true, message: 'Please input the Event Description!' }]}
+        >
+          <Input.TextArea placeholder='Type here Event Description' rows={4} />
+        </Form.Item>
+
+        <Form.Item
+          className='w-full md:w-1/2'
+          label='Organizer'
+          name='organized_by'
+          rules={[{ required: true, message: 'Please input the Organizer!' }]}
+        >
+          <Input placeholder='Organizer' size='large' allowClear />
+        </Form.Item>
+      </div>
 
       <Form.Item
         name='event_images'
