@@ -8,6 +8,7 @@ import Footer from "./components/footer";
 import EventSelector from "./components/eventCard";
 import EventDetail from "./components/eventDetail";
 import Testimonials from "./components/TestimonialCard";
+import RoomList from "./pages/roomlist"; // Import RoomList component
 import "./App.css";
 import AnimatedCursor from "react-animated-cursor";
 
@@ -20,11 +21,6 @@ function App() {
         smooth: true,
         // You can add more options here as needed
       }}
-      watch={
-        [
-          // You can add dependencies here to watch for content changes
-        ]
-      }
       containerRef={containerRef}
     >
       <div className="App" data-scroll-container ref={containerRef}>
@@ -57,6 +53,8 @@ function App() {
               }
             />
             <Route path="/event/:id" element={<EventDetail />} />
+            {/* Add the RoomList route */}
+            <Route path="/rooms" element={<RoomList />} />
           </Routes>
         </main>
         <Footer />
