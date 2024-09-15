@@ -8,6 +8,7 @@ import Footer from "./components/footer";
 import EventSelector from "./components/eventCard";
 import EventDetail from "./components/eventDetail";
 import Testimonials from "./components/TestimonialCard";
+import RoomDetail from "./pages/roomdetails"
 import RoomList from "./pages/roomlist"; // Import RoomList component
 import "./App.css";
 import AnimatedCursor from "react-animated-cursor";
@@ -55,6 +56,7 @@ function App() {
             <Route path="/event/:id" element={<EventDetail />} />
             {/* Add the RoomList route */}
             <Route path="/rooms" element={<RoomList />} />
+            <Route path="/rooms/:id" element={<RoomDetail/>} />
           </Routes>
         </main>
         <Footer />

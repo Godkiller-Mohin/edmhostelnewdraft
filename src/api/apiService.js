@@ -1,61 +1,63 @@
 import axios from 'axios';
 import { getSessionToken, removeSessionAndLogoutUser } from './authentication';
 
+// Create an axios instance with a base URL
 const ApiService = axios.create({
-  // baseURL: process.env.REACT_APP_API_BASE_URL
-  baseURL: 'http://localhost:4000'
+  baseURL: 'http://localhost:4000', // Adjust according to your API URL
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 /**
- * Interceptor for all requests
+ * Request interceptor to add authorization headers if needed
  */
 ApiService.interceptors.request.use(
   (config) => {
-    /**
-     * Add your request interceptor logic here: setting headers, authorization etc.
-     */
-    config.headers['Content-Type'] = 'application/json';
-
     if (!config?.noAuth) {
       const token = getSessionToken();
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
     }
-
     return config;
   },
   (error) => Promise.reject(error)
 );
 
 /**
- * Interceptor for all responses
+ * Response interceptor to handle successful and error responses
  */
 ApiService.interceptors.response.use(
   /**
-  * Add logic for successful response
-  */
-  (response) => response?.data || {},
+   * For successful responses, return the data or handle nested response structure
+   */
+  (response) => {
+    if (response?.data) {
+      return response.data; // Assuming response structure has .data as the actual result
+    }
+    return response; // Fallback to returning the whole response if .data is missing
+  },
 
   /**
-  * Add logic for any error from backend
-  */
+   * For error responses, handle cases like 401 (Unauthorized) and others
+   */
   async (error) => {
     const originalRequest = error.config;
 
-    if (error?.response?.data?.result_code === 11) {
-      // if authorized to logout user and redirect login page
-      removeSessionAndLogoutUser();
+    // Check if the error response has a result_code of 11 or is a 401 (Unauthorized)
+    if (error?.response?.data?.result_code === 11 || error.response?.status === 401) {
+      if (!originalRequest._retry) {
+        originalRequest._retry = true; // Avoid retrying infinitely
+        removeSessionAndLogoutUser(); // Log the user out if unauthorized
+      }
     }
 
-    // eslint-disable-next-line no-underscore-dangle
-    if (error.response.status === 401 && !originalRequest._retry) {
-      // if authorized to logout user and redirect login page
-      removeSessionAndLogoutUser();
-    }
+    // Log error for debugging
+    console.error('API Error:', error);
 
-    // Handle other error cases
-    return Promise.reject(error);
+    // Return a rejected Promise with error information
+    return Promise.reject(error.response?.data || error.message || error);
   }
 );
 
