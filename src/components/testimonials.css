@@ -1,0 +1,58 @@
+.testimonial-section {
+  background-color: #085232; /* Dark green background color */
+  color: white; /* White text color */
+  padding: 2rem; /* Padding around the section */
+  text-align: center; /* Center the text */
+}
+
+.testimonial-section h2 {
+  font-size: 40px;
+  margin: 0 auto 100px; /* Center h2 and adjust margin as needed */
+  text-align: center; /* Ensure h2 is centered */
+  color: white; /* Make h2 text color white */
+}
+
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Three columns layout */
+  gap: 1rem; /* Gap between grid items */
+  margin-top: 2rem; /* Space above the grid */
+}
+
+.testimonial-card {
+  background-color: green; /* Full division color green */
+  position: relative;
+  cursor: pointer;
+  overflow: hidden; /* Hide overflow for hover effect */
+}
+
+.testimonial-card img {
+  width: 100%;
+  height: auto;
+  transition: transform 0.3s ease; /* Smooth scaling on hover */
+}
+
+.testimonial-card:hover img {
+  transform: scale(1.05); /* Slightly enlarge the image on hover */
+}
+
+.testimonial-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.7); /* Dark background for text overlay */
+  color: white; /* Ensure text in the overlay is white */
+}
+
+.subtitle {
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+  color: white; /* Ensure subtitle text is white */
+}
+
+h3 {
+  color: white; /* Make h3 text color white */
+  margin: 0;
+}
