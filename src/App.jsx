@@ -8,7 +8,12 @@ import Footer from "./components/footer";
 import EventSelector from "./components/eventCard";
 import EventDetail from "./components/eventDetail";
 import Testimonials from "./components/TestimonialCard";
-import RoomDetail from "./pages/roomdetails"
+import AccommodationSelector from "./components/accommodation";
+import Introduction from "./components/introduction";
+import Events from "./components/events";
+import RestaurantAndBar from "./components/RestaurantAndBar";
+import Stays from "./components/stays";
+import RoomDetail from "./pages/roomdetails";
 import RoomList from "./pages/roomlist"; // Import RoomList component
 import "./App.css";
 import AnimatedCursor from "react-animated-cursor";
@@ -49,14 +54,19 @@ function App() {
                 <>
                   <Hero />
                   <EventSelector />
+                  <AccommodationSelector />
                   <Testimonials />
                 </>
               }
             />
             <Route path="/event/:id" element={<EventDetail />} />
+            <Route path="/introduction" element={<Introduction />} />
+            <Route path="/events" element={<Events />} />
+            <Route path="/restaurant-and-bar" element={<RestaurantAndBar />} />
+            <Route path="/stays" element={<Stays />} />
             {/* Add the RoomList route */}
             <Route path="/rooms" element={<RoomList />} />
-            <Route path="/rooms/:id" element={<RoomDetail/>} />
+            <Route path="/rooms/:id" element={<RoomDetail />} />
           </Routes>
         </main>
         <Footer />
