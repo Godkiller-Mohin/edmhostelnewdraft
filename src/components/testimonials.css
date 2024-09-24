@@ -1,58 +1,75 @@
-.testimonial-section {
-  background-color: #085232; /* Dark green background color */
-  color: white; /* White text color */
-  padding: 2rem; /* Padding around the section */
-  text-align: center; /* Center the text */
+.testimonial-selector {
+  background-color: #01231f;
+  color: white;
+  padding: 2rem;
+  text-align: center;
+  overflow: hidden;
 }
 
-.testimonial-section h2 {
+.heading-container {
+  position: relative;
+  margin: 100px 0;
+  height: auto;
+}
+
+.background-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  transform: translate(-50%, -50%);
+  font-size: 200px;
+  opacity: 0.1;
+  margin: 0;
+  z-index: 1;
+  transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+  white-space: nowrap;
+}
+
+.main-heading {
+  position: relative;
   font-size: 40px;
-  margin: 0 auto 100px; /* Center h2 and adjust margin as needed */
-  text-align: center; /* Ensure h2 is centered */
-  color: white; /* Make h2 text color white */
+  margin: 0;
+  z-index: 2;
+  padding: 20px 0;
 }
 
 .testimonial-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Three columns layout */
-  gap: 1rem; /* Gap between grid items */
-  margin-top: 2rem; /* Space above the grid */
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 2rem;
 }
 
 .testimonial-card {
-  background-color: green; /* Full division color green */
-  position: relative;
-  cursor: pointer;
-  overflow: hidden; /* Hide overflow for hover effect */
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
 }
 
-.testimonial-card img {
-  width: 100%;
-  height: auto;
-  transition: transform 0.3s ease; /* Smooth scaling on hover */
+.testimonial-card:hover {
+  transform: translateY(-5px);
 }
 
-.testimonial-card:hover img {
-  transform: scale(1.05); /* Slightly enlarge the image on hover */
+.testimonial-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-.testimonial-info {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 1rem;
-  background: rgba(0, 0, 0, 0.7); /* Dark background for text overlay */
-  color: white; /* Ensure text in the overlay is white */
+.testimonial-name {
+  margin: 0 0 1rem 0;
+  font-size: 1.2rem;
+  color: #ffffff;
 }
 
-.subtitle {
-  font-size: 0.8rem;
-  margin-bottom: 0.5rem;
-  color: white; /* Ensure subtitle text is white */
-}
-
-h3 {
-  color: white; /* Make h3 text color white */
-  margin: 0;
+.testimonial-text {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.8);
+  flex-grow: 1;
 }

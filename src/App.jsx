@@ -8,6 +8,11 @@ import Footer from "./components/footer";
 import EventSelector from "./components/eventCard";
 import EventDetail from "./components/eventDetail";
 import Testimonials from "./components/TestimonialCard";
+import AccommodationSelector from "./components/accommodation";
+import Introduction from "./components/introduction";
+import Events from "./components/events";
+import RestaurantAndBar from "./components/RestaurantAndBar";
+import Stays from "./components/stays";
 import "./App.css";
 import AnimatedCursor from "react-animated-cursor";
 
@@ -52,11 +57,16 @@ function App() {
                 <>
                   <Hero />
                   <EventSelector />
+                  <AccommodationSelector />
                   <Testimonials />
                 </>
               }
             />
             <Route path="/event/:id" element={<EventDetail />} />
+            <Route path="/introduction" element={<Introduction />} />
+            <Route path="/events" element={<Events />} />
+            <Route path="/restaurant-and-bar" element={<RestaurantAndBar />} />
+            <Route path="/stays" element={<Stays />} />
           </Routes>
         </main>
         <Footer />
