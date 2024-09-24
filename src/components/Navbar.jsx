@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";  // Import Link
 import "./navbar.css";
 import logoImage from "../assets/logo.png";
 
@@ -18,7 +19,8 @@ function Navigation() {
         <a href="#about">ABOUT</a>
         <a href="#shop">SHOP</a>
         <a href="#contact">CONTACT</a>
-        <button className="reserve-button">RESERVE A TABLE</button>
+        {/* Use Link for internal routing to the room booking page */}
+        <Link to="/rooms" className="reserve-button">BOOK A ROOM!</Link>
       </div>
     </nav>
   );

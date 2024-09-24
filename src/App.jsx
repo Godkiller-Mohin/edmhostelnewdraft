@@ -13,6 +13,8 @@ import Introduction from "./components/introduction";
 import Events from "./components/events";
 import RestaurantAndBar from "./components/RestaurantAndBar";
 import Stays from "./components/stays";
+import RoomDetail from "./pages/roomdetails";
+import RoomList from "./pages/roomlist"; // Import RoomList component
 import "./App.css";
 import AnimatedCursor from "react-animated-cursor";
 
@@ -25,11 +27,6 @@ function App() {
         smooth: true,
         // You can add more options here as needed
       }}
-      watch={
-        [
-          // You can add dependencies here to watch for content changes
-        ]
-      }
       containerRef={containerRef}
     >
       <div className="App" data-scroll-container ref={containerRef}>
@@ -67,6 +64,9 @@ function App() {
             <Route path="/events" element={<Events />} />
             <Route path="/restaurant-and-bar" element={<RestaurantAndBar />} />
             <Route path="/stays" element={<Stays />} />
+            {/* Add the RoomList route */}
+            <Route path="/rooms" element={<RoomList />} />
+            <Route path="/rooms/:id" element={<RoomDetail />} />
           </Routes>
         </main>
         <Footer />

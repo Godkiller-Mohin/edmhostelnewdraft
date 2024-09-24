@@ -6,10 +6,12 @@ const morgan = require('morgan');
 dotenv.config();
 // Import routes using CommonJS
 const authRoutes = require('./routes/auth.cjs');
-const bookingRoute = require('./routes/booking.route.cjs');
+const bookingRoomRoute = require('./routes/booking.route.cjs');
 const roomRoute = require('./routes/room.route.cjs');
 const appRoute = require('./routes/app.route.cjs');
 const userRoute = require('./routes/user.routes.cjs');
+const eventRoute=require('./routes/events.route.cjs');
+const bookingEventroute=require('./routes/bookingevent.route.cjs')
 const app = express();
 
 // Load environment variables
@@ -42,9 +44,11 @@ const connect = () => {
 
 app.use("/api/app", appRoute);
 app.use("/api/auth", authRoutes);
-app.use("/api/booking", bookingRoute);
+app.use("/api/booking", bookingRoomRoute);
 app.use("/api/room", roomRoute);
 app.use("/api/user", userRoute);
+app.use("/api/event",eventRoute);
+app.use("/api/bookevent",bookingEventroute);
 
 app.use((err, req, res, next) => {
     const status = err.status || 500;
