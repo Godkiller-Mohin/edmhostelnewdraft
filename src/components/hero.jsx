@@ -1,17 +1,127 @@
+// import React, { useEffect, useRef } from "react";
+// import { Link } from "react-router-dom";
+// import "./hero.css";
+// import { gsap } from "gsap";
+// import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+// gsap.registerPlugin(ScrollTrigger);
+
+// const Hero = () => {
+//   const videoRef = useRef(null);
+//   const videoSectionRef = useRef(null);
+//   const parallaxRefs = useRef([]);
+//   const heroSectionRef = useRef(null);
+
+//   useEffect(() => {
+//     // IntersectionObserver for video play/pause logic
+//     const options = {
+//       root: null,
+//       rootMargin: "0px",
+//       threshold: 0.5,
+//     };
+
+//     const observer = new IntersectionObserver((entries) => {
+//       entries.forEach((entry) => {
+//         if (entry.isIntersecting) {
+//           videoRef.current.play();
+//           videoSectionRef.current.classList.add("in-view");
+//         } else {
+//           videoRef.current.pause();
+//           videoSectionRef.current.classList.remove("in-view");
+//         }
+//       });
+//     }, options);
+
+//     if (videoSectionRef.current) {
+//       observer.observe(videoSectionRef.current);
+//     }
+
+//     // GSAP Parallax Effect with Smooth Scrolling on Images
+//     const images = parallaxRefs.current;
+//     const heroSection = heroSectionRef.current;
+
+//     images.forEach((image, i) => {
+//       const depth = (i + 1) * 0.6; // Adjust depth for different speeds
+
+//       gsap.to(image, {
+//         y: () => -100 * depth, // Apply parallax effect
+//         ease: "power1.out", // Smooth easing effect
+//         scrollTrigger: {
+//           trigger: heroSection,
+//           start: "top top",
+//           end: "bottom top",
+//           scrub: 0.5, // Smooth scrubbing tied to scroll position
+//           invalidateOnRefresh: true,
+//         },
+//       });
+//     });
+
+//     return () => {
+//       if (videoSectionRef.current) {
+//         observer.unobserve(videoSectionRef.current);
+//       }
+//       ScrollTrigger.getAll().forEach((t) => t.kill());
+//     };
+//   }, []);
+
+//   const imageLinks = [
+//     { path: "/introduction", className: "image1" },
+//     { path: "/events", className: "image2" },
+//     { path: "/restaurant-and-bar", className: "image3" },
+//     { path: "/stays", className: "image4" },
+//   ];
+
+//   return (
+//     <div className="hero-container">
+//       <section className="video-section" ref={videoSectionRef}>
+//         <video ref={videoRef} className="reduced-video" loop muted playsInline>
+//           <source src="/src/assets/video.mp4" type="video/mp4" />
+//           Your browser does not support the video tag.
+//         </video>
+//         <div className="hero-title-overlay">
+//           <span>INDIA'S FIRST</span>
+//           <br />
+//           <span>PARTY HOSTEL</span>
+//         </div>
+//       </section>
+//       <section className="hero" ref={heroSectionRef}>
+//         <div className="hero-content">
+//           <h1 className="hero-title">
+//             <span>EXPLORE</span>
+//           </h1>
+//         </div>
+
+//         {imageLinks.map((link, index) => (
+//           <Link
+//             key={link.path}
+//             to={link.path}
+//             className={`image-container ${link.className}`}
+//             ref={(el) => (parallaxRefs.current[index] = el)}
+//           />
+//         ))}
+//       </section>
+//     </div>
+//   );
+// };
+
+// export default Hero;
+
 import React, { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import "./hero.css";
-import VerticalSocialBar from "./verticalSocialBar";
-import { LocomotiveScrollProvider } from "react-locomotive-scroll";
-import Navigation from "./Navbar";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Hero = () => {
   const videoRef = useRef(null);
   const videoSectionRef = useRef(null);
   const parallaxRefs = useRef([]);
-  const socialBarRef = useRef(null);
-  const scrollContainerRef = useRef(null);
+  const heroSectionRef = useRef(null);
 
   useEffect(() => {
+    // IntersectionObserver for video play/pause logic
     const options = {
       root: null,
       rootMargin: "0px",
@@ -23,11 +133,9 @@ const Hero = () => {
         if (entry.isIntersecting) {
           videoRef.current.play();
           videoSectionRef.current.classList.add("in-view");
-          socialBarRef.current.classList.remove("hidden");
         } else {
           videoRef.current.pause();
           videoSectionRef.current.classList.remove("in-view");
-          socialBarRef.current.classList.add("hidden");
         }
       });
     }, options);
@@ -36,92 +144,76 @@ const Hero = () => {
       observer.observe(videoSectionRef.current);
     }
 
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      parallaxRefs.current.forEach((el) => {
-        const speed = 0.1;
-        const yOffset = scrollY * speed;
-        el.style.transform = `translateY(-${yOffset}px)`;
-      });
-    };
+    // GSAP Parallax Effect with Smooth Scrolling on Images
+    const images = parallaxRefs.current;
+    const heroSection = heroSectionRef.current;
 
-    window.addEventListener("scroll", handleScroll);
+    images.forEach((image, i) => {
+      const depth = (i + 1) * 0.5; // Adjust depth for different speeds
+
+      gsap.to(image, {
+        y: () => -100 * depth, // Apply parallax effect
+        ease: "power1.out", // Smooth easing effect
+        scrollTrigger: {
+          trigger: heroSection,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1, // Smooth scrubbing tied to scroll position
+          invalidateOnRefresh: true,
+        },
+      });
+    });
 
     return () => {
       if (videoSectionRef.current) {
         observer.unobserve(videoSectionRef.current);
       }
-      window.removeEventListener("scroll", handleScroll);
+      ScrollTrigger.getAll().forEach((t) => t.kill());
     };
   }, []);
 
-  return (
-    <LocomotiveScrollProvider
-      options={{
-        smooth: true,
-        smartphone: {
-          smooth: true,
-        },
-        tablet: {
-          smooth: true,
-        },
-      }}
-      watch={[]}
-      containerRef={scrollContainerRef}
-    >
-      <div
-        className="hero-container"
-        data-scroll-container
-        ref={scrollContainerRef}
-      >
-        {/* <Navigation /> */}
-        <section className="video-section" ref={videoSectionRef}>
-          <video
-            ref={videoRef}
-            className="reduced-video"
-            loop
-            muted
-            playsInline
-          >
-            <source src="/src/assets/video.mp4" />
-            Your browser does not support the video tag.
-          </video>
-          <div className="hero-title-overlay">
-            <span>INDIA'S FIRST</span>
-            <br />
-            <span>PARTY HOSTEL</span>
-          </div>
-        </section>
-        <section className="hero">
-          <div className="hero-content">
-            <h1 className="hero-title">
-              <span>EXPLORE</span>
-            </h1>
-          </div>
+  const imageLinks = [
+    { path: "/introduction", className: "image1" },
+    { path: "/events", className: "image2" },
+    { path: "/restaurant-and-bar", className: "image3" },
+    { path: "/stays", className: "image4" },
+  ];
 
-          <div
-            className="image-container image1"
-            ref={(el) => (parallaxRefs.current[0] = el)}
-          ></div>
-          <div
-            className="image-container image2"
-            ref={(el) => (parallaxRefs.current[1] = el)}
-          ></div>
-          <div
-            className="image-container image3"
-            ref={(el) => (parallaxRefs.current[2] = el)}
-          ></div>
-          <div
-            className="image-container image4"
-            ref={(el) => (parallaxRefs.current[3] = el)}
-          ></div>
-          <div
-            className="image-container image5"
-            ref={(el) => (parallaxRefs.current[4] = el)}
-          ></div>
-        </section>
-      </div>
-    </LocomotiveScrollProvider>
+  return (
+    <div className="hero-container">
+      <section className="video-section" ref={videoSectionRef}>
+        <video ref={videoRef} className="reduced-video" loop muted playsInline>
+          <source src="/src/assets/video.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <div className="hero-title-overlay">
+          <span>INDIA'S FIRST</span>
+          <br />
+          <span>PARTY HOSTEL</span>
+        </div>
+      </section>
+      <section className="hero" ref={heroSectionRef}>
+        <div className="hero-content">
+          <h1 className="hero-title">
+            <span>EXPLORE</span>
+          </h1>
+        </div>
+        {imageLinks.map((link, index) => (
+          <Link
+            key={link.path}
+            to={link.path}
+            className={`image-container ${link.className}`}
+            ref={(el) => (parallaxRefs.current[index] = el)}
+          >
+            <div className="overlay">
+              <span className="overlay-text">
+                {link.path.replace("/", "").replace("-", " ").toUpperCase()}
+              </span>
+            </div>
+          </Link>
+        ))}{" "}
+      </section>
+    </div>
   );
 };
 
