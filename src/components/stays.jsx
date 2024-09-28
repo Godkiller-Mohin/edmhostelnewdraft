@@ -1,6 +1,11 @@
 import React, { useState } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { TextField } from "@mui/material";
+import dayjs from "dayjs";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser, faChild } from "@fortawesome/free-solid-svg-icons";
 import "./stays.css";
 
 const Stays = () => {
@@ -12,32 +17,37 @@ const Stays = () => {
     {
       name: "Mixed Dorm",
       image: "../src/assets/mixed-dorm.jpeg",
-      price: 149.99,
-      maxAdults: 8,
+      price: 599,
+      maxAdults: 2,
+      maxChildren: 0,
     },
     {
       name: "Female Dorm 6 Bedded",
       image: "../src/assets/mixed-dorm.jpeg",
       price: 129.99,
       maxAdults: 6,
+      maxChildren: 0,
     },
     {
       name: "Male Dorm 6 Bedded",
       image: "../src/assets/mixed-dorm.jpeg",
       price: 129.99,
       maxAdults: 6,
+      maxChildren: 0,
     },
     {
       name: "Private Room Small",
       image: "../src/assets/mixed-dorm.jpeg",
       price: 249.99,
       maxAdults: 2,
+      maxChildren: 1,
     },
     {
       name: "Private Room Big",
       image: "../src/assets/mixed-dorm.jpeg",
       price: 349.99,
       maxAdults: 4,
+      maxChildren: 2,
     },
   ];
 
@@ -55,80 +65,96 @@ const Stays = () => {
   };
 
   return (
-    <div className="stays-container">
-      <div className="room-types">
-        {roomTypes.map((room, index) => (
-          <div
-            key={index}
-            className={`room-card ${
-              selectedRoom?.name === room.name ? "selected" : ""
-            }`}
-            onClick={() => handleRoomSelect(room)}
-          >
-            <img src={room.image} alt={room.name} />
-            <div className="room-info">
-              <h3>{room.name}</h3>
-              <p>Price: ${room.price}</p>
-              <p>Max Adults: {room.maxAdults}</p>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <div className="stays-container">
+        <div className="room-types">
+          {roomTypes.map((room, index) => (
+            <div key={index} className="room-card">
+              <img src={room.image} alt={room.name} />
+              <div className="room-info">
+                <h3>{room.name}</h3>
+                <div className="room-capacity">
+                  <span>
+                    <FontAwesomeIcon icon={faUser} /> Max adults:{" "}
+                    {room.maxAdults}
+                  </span>
+                  <span>
+                    <FontAwesomeIcon icon={faChild} /> Max children:{" "}
+                    {room.maxChildren}
+                  </span>
+                </div>
+                <div className="room-price">
+                  <p>Prices From</p>
+                  <p className="price">Rs {room.price}</p>
+                </div>
+                <button
+                  className="select-btn"
+                  onClick={() => handleRoomSelect(room)}
+                >
+                  Select
+                </button>
+              </div>
             </div>
+          ))}
+        </div>
+        <div className="booking-component">
+          <h2>Book This Room</h2>
+          <div className="booking-form">
+            <div className="form-group">
+              <label>Select Date</label>
+              <DatePicker
+                value={selectedDate}
+                onChange={handleDateChange}
+                renderInput={(params) => <TextField {...params} />}
+                className="date-picker"
+                minDate={dayjs()}
+                disablePast
+              />
+            </div>
+            <div className="form-group">
+              <label>Guests</label>
+              <select value={guests} onChange={handleGuestsChange}>
+                {Array.from(
+                  { length: selectedRoom?.maxAdults || 1 },
+                  (_, i) => i + 1
+                ).map((num) => (
+                  <option key={num} value={num}>
+                    {num} Guest{num > 1 ? "s" : ""}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="price-summary">
+              <div className="row">
+                <span>Price per person:</span>
+                <span>${selectedRoom?.price || 0}</span>
+              </div>
+              <div className="row">
+                <span>Guests:</span>
+                <span>{guests}</span>
+              </div>
+              <div className="row">
+                <span>Subtotal:</span>
+                <span>${(selectedRoom?.price || 0) * guests}</span>
+              </div>
+              <div className="row">
+                <span>Taxes:</span>
+                <span>$15.00</span>
+              </div>
+              <div className="row">
+                <span>Fees:</span>
+                <span>$10.00</span>
+              </div>
+              <div className="row total">
+                <span>Total:</span>
+                <span>${(selectedRoom?.price || 0) * guests + 15 + 10}</span>
+              </div>
+            </div>
+            <button className="book-now-btn">Book Now</button>
           </div>
-        ))}
-      </div>
-      <div className="booking-component">
-        <h2>Book This Room</h2>
-        <div className="booking-form">
-          <div className="form-group">
-            <label>Select Date</label>
-            <DatePicker
-              selected={selectedDate}
-              onChange={handleDateChange}
-              dateFormat="yyyy-MM-dd"
-              className="date-picker"
-            />
-          </div>
-          <div className="form-group">
-            <label>Guests</label>
-            <select value={guests} onChange={handleGuestsChange}>
-              {Array.from(
-                { length: selectedRoom?.maxAdults || 1 },
-                (_, i) => i + 1
-              ).map((num) => (
-                <option key={num} value={num}>
-                  {num} Guest{num > 1 ? "s" : ""}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="price-summary">
-            <div className="row">
-              <span>Price per person:</span>
-              <span>${selectedRoom?.price || 149.99}</span>
-            </div>
-            <div className="row">
-              <span>Guests:</span>
-              <span>{guests}</span>
-            </div>
-            <div className="row">
-              <span>Subtotal:</span>
-              <span>${(selectedRoom?.price || 149.99) * guests}</span>
-            </div>
-            <div className="row">
-              <span>Taxes:</span>
-              <span>$15.00</span>
-            </div>
-            <div className="row">
-              <span>Fees:</span>
-              <span>$10.00</span>
-            </div>
-            <div className="row total">
-              <span>Total:</span>
-              <span>${(selectedRoom?.price || 149.99) * guests + 15 + 10}</span>
-            </div>
-          </div>
-          <button className="book-now-btn">Book Now</button>
         </div>
       </div>
-    </div>
+    </LocalizationProvider>
   );
 };
 
