@@ -10,6 +10,8 @@ import EventDetail from "./components/eventDetail";
 import Testimonials from "./components/TestimonialCard";
 import RoomDetail from "./pages/roomdetails"
 import RoomList from "./pages/roomlist"; // Import RoomList component
+import EventDetails from "./pages/eventdetails";
+import EventLists from "./pages/eventlist";
 import "./App.css";
 import AnimatedCursor from "react-animated-cursor";
 
@@ -57,6 +59,8 @@ function App() {
             {/* Add the RoomList route */}
             <Route path="/rooms" element={<RoomList />} />
             <Route path="/rooms/:id" element={<RoomDetail/>} />
+            <Route path="/event" element={<EventLists />} />
+            <Route path="/events/:id" element={<EventDetails/>} />
           </Routes>
         </main>
         <Footer />
