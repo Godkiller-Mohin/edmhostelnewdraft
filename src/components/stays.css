@@ -14,10 +14,23 @@ body {
 }
 
 .room-types {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 20px;
   width: 60%;
+}
+
+.room-category {
+  margin-bottom: 40px;
+}
+
+.room-category h1 {
+  color: white;
+  font-size: 54px;
+  margin-bottom: 20px;
+}
+
+.room-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20px;
 }
 
 .room-card {
@@ -97,6 +110,7 @@ body {
   padding: 20px;
   width: 30%;
   height: 100%;
+  margin-top: 65px;
 }
 
 .booking-component h2 {
