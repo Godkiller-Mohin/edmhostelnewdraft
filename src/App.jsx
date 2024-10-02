@@ -47,7 +47,7 @@ function App() {
           }}
         />
         <Navbar />
-        <VerticalSocialBar />
+        {/* <VerticalSocialBar /> */}
         <main data-scroll-section>
           <Routes>
             <Route
