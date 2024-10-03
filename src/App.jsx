@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import { Routes, Route } from "react-router-dom";
+import React, { useRef, useState } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { LocomotiveScrollProvider } from "react-locomotive-scroll";
 import Navbar from "./components/Navbar";
 import Hero from "./components/hero";
@@ -15,6 +15,8 @@ import RestaurantAndBar from "./components/RestaurantAndBar";
 import Stays from "./components/stays";
 import RoomDetail from "./pages/roomdetails";
 import RoomList from "./pages/roomlist"; // Import RoomList component
+import SignIn from "./components/login";
+import SignUp from "./components/signup";
 import EventDetails from "./pages/eventdetails";
 import EventLists from "./pages/eventlist";
 import "./App.css";
@@ -22,6 +24,12 @@ import AnimatedCursor from "react-animated-cursor";
 
 function App() {
   const containerRef = useRef(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // Function to handle successful login
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
 
   return (
     <LocomotiveScrollProvider
@@ -46,7 +54,7 @@ function App() {
             border: "3px solid  #fff",
           }}
         />
-        <Navbar />
+        <Navbar isLoggedIn={isLoggedIn} />
         {/* <VerticalSocialBar /> */}
         <main data-scroll-section>
           <Routes>
@@ -66,11 +74,18 @@ function App() {
             <Route path="/events" element={<Events />} />
             <Route path="/restaurant-and-bar" element={<RestaurantAndBar />} />
             <Route path="/stays" element={<Stays />} />
-            {/* Add the RoomList route */}
-            <Route path="/rooms" element={<RoomList />} />
-            <Route path="/rooms/:id" element={<RoomDetail />} />
+            <Route
+              path="/rooms"
+              element={isLoggedIn ? <RoomList /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/rooms/:id"
+              element={isLoggedIn ? <RoomDetail /> : <Navigate to="/login" />}
+            />
+            <Route path="/login" element={<SignIn onLogin={handleLogin} />} />
+            <Route path="/signup" element={<SignUp />} />
             <Route path="/event" element={<EventLists />} />
-            <Route path="/events/:id" element={<EventDetails/>} />
+            <Route path="/events/:id" element={<EventDetails />} />
           </Routes>
         </main>
         <Footer />
