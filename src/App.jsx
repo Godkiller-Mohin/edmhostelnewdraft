@@ -14,9 +14,11 @@ import Events from "./components/events";
 import RestaurantAndBar from "./components/RestaurantAndBar";
 import Stays from "./components/stays";
 import RoomDetail from "./pages/roomdetails";
-import RoomList from "./pages/roomlist";
+import RoomList from "./pages/roomlist"; // Import RoomList component
 import SignIn from "./components/login";
 import SignUp from "./components/signup";
+import EventDetails from "./pages/eventdetails";
+import EventLists from "./pages/eventlist";
 import "./App.css";
 import AnimatedCursor from "react-animated-cursor";
 
@@ -81,8 +83,9 @@ function App() {
               element={isLoggedIn ? <RoomDetail /> : <Navigate to="/login" />}
             />
             <Route path="/login" element={<SignIn onLogin={handleLogin} />} />
-            <Route path="/signup" element={<SignUp />} />{" "}
-            {/* Add the SignUp route */}
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/event" element={<EventLists />} />
+            <Route path="/events/:id" element={<EventDetails />} />
           </Routes>
         </main>
         <Footer />
