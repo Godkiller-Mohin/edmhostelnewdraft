@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons"; // Import FontAwesome Google Icon
 
 const SignIn = () => {
   return (
@@ -58,6 +60,16 @@ const SignIn = () => {
             Sign In
           </button>
         </form>
+
+        {/* Google Sign-In Button */}
+        <div className="mt-4">
+          <button className="w-full flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+            {/* Google Icon with Font Awesome */}
+            <FontAwesomeIcon icon={faGoogle} className="w-5 h-5 mr-2" />
+            Sign in with Google
+          </button>
+        </div>
+
         <div className="mt-6">
           <div className="relative flex justify-center text-sm">
             <p className="text-center text-sm text-gray">

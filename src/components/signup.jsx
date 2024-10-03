@@ -1,10 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons"; // Import FontAwesome Google Icon
+
 const SignUp = () => {
   return (
     <div
       className="flex flex-col items-center justify-center"
-      style={{ backgroundColor: "#032A25", minHeight: "130vh" }}
+      style={{ backgroundColor: "#032A25", minHeight: "150vh" }}
     >
       <div className="p-8 bg-white rounded-lg shadow-md w-full max-w-md">
         <div className="flex justify-center mb-6">
@@ -84,17 +87,27 @@ const SignUp = () => {
           >
             Sign Up
           </button>
-          <p className="mt-8 text-center text-sm text-gray">
-            Already have an account?{" "}
-            <Link
-              to="/login"
-              className="font-medium"
-              style={{ color: "#01231F" }}
-            >
-              Sign in
-            </Link>
-          </p>
         </form>
+
+        {/* Google Sign-Up Button */}
+        <div className="mt-4">
+          <button className="w-full flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+            {/* Google Icon with Font Awesome */}
+            <FontAwesomeIcon icon={faGoogle} className="w-5 h-5 mr-2" />
+            Sign up with Google
+          </button>
+        </div>
+
+        <p className="mt-8 text-center text-sm text-gray">
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            className="font-medium"
+            style={{ color: "#01231F" }}
+          >
+            Sign in
+          </Link>
+        </p>
       </div>
     </div>
   );
