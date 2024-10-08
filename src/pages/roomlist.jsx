@@ -59,7 +59,7 @@ const RoomList = () => {
               <p><strong>Type:</strong> {room.room_type}</p>
               <p><strong>Capacity:</strong> {room.room_capacity}</p>
               <p><strong>Status:</strong> {room.room_status === 'available' ? 'Available' : 'Occupied'}</p>
-              <Link to={`/rooms/${room.id}`} className="details-link">View Details</Link>
+              <Link to={`/RoomDetail/${room.id}`} className="details-link">View Details</Link>
             </div>
           ))
         ) : (
