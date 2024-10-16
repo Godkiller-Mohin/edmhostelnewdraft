@@ -15,6 +15,7 @@ import RestaurantAndBar from "./components/RestaurantAndBar";
 import Stays from "./components/stays";
 import RoomDetail from "./pages/roomdetails";
 import RoomList from "./pages/roomlist"; // Import RoomList component
+import RoomBooking from "./pages/roombooking";
 import SignIn from "./components/login";
 import SignUp from "./components/signup";
 import EventDetails from "./pages/eventdetails";
@@ -75,13 +76,14 @@ function App() {
             <Route path="/restaurant-and-bar" element={<RestaurantAndBar />} />
             <Route path="/stays" element={<Stays />} />
             <Route
-              path="/rooms"
-              element={isLoggedIn ? <RoomList /> : <Navigate to="/login" />}
+              path="/RoomList"
+              element={<RoomList />}
             />
             <Route
-              path="/rooms/:id"
-              element={isLoggedIn ? <RoomDetail /> : <Navigate to="/login" />}
+              path="/RoomDetail/:id"
+              element={<RoomDetail />}
             />
+            <Route path="/book-room/:id" element={<RoomBooking />}/>
             <Route path="/login" element={<SignIn onLogin={handleLogin} />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/event" element={<EventLists />} />

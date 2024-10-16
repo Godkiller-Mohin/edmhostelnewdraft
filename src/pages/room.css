@@ -48,3 +48,119 @@
 .details-link:hover {
   background-color: #0056b3;
 }
+.room-detail {
+  background-color: #f5f5f5; /* Light background for contrast */
+  color: #333; /* Dark text for readability */
+  padding: 2rem; /* General padding */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  max-width: 800px; /* Maximum width for the detail card */
+  margin: auto; /* Centering the card */
+  font-family: Arial, sans-serif; /* Font style */
+}
+
+.room-detail h2 {
+  font-size: 2.5rem; /* Title size */
+  margin-bottom: 1rem; /* Space below the title */
+  color: #007bff; /* Primary color for headings */
+  text-align: center; /* Center the title */
+}
+
+.room-detail img {
+  width: 100%; /* Responsive image */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 8px; /* Rounded corners for the image */
+  margin-bottom: 1rem; /* Space below the image */
+}
+
+.room-detail p {
+  font-size: 1.2rem; /* General paragraph size */
+  margin: 0.5rem 0; /* Margins for spacing */
+}
+
+.room-detail a {
+  display: inline-block; /* Make link a block for padding */
+  margin-top: 1rem; /* Space above the link */
+  padding: 10px 20px; /* Padding for button appearance */
+  background-color: #007bff; /* Button background color */
+  color: #fff; /* Button text color */
+  text-decoration: none; /* Remove underline */
+  border-radius: 5px; /* Rounded button corners */
+  transition: background-color 0.3s; /* Transition effect */
+}
+
+.room-detail a:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+}
+.room-booking {
+  background-color: #f5f5f5; /* Light background for contrast */
+  color: #333; /* Dark text for readability */
+  padding: 2rem; /* General padding */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  max-width: 600px; /* Maximum width for the booking card */
+  margin: auto; /* Centering the card */
+  font-family: Arial, sans-serif; /* Font style */
+}
+
+.room-booking h2 {
+  font-size: 2.5rem; /* Title size */
+  margin-bottom: 1.5rem; /* Space below the title */
+  color: #007bff; /* Primary color for headings */
+  text-align: center; /* Center the title */
+}
+
+.room-booking form {
+  display: flex; /* Flexbox layout */
+  flex-direction: column; /* Vertical alignment */
+}
+
+.room-booking div {
+  margin-bottom: 1.5rem; /* Space between fields */
+}
+
+.room-booking label {
+  font-size: 1.2rem; /* Label size */
+  margin-bottom: 0.5rem; /* Space below label */
+  display: block; /* Make label block for spacing */
+}
+
+.room-booking input {
+  padding: 10px; /* Input padding */
+  font-size: 1rem; /* Input text size */
+  border: 1px solid #ccc; /* Light border */
+  border-radius: 4px; /* Rounded input corners */
+  width: 100%; /* Full width input */
+  box-sizing: border-box; /* Include padding in width */
+  transition: border-color 0.3s; /* Transition for border color */
+}
+
+.room-booking input:focus {
+  border-color: #007bff; /* Change border color on focus */
+  outline: none; /* Remove outline */
+}
+
+.room-booking button {
+  padding: 10px 15px; /* Button padding */
+  background-color: #007bff; /* Button background color */
+  color: #fff; /* Button text color */
+  border: none; /* Remove border */
+  border-radius: 4px; /* Rounded button corners */
+  font-size: 1.2rem; /* Button text size */
+  cursor: pointer; /* Pointer cursor */
+  transition: background-color 0.3s; /* Transition for background color */
+}
+
+.room-booking button:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+}
+.success-message {
+  color: green;
+  margin-top: 20px;
+}
+
+.error-message {
+  color: red;
+  margin-top: 20px;
+}
+
