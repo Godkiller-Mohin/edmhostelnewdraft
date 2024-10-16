@@ -4,31 +4,47 @@ import "./introduction.css";
 const Introduction = () => {
   return (
     <div className="edm-hostel-container">
-      <h1>INTRODUCING AUSTIN, TX</h1>
-      <p className="address">204 E 6th St, Austin, TX, 78701 •</p>
+      <h1>India’s First Party Hostel – Where Beats Hit Different!</h1>
+      <p className="address">Welcome to EDM Hostel </p>
 
       <div className="content-wrapper">
         <div className="main-content">
           <p>
-            Opened in July 2024, our eagerly awaited Texas outpost sits on
-            Austin's iconic Sixth Street in the Downtown Historic District.
-            Predominantly pedestrianized, the area is known for its bars, clubs,
-            live music, and comedy venues housed in 19th-century Victorian
-            buildings, earning the street a spot on the National Register of
-            Historic Places.
+            Sitting high up at 6900 feet, EDM Hostel in Dharamshala is where
+            your adventure meets a party you’ll never forget. As India’s
+            first-ever party hostel, we’re here to redefine what it means to
+            have a good time. Whether you're vibing to the beats, catching a
+            killer sunset, or meeting new friends, this is the ultimate hangout
+            for party lovers—the kind of place where you come for one night and
+            stay for a week.
           </p>
           <p>
-            As is The Dead Rabbit signature, modern Irish art adorns the walls,
-            with uniforms and menus designed by celebrated Irish makers. And
-            what's Austin without great live music? We've weekly Sunday
-            seisiúns, and regularly host visiting musicians, comedians, and
-            more.
+            We don’t just throw parties, we create experiences. From Thursday to
+            Sunday, expect house, techno, and psytrance events that go off with
+            top-tier DJs spinning all night long. And if we’re feeling the vibe,
+            we throw in some extra mid-week parties, just because we can. No
+            FOMO here—whether you’re dancing under the stars or chilling at our
+            in-house bar, it’s all about making memories that last.
           </p>
           <p>
-            Enjoy classic and modern cocktails, including our signature Irish
-            Coffee, alongside perfect pints, an array of spirits, and hearty pub
-            dishes, all served in our lively Taproom. Welcome to The Dead
-            Rabbit, welcome home.
+            And, for those chill days? We got you. Mondays, Tuesdays, and
+            Wednesdays are reserved for recharging your energy with stuff like
+            movement workshops, contact improv, breathwork, and ecstatic dances.
+            It's all about getting in sync with yourself, your people, and the
+            mountain vibes.
+          </p>
+
+          <p>
+            Oh, and did we mention our restaurant has the best view in Dharamkot
+            and Dharamshala? Yeah, whether it’s breakfast with a killer sunrise
+            or cocktails at golden hour, you won’t find a better backdrop for
+            your Instagram feed.
+          </p>
+          <p>
+            At EDM Hostel, we’re more than just a place to crash. We’re where
+            your squad gets bigger, the beats hit harder, and every moment feels
+            like a whole new vibe. Ready for the ultimate party? Your adventure
+            starts here.
           </p>
 
           <div className="buttons">
