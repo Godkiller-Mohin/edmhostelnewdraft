@@ -97,3 +97,11 @@
   padding-right: 2rem;
   margin-right: 2rem;
 }
+
+.remove-mb {
+  margin-bottom: 0;
+}
+
+.contact-us li {
+  margin-bottom: 20px;
+}
