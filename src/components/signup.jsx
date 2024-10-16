@@ -12,7 +12,7 @@ const SignUp = () => {
     dob: "",
     address: "",
     gender: "male", // Default to 'male', can be changed
-    role: "user" // Default role
+    role: "user", // Default role
   });
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -22,7 +22,7 @@ const SignUp = () => {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.id]: e.target.value
+      [e.target.id]: e.target.value,
     });
   };
 
@@ -31,13 +31,13 @@ const SignUp = () => {
     e.preventDefault();
     try {
       const response = await ApiService.post("/api/auth/registration", formData);
-  
+
       // Log the full response for debugging
       console.log("Full response:", response);
-  
+
       const { result_code, result } = response; // Destructure the response as done in the login function
-  
-      if (result_code === 0 && result.title === 'SUCCESS') {
+
+      if (result_code === 0 && result.title === "SUCCESS") {
         // If registration is successful
         setSuccess("User registered successfully!");
         setError(null);
@@ -48,7 +48,7 @@ const SignUp = () => {
       }
     } catch (err) {
       console.error("Error during registration:", err.response); // Log for debugging
-  
+
       if (err.response && err.response.data && err.response.data.message) {
         setError(err.response.data.message); // Handle error message from backend
       } else {
@@ -56,7 +56,6 @@ const SignUp = () => {
       }
     }
   };
-  
 
   return (
     <div
@@ -70,7 +69,12 @@ const SignUp = () => {
         <form onSubmit={handleSubmit}>
           {/* Username */}
           <div className="mb-4">
-            <label htmlFor="userName" className="block text-sm font-medium text-gray-700">Username</label>
+            <label
+              htmlFor="userName"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Username
+            </label>
             <input
               type="text"
               id="userName"
@@ -83,7 +87,12 @@ const SignUp = () => {
 
           {/* Full Name */}
           <div className="mb-4">
-            <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">Full Name</label>
+            <label
+              htmlFor="fullName"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Full Name
+            </label>
             <input
               type="text"
               id="fullName"
@@ -96,7 +105,12 @@ const SignUp = () => {
 
           {/* Email */}
           <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Email
+            </label>
             <input
               type="email"
               id="email"
@@ -109,7 +123,12 @@ const SignUp = () => {
 
           {/* Phone */}
           <div className="mb-4">
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone</label>
+            <label
+              htmlFor="phone"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Phone
+            </label>
             <input
               type="text"
               id="phone"
@@ -122,7 +141,12 @@ const SignUp = () => {
 
           {/* Password */}
           <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Password
+            </label>
             <input
               type="password"
               id="password"
@@ -135,7 +159,12 @@ const SignUp = () => {
 
           {/* Date of Birth */}
           <div className="mb-4">
-            <label htmlFor="dob" className="block text-sm font-medium text-gray-700">Date of Birth</label>
+            <label
+              htmlFor="dob"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Date of Birth
+            </label>
             <input
               type="date"
               id="dob"
@@ -148,7 +177,12 @@ const SignUp = () => {
 
           {/* Address */}
           <div className="mb-4">
-            <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>
+            <label
+              htmlFor="address"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Address
+            </label>
             <input
               type="text"
               id="address"
@@ -161,7 +195,12 @@ const SignUp = () => {
 
           {/* Gender */}
           <div className="mb-4">
-            <label htmlFor="gender" className="block text-sm font-medium text-gray-700">Gender</label>
+            <label
+              htmlFor="gender"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Gender
+            </label>
             <select
               id="gender"
               value={formData.gender}
@@ -174,8 +213,6 @@ const SignUp = () => {
               <option value="other">Other</option>
             </select>
           </div>
-
-    
 
           {/* Error & Success Messages */}
           {error && <p className="text-red-500 mb-4">{error}</p>}
@@ -191,7 +228,10 @@ const SignUp = () => {
         </form>
 
         <p className="mt-4 text-center text-sm">
-          Already have an account? <Link to="/login" className="text-indigo-500">Log in</Link>
+          Already have an account?{" "}
+          <Link to="/login" className="text-indigo-500">
+            Log in
+          </Link>
         </p>
       </div>
     </div>
