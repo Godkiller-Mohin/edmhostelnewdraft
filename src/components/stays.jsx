@@ -16,7 +16,7 @@ const Stays = () => {
   const roomTypes = [
     {
       name: "Mixed Dorm",
-      image: "../src/assets/mixed-dorm.jpeg",
+      image: "/images/mixed-dorm.jpeg",
       price: 599,
       maxAdults: 2,
       maxChildren: 0,
@@ -24,7 +24,7 @@ const Stays = () => {
     },
     {
       name: "Female Dorm 6 Bedded",
-      image: "../src/assets/mixed-dorm.jpeg",
+      image: "/images/mixed-dorm.jpeg",
       price: 129.99,
       maxAdults: 6,
       maxChildren: 0,
@@ -32,7 +32,7 @@ const Stays = () => {
     },
     {
       name: "Male Dorm 6 Bedded",
-      image: "../src/assets/mixed-dorm.jpeg",
+      image: "/images/mixed-dorm.jpeg",
       price: 129.99,
       maxAdults: 6,
       maxChildren: 0,
@@ -40,7 +40,7 @@ const Stays = () => {
     },
     {
       name: "Private Room Small",
-      image: "../src/assets/mixed-dorm.jpeg",
+      image: "/images/mixed-dorm.jpeg",
       price: 249.99,
       maxAdults: 2,
       maxChildren: 1,
@@ -48,7 +48,7 @@ const Stays = () => {
     },
     {
       name: "Private Room Big",
-      image: "../src/assets/mixed-dorm.jpeg",
+      image: "/images/mixed-dorm.jpeg",
       price: 349.99,
       maxAdults: 4,
       maxChildren: 2,

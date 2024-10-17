@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./footer.css";
-import facebookIcon from "../assets/facebook-icon.png";
-import instagramIcon from "../assets/instagram-icon.png";
-import linkedinIcon from "../assets/linkedin-icon.png";
-import twitterIcon from "../assets/twitter-icon.png";
+import facebookIcon from "/images/facebook-icon.png";
+import instagramIcon from "/images/instagram-icon.png";
+import linkedinIcon from "/images/linkedin-icon.png";
+import twitterIcon from "/images/twitter-icon.png";
 
 const Footer = () => {
   return (
