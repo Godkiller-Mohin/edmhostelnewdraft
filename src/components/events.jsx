@@ -38,21 +38,21 @@ const Events = () => {
   const events = [
     {
       name: "Summer Music Festival",
-      image: "../src/assets/events.jpg",
+      image: "/images/events.jpg",
       price: 599,
       date: "29-09-2024",
       maxAttendees: 1000,
     },
     {
       name: "Tech Conference",
-      image: "../src/assets/events.jpg",
+      image: "/images/events.jpg",
       price: 799,
       date: "15-10-2024",
       maxAttendees: 500,
     },
     {
       name: "Food and Wine Expo",
-      image: "../src/assets/events.jpg",
+      image: "/images/events.jpg",
       price: 399,
       date: "05-11-2024",
       maxAttendees: 750,

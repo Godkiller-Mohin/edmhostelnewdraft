@@ -33,16 +33,16 @@ const HorizontalScrollingGallery = () => {
   };
 
   const images = [
-    { src: "../src/assets/food1.jpg", alt: "Gallery Image 1" },
-    { src: "../src/assets/food2.jpg", alt: "Gallery Image 2" },
-    { src: "../src/assets/food3.jpg", alt: "Gallery Image 3" },
-    { src: "../src/assets/bar1.jpg", alt: "Gallery Image 4" },
-    { src: "../src/assets/bar2.jpg", alt: "Gallery Image 5" },
-    { src: "../src/assets/bar3.jpg", alt: "Gallery Image 6" },
-    { src: "../src/assets/food1.jpg", alt: "Gallery Image 7" },
-    { src: "../src/assets/food1.jpg", alt: "Gallery Image 8" },
-    { src: "../src/assets/food1.jpg", alt: "Gallery Image 9" },
-    { src: "../src/assets/food1.jpg", alt: "Gallery Image 10" },
+    { src: "/images/food1.jpg", alt: "Gallery Image 1" },
+    { src: "/images/food2.jpg", alt: "Gallery Image 2" },
+    { src: "/images/food3.jpg", alt: "Gallery Image 3" },
+    { src: "/images/bar1.jpg", alt: "Gallery Image 4" },
+    { src: "/images/bar2.jpg", alt: "Gallery Image 5" },
+    { src: "/images/bar3.jpg", alt: "Gallery Image 6" },
+    { src: "/images/food1.jpg", alt: "Gallery Image 7" },
+    { src: "/images/food1.jpg", alt: "Gallery Image 8" },
+    { src: "/images/food1.jpg", alt: "Gallery Image 9" },
+    { src: "/images/food1.jpg", alt: "Gallery Image 10" },
   ];
 
   return (
@@ -108,17 +108,17 @@ const RestaurantAndBarMenu = () => {
     {
       title: "Austin Menu",
       description: "Food, Cocktails, Beers and Wines",
-      image: "../src/assets/food1.jpg",
+      image: "/images/food1.jpg",
     },
     {
       title: "Tex-Mex Platter",
       description: "A delicious assortment of Tex-Mex favorites",
-      image: "../src/assets/food1.jpg",
+      image: "/images/food1.jpg",
     },
     {
       title: "Chef's Special",
       description: "Daily curated dish by our expert chef",
-      image: "../src/assets/food1.jpg",
+      image: "/images/food1.jpg",
     },
   ];
 
@@ -126,17 +126,17 @@ const RestaurantAndBarMenu = () => {
     {
       title: "Classic Cocktails",
       description: "Timeless favorites crafted to perfection",
-      image: "../src/assets/bar1.jpg",
+      image: "/images/bar1.jpg",
     },
     {
       title: "Craft Beers",
       description: "Local and international brews on tap",
-      image: "../src/assets/bar2.jpg",
+      image: "/images/bar2.jpg",
     },
     {
       title: "Wine Selection",
       description: "Curated wines from around the world",
-      image: "../src/assets/bar3.jpg",
+      image: "/images/bar3.jpg",
     },
   ];
 
