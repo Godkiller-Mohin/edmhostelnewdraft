@@ -1,76 +1,48 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./footer.css";
-import facebookIcon from "../assets/facebook-icon.png";
-import instagramIcon from "../assets/instagram-icon.png";
-import linkedinIcon from "../assets/linkedin-icon.png";
-import twitterIcon from "../assets/twitter-icon.png";
+import facebookIcon from "/images/facebook-icon.png";
+import instagramIcon from "/images/instagram-icon.png";
+import linkedinIcon from "/images/linkedin-icon.png";
+import twitterIcon from "/images/twitter-icon.png";
 
 const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-content">
         <div className="footer-section">
-          <h3>NEW YORK, NYC</h3>
+          <h3>EDM HOSTEL</h3>
+          <ul>
+            <p>
+              EDM Hostel in Dharamshala offers a peaceful place with modern
+              amenities amidst the spiritual ambiance of the sacred town.
+              Comfortable rooms, in house restaurant, and warm hospitality make
+              it an ideal choice for pilgrims and tourists seeking a tranquil
+              stay near major attractions like the Aghanjar Temple and Triund
+              Hill
+            </p>
+          </ul>
+        </div>
+        <div className="footer-section contact-us">
+          <h3>CONTACT US</h3>
           <ul>
             <li>
-              <Link to="/austin">AUSTIN, TX</Link>
+              ADDRESS: EDM Hostel, Upper Dharamkot, Dharamshala, HP. 176219
             </li>
             <li>
-              <Link to="/washington">WASHINGTON, D.C.</Link>
+              PHONE NUMBER: <br></br>+91 8091977846
             </li>
-            <li>
-              <Link to="/about">ABOUT US</Link>
-            </li>
-            <li>
-              <Link to="/story">OUR STORY</Link>
-            </li>
-            <li>
-              <Link to="/ny-menus">NEW YORK MENUS</Link>
-            </li>
-            <li>
-              <Link to="/austin-menu">AUSTIN MENU</Link>
-            </li>
+            <li>EMAIL ID : edmhostel@gmail.com</li>
           </ul>
         </div>
         <div className="footer-section">
-          <h3>THAT'S DEADLY</h3>
-          <ul>
-            <li>
-              <Link to="/awards">AWARDS & PRESS</Link>
-            </li>
-            <li>
-              <Link to="/careers">CAREERS</Link>
-            </li>
-            <li>
-              <Link to="/shop">MERCHANDISE SHOP</Link>
-            </li>
-            <li>
-              <Link to="/gift-cards">GIFT CARDS - US</Link>
-            </li>
-            <li>
-              <Link to="/wellness">WELLNESS</Link>
-            </li>
-            <li>
-              <Link to="/artists">ARTISTS</Link>
-            </li>
-          </ul>
+          <h3>WEATHER</h3>
+          <h3 className="remove-mb">DHARAMSHALA</h3>
+          <p>Rainy</p>
+          <p>22°C</p>
         </div>
         <div className="footer-section">
-          <h3>NEW YORK</h3>
-          <h4>THE PARLOR</h4>
-          <p>TUE - SAT | 5PM - 1AM</p>
-          <p>SUN | 4PM - 12AM</p>
-          <h4>THE TAPROOM</h4>
-          <p>SUN - THU | 11AM - 2AM</p>
-          <p>FRI - SAT | 11AM - 3AM</p>
-        </div>
-        <div className="footer-section">
-          <h3>AUSTIN, TX</h3>
-          <h4>THE TAPROOM</h4>
-          <p>MONDAY - SUNDAY | 11AM - 2AM</p>
-          <h4>NEIGHBOURHOOD</h4>
-          <p>MON - SUN | 7AM - 4PM</p>
+          <h3>MAPS</h3>
         </div>
       </div>
       <div className="footer-bottom">
@@ -104,10 +76,10 @@ const Footer = () => {
             <img src={twitterIcon} alt="Twitter" className="social-icon" />
           </a>
         </div>
-        <p>COPYRIGHT THE DEAD RABBIT 2024</p>
+        <p>© 2024 EDM Hostel</p>
         <div className="footer-links">
           <Link to="/privacy">PRIVACY POLICY</Link>
-          <span>WEBSITE BY CROWN CREATIVE</span>
+          <span>WEBSITE BY ----</span>
         </div>
       </div>
     </footer>

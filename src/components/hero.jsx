@@ -1,16 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "./hero.css";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const Hero = () => {
   const videoRef = useRef(null);
   const videoSectionRef = useRef(null);
-  const parallaxRefs = useRef([]);
-  const heroSectionRef = useRef(null);
 
   useEffect(() => {
     // IntersectionObserver for video play/pause logic
@@ -36,31 +30,10 @@ const Hero = () => {
       observer.observe(videoSectionRef.current);
     }
 
-    // GSAP Parallax Effect with Smooth Scrolling on Images
-    const images = parallaxRefs.current;
-    const heroSection = heroSectionRef.current;
-
-    images.forEach((image, i) => {
-      const depth = (i + 1) * 0.5; // Adjust depth for different speeds
-
-      gsap.to(image, {
-        y: () => -100 * depth, // Apply parallax effect
-        ease: "power1.out", // Smooth easing effect
-        scrollTrigger: {
-          trigger: heroSection,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1, // Smooth scrubbing tied to scroll position
-          invalidateOnRefresh: true,
-        },
-      });
-    });
-
     return () => {
       if (videoSectionRef.current) {
         observer.unobserve(videoSectionRef.current);
       }
-      ScrollTrigger.getAll().forEach((t) => t.kill());
     };
   }, []);
 
@@ -75,7 +48,7 @@ const Hero = () => {
     <div className="hero-container">
       <section className="video-section" ref={videoSectionRef}>
         <video ref={videoRef} className="reduced-video" loop muted playsInline>
-          <source src="/src/assets/video.mp4" type="video/mp4" />
+          <source src="/videos/video.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
         <div className="hero-title-overlay">
@@ -84,18 +57,17 @@ const Hero = () => {
           <span>PARTY HOSTEL</span>
         </div>
       </section>
-      <section className="hero" ref={heroSectionRef}>
+      <section className="hero">
         <div className="hero-content">
           <h1 className="hero-title">
             <span>EXPLORE</span>
           </h1>
         </div>
-        {imageLinks.map((link, index) => (
+        {imageLinks.map((link) => (
           <Link
             key={link.path}
             to={link.path}
             className={`image-container ${link.className}`}
-            ref={(el) => (parallaxRefs.current[index] = el)}
           >
             <div className="overlay">
               <span className="overlay-text">
@@ -103,7 +75,7 @@ const Hero = () => {
               </span>
             </div>
           </Link>
-        ))}{" "}
+        ))}
       </section>
     </div>
   );

@@ -43,19 +43,19 @@ const AccommodationSelector = () => {
     {
       id: 1,
       name: "PRIVATE ROOM",
-      image: "../src/assets/private-room.jpeg",
+      image: "/images/private-room.jpeg",
       subtitle: "COMFORT AND PRIVACY",
     },
     {
       id: 2,
       name: "FEMALE DORMITORY",
-      image: "../src/assets/female-dorm.jpeg",
+      image: "/images/female-dorm.jpeg",
       subtitle: "LADIES ONLY",
     },
     {
       id: 3,
       name: "MIXED DORMITORY",
-      image: "../src/assets/mixed-dorm.jpeg",
+      image: "/images/mixed-dorm.jpeg",
       subtitle: "SOCIAL AND AFFORDABLE",
     },
   ];
@@ -71,7 +71,7 @@ const AccommodationSelector = () => {
       <div className="accommodation-grid">
         {accommodations.map((accommodation) => (
           <div key={accommodation.id} className="accommodation-card">
-            <Link to={`/accommodation/${accommodation.id}`}>
+            <Link to={`/stays`}>
               <img src={accommodation.image} alt={accommodation.name} />
               <div className="accommodation-info">
                 <p className="subtitle">{accommodation.subtitle}</p>

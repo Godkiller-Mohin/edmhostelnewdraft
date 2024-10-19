@@ -1,24 +1,21 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import ApiService from "../api/apiService";
 
-const SignUp = () => {
+const SignIn = () => {
   const [formData, setFormData] = useState({
-    userName: "",
-    fullName: "",
     email: "",
-    phone: "",
     password: "",
     dob: "",
     address: "",
     gender: "male", // Default to 'male', can be changed
-    role: "user", // Default role
+    role: "user" // Default role
   });
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
   const navigate = useNavigate();
 
-  // Handle form input changes
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -26,33 +23,31 @@ const SignUp = () => {
     });
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await ApiService.post("/api/auth/registration", formData);
-
+  
       // Log the full response for debugging
       console.log("Full response:", response);
-
+  
       const { result_code, result } = response; // Destructure the response as done in the login function
-
-      if (result_code === 0 && result.title === "SUCCESS") {
+  
+      if (result_code === 0 && result.title === 'SUCCESS') {
         // If registration is successful
         setSuccess("User registered successfully!");
         setError(null);
-        navigate("/login"); // Redirect to login after successful registration
+        navigate("/RoomList");
       } else {
-        // Handle errors coming from the response
-        setError(result.message || "An error occurred during registration.");
+        setError(result.message || "An error occurred during login.");
       }
     } catch (err) {
       console.error("Error during registration:", err.response); // Log for debugging
-
+  
       if (err.response && err.response.data && err.response.data.message) {
-        setError(err.response.data.message); // Handle error message from backend
+        setError(err.response.data.message);
       } else {
-        setError("An error occurred during registration.");
+        setError("An error occurred during login. Please try again.");
       }
     }
   };
@@ -63,18 +58,22 @@ const SignUp = () => {
       style={{ backgroundColor: "#032A25", minHeight: "130vh" }}
     >
       <div className="p-8 bg-white rounded-lg shadow-md w-full max-w-md">
+        <div className="flex justify-center mb-6">
+          <svg
+            className="w-10 h-10"
+            style={{ color: "#032A25" }}
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+          </svg>
+        </div>
         <h2 className="text-2xl font-bold text-center mb-6">
-          Sign up for an account
+          Sign in to your account
         </h2>
         <form onSubmit={handleSubmit}>
-          {/* Username */}
           <div className="mb-4">
-            <label
-              htmlFor="userName"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Username
-            </label>
+            <label htmlFor="userName" className="block text-sm font-medium text-gray-700">Username</label>
             <input
               type="text"
               id="userName"
@@ -87,12 +86,7 @@ const SignUp = () => {
 
           {/* Full Name */}
           <div className="mb-4">
-            <label
-              htmlFor="fullName"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Full Name
-            </label>
+            <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">Full Name</label>
             <input
               type="text"
               id="fullName"
@@ -105,30 +99,18 @@ const SignUp = () => {
 
           {/* Email */}
           <div className="mb-4">
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Email
-            </label>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
             <input
               type="email"
               id="email"
               value={formData.email}
               onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               required
             />
           </div>
-
-          {/* Phone */}
           <div className="mb-4">
-            <label
-              htmlFor="phone"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Phone
-            </label>
+            <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone</label>
             <input
               type="text"
               id="phone"
@@ -141,12 +123,7 @@ const SignUp = () => {
 
           {/* Password */}
           <div className="mb-4">
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Password
-            </label>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
             <input
               type="password"
               id="password"
@@ -159,12 +136,7 @@ const SignUp = () => {
 
           {/* Date of Birth */}
           <div className="mb-4">
-            <label
-              htmlFor="dob"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Date of Birth
-            </label>
+            <label htmlFor="dob" className="block text-sm font-medium text-gray-700">Date of Birth</label>
             <input
               type="date"
               id="dob"
@@ -177,12 +149,7 @@ const SignUp = () => {
 
           {/* Address */}
           <div className="mb-4">
-            <label
-              htmlFor="address"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Address
-            </label>
+            <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>
             <input
               type="text"
               id="address"
@@ -195,12 +162,7 @@ const SignUp = () => {
 
           {/* Gender */}
           <div className="mb-4">
-            <label
-              htmlFor="gender"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Gender
-            </label>
+            <label htmlFor="gender" className="block text-sm font-medium text-gray-700">Gender</label>
             <select
               id="gender"
               value={formData.gender}
@@ -214,28 +176,25 @@ const SignUp = () => {
             </select>
           </div>
 
+    
+
           {/* Error & Success Messages */}
           {error && <p className="text-red-500 mb-4">{error}</p>}
-          {success && <p className="text-green-500 mb-4">{success}</p>}
-
-          {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-700"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white"
+            style={{ backgroundColor: "#01231F" }}
           >
-            Sign Up
+            Sign In
           </button>
         </form>
 
         <p className="mt-4 text-center text-sm">
-          Already have an account?{" "}
-          <Link to="/login" className="text-indigo-500">
-            Log in
-          </Link>
+          Already have an account? <Link to="/login" className="text-indigo-500">Log in</Link>
         </p>
       </div>
     </div>
   );
 };
 
-export default SignUp;
+export default SignIn;

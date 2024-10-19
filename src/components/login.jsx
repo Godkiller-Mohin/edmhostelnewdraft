@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import ApiService from "../api/apiService";
 
 const SignIn = () => {
@@ -11,7 +13,6 @@ const SignIn = () => {
   const [loading, setLoading] = useState(false); // Added loading state
   const navigate = useNavigate();
 
-  // Handle form input changes
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -19,7 +20,6 @@ const SignIn = () => {
     });
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null); // Reset error state on form submit
@@ -30,31 +30,29 @@ const SignIn = () => {
         email: formData.email,
         password: formData.password,
       });
-
-      // Log full response for debugging
+  
+      // Log the full response for debugging
       console.log("Full response:", response);
+  
+      const { result_code, result } = response; // Access response.result_code and response.result
+  
+      if (result_code === 0 && result.title === 'SUCCESS') {
+        // Optionally store any token or user data in localStorage or state
+        // localStorage.setItem('token', result.data.token); // Uncomment if token is available in the result.data
+        localStorage.setItem('accessToken', result.data.accessToken);
+        localStorage.setItem('refreshToken', result.data.refreshToken);
 
-      // Destructure response
-      const { result_code, result } = response.data; // Assuming result_code and result are inside response.data
-
-      // Check if the login was successful
-      if (result_code === 0 && result.title === "SUCCESS") {
-        // Store tokens in localStorage
-        localStorage.setItem("accessToken", result.data.accessToken);
-        localStorage.setItem("refreshToken", result.data.refreshToken);
-
-        // Redirect to the dashboard or home page upon successful login
-        navigate("/dashboard"); // Updated to redirect to /dashboard
+        setError(null); // Clear any error messages
+        navigate("/RoomList"); // Redirect after successful login
       } else {
         // If login fails, display the error message
         setError(result.message || "Login failed. Please try again.");
       }
     } catch (err) {
-      console.error("Error during login:", err.response);
-
-      // Show error from backend or fallback message
-      if (err.response && err.response.data && err.response.data.result && err.response.data.result.message) {
-        setError(err.response.data.result.message); // Adjusted to match your response structure
+      console.error("Error during login:", err.response); // Log the response error
+      
+      if (err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message); // Show error from backend
       } else {
         setError("An error occurred during login. Please try again.");
       }
@@ -125,6 +123,14 @@ const SignIn = () => {
             {loading ? "Signing In..." : "Sign In"} {/* Button text changes based on loading state */}
           </button>
         </form>
+
+        <div className="mt-4">
+          <button className="w-full flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+            <FontAwesomeIcon icon={faGoogle} className="w-5 h-5 mr-2" />
+            Sign in with Google
+          </button>
+        </div>
+
         <div className="mt-6">
           <div className="relative flex justify-center text-sm">
             <p className="text-center text-sm text-gray-500">
