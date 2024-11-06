@@ -96,7 +96,7 @@ const Hero = () => {
             className={`image-container ${link.className}`}
           >
             <div className="overlay">
-              <span className="overlay-text">RESERVE YOUR</span>
+              <span className="overlay-text">RESERVE YOUR SPOT</span>
             </div>
           </Link>
         ))}
