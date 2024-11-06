@@ -164,3 +164,15 @@ export const eventColorAsResponse = (type) => {
   }
   return 'default';
 };
+export const eventTypeAsColor = (type) => {
+  if (type === 'conference') {
+    return '#3498db'; // Example color for conference
+  }
+  if (type === 'meeting') {
+    return '#2ecc71'; // Example color for meeting
+  }
+  if (type === 'workshop') {
+    return '#e67e22'; // Example color for workshop
+  }
+  return 'default'; // Default color for unrecognized types
+};

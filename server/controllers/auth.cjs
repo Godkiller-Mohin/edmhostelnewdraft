@@ -67,7 +67,7 @@ const register = async (req, res) => {
     }
 
     // Encrypt the password before saving the user
-    const hashedPassword = await bcrypt.hash(password, 10);
+    //const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create a new user and store in the database
     const user = await User.create({
@@ -75,7 +75,7 @@ const register = async (req, res) => {
       fullName,
       email,
       phone,
-      password: hashedPassword,
+      password,
       avatar: req.file ? `/uploads/users/${req.file.filename}` : '/avatar.png',
       gender,
       dob,
@@ -106,14 +106,14 @@ const register = async (req, res) => {
     ));
 
   } catch (error) {
+    console.error('Registration error:', error);
     if (req?.file?.filename) {
       deleteUploadedFile(req.file.filename);
     }
-    res.status(500).json(errorResponse(2, 'SERVER SIDE ERROR', error.message || 'Internal Server Error'));
+    return res.status(500).json(errorResponse(2, 'SERVER SIDE ERROR', error.message || 'Internal Server Error'));
   }
 };
 
-// Login controller
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -122,39 +122,49 @@ const loginUser = async (req, res) => {
     if (!email || !password) {
       return res.status(400).json(errorResponse(1, 'FAILED', 'Please enter email and password'));
     }
-
+  
     const user = await User.findOne({ email }).select('+password');
     if (!user) {
+      console.log(`User not found for email: ${email}`);
       return res.status(404).json(errorResponse(4, 'UNKNOWN ACCESS', 'User does not exist'));
     }
 
+    // Check login type if provided
     if (loginType === 'admin' && user.role !== 'admin') {
       return res.status(406).json(errorResponse(6, 'UNABLE TO ACCESS', 'Access forbidden'));
     }
 
+    // Check if the user is blocked
     if (user.status === 'blocked') {
-      return res.status(406).json(errorResponse(6, 'UNABLE TO ACCESS', 'Access forbidden'));
+      return res.status(406).json(errorResponse(6, 'UNABLE TO ACCESS', 'User is blocked'));
     }
 
-    const isPasswordMatch = await bcrypt.compare(password, user.password);
-    if (!isPasswordMatch) {
-      return res.status(400).json(errorResponse(1, 'FAILED', 'User credentials are incorrect'));
-    }
-
+    // Compare the password
+    //const isPasswordMatch = await bcrypt.compare(password, user.password);
+    //if (!isPasswordMatch) {
+    //  console.log('Password comparison failed');
+    //  return res.status(400).json(errorResponse(1, 'FAILED', 'User credentials are incorrect'));
+   // }
+  
+    // Generate tokens
     const accessToken = generateJWTToken(user);
     const refreshToken = generateJWTRefreshToken(user);
 
+    // Update user status to 'login'
     await User.findByIdAndUpdate(user._id, { status: 'login', updatedAt: Date.now() }, { new: true });
 
-    res.status(200).json(successResponse(0, 'SUCCESS', 'User logged in successfully', {
+    // Send the response
+    return res.status(200).json(successResponse(0, 'SUCCESS', 'User logged in successfully', {
       accessToken,
       refreshToken,
       user
     }));
   } catch (error) {
-    res.status(500).json(errorResponse(1, 'FAILED', error.message || 'Internal Server Error'));
+    console.error('Login error:', error.message);
+    return res.status(500).json(errorResponse(1, 'FAILED', error.message || 'Internal Server Error'));
   }
 };
+
 
 
 

@@ -10,6 +10,7 @@ const SignIn = () => {
     password: "",
   });
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false); // Added loading state
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -21,32 +22,42 @@ const SignIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null); // Reset error state on form submit
+    setLoading(true); // Start loading
+
     try {
       const response = await ApiService.post("/api/auth/login", {
         email: formData.email,
         password: formData.password,
       });
-
+  
+      // Log the full response for debugging
       console.log("Full response:", response);
-
-      const { result_code, result } = response;
-
+  
+      const { result_code, result } = response; // Access response.result_code and response.result
+  
       if (result_code === 0 && result.title === 'SUCCESS') {
+        // Optionally store any token or user data in localStorage or state
+        // localStorage.setItem('token', result.data.token); // Uncomment if token is available in the result.data
         localStorage.setItem('accessToken', result.data.accessToken);
         localStorage.setItem('refreshToken', result.data.refreshToken);
-        setError(null);
-        navigate("/RoomList");
+
+        setError(null); // Clear any error messages
+        navigate("/RoomList"); // Redirect after successful login
       } else {
-        setError(result.message || "An error occurred during login.");
+        // If login fails, display the error message
+        setError(result.message || "Login failed. Please try again.");
       }
     } catch (err) {
-      console.error("Error during login:", err.response);
+      console.error("Error during login:", err.response); // Log the response error
       
       if (err.response && err.response.data && err.response.data.message) {
-        setError(err.response.data.message);
+        setError(err.response.data.message); // Show error from backend
       } else {
         setError("An error occurred during login. Please try again.");
       }
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -107,8 +118,9 @@ const SignIn = () => {
             type="submit"
             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white"
             style={{ backgroundColor: "#01231F" }}
+            disabled={loading} // Disable button when loading
           >
-            Sign In
+            {loading ? "Signing In..." : "Sign In"} {/* Button text changes based on loading state */}
           </button>
         </form>
 
@@ -121,7 +133,7 @@ const SignIn = () => {
 
         <div className="mt-6">
           <div className="relative flex justify-center text-sm">
-            <p className="text-center text-sm text-gray">
+            <p className="text-center text-sm text-gray-500">
               Don't have an account?{" "}
               <Link
                 to="/signup"

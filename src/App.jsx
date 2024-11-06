@@ -23,6 +23,7 @@ import EventLists from "./pages/eventlist";
 import "./App.css";
 import AnimatedCursor from "react-animated-cursor";
 import BlogSelector from "./components/blog";
+
 function App() {
   const containerRef = useRef(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -64,7 +65,6 @@ function App() {
               element={
                 <>
                   <Hero />
-                  {/* <EventSelector /> */}
                   <AccommodationSelector />
                   <Testimonials />
                 </>
