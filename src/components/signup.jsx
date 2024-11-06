@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
-import ApiService from "../api/apiService";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons"; // Import FontAwesome Google Icon
 
-const SignIn = () => {
+const SignUp = () => {
   const [formData, setFormData] = useState({
+    fullName: "",
     email: "",
+    phone: "",
     password: "",
     dob: "",
     address: "",
@@ -39,7 +40,7 @@ const SignIn = () => {
         setError(null);
         navigate("/RoomList");
       } else {
-        setError(result.message || "An error occurred during login.");
+        setError(result.message || "An error occurred during registration.");
       }
     } catch (err) {
       console.error("Error during registration:", err.response); // Log for debugging
@@ -47,7 +48,7 @@ const SignIn = () => {
       if (err.response && err.response.data && err.response.data.message) {
         setError(err.response.data.message);
       } else {
-        setError("An error occurred during login. Please try again.");
+        setError("An error occurred during registration. Please try again.");
       }
     }
   };
@@ -69,21 +70,9 @@ const SignIn = () => {
           </svg>
         </div>
         <h2 className="text-2xl font-bold text-center mb-6">
-          Sign in to your account
+          Sign up for an account
         </h2>
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label htmlFor="userName" className="block text-sm font-medium text-gray-700">Username</label>
-            <input
-              type="text"
-              id="userName"
-              value={formData.userName}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-              required
-            />
-          </div>
-
           {/* Full Name */}
           <div className="mb-4">
             <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">Full Name</label>
@@ -105,10 +94,12 @@ const SignIn = () => {
               id="email"
               value={formData.email}
               onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
               required
             />
           </div>
+
+          {/* Phone */}
           <div className="mb-4">
             <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone</label>
             <input
@@ -128,19 +119,6 @@ const SignIn = () => {
               type="password"
               id="password"
               value={formData.password}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-              required
-            />
-          </div>
-
-          {/* Date of Birth */}
-          <div className="mb-4">
-            <label htmlFor="dob" className="block text-sm font-medium text-gray-700">Date of Birth</label>
-            <input
-              type="date"
-              id="dob"
-              value={formData.dob}
               onChange={handleChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
               required
@@ -176,25 +154,40 @@ const SignIn = () => {
             </select>
           </div>
 
-    
-
-          {/* Error & Success Messages */}
+          {/* Error Messages */}
           {error && <p className="text-red-500 mb-4">{error}</p>}
+
           <button
             type="submit"
             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white"
             style={{ backgroundColor: "#01231F" }}
           >
-            Sign In
+            Sign Up
           </button>
         </form>
 
-        <p className="mt-4 text-center text-sm">
-          Already have an account? <Link to="/login" className="text-indigo-500">Log in</Link>
+        {/* Google Sign-Up Button */}
+        <div className="mt-4">
+          <button className="w-full flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+            {/* Google Icon with Font Awesome */}
+            <FontAwesomeIcon icon={faGoogle} className="w-5 h-5 mr-2" />
+            Sign up with Google
+          </button>
+        </div>
+
+        <p className="mt-8 text-center text-sm text-gray">
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            className="font-medium"
+            style={{ color: "#01231F" }}
+          >
+            Sign in
+          </Link>
         </p>
       </div>
     </div>
   );
 };
 
-export default SignIn;
+export default SignUp;
