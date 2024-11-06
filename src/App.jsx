@@ -64,9 +64,8 @@ function App() {
                   <Hero />
                   <AccommodationSelector />
                   <RestaurantAndBarGallery />
-
-                  <Testimonials />
                   <BlogSelector />
+                  <Testimonials />
                 </>
               }
             />

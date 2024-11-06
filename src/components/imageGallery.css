@@ -18,3 +18,41 @@
   background-position: center;
   border-radius: 8px;
 }
+
+.button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.view-more-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: transparent;
+  border: 2px solid white;
+  border-radius: 50px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.view-more-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.view-more-btn:hover {
+  background-color: white;
+  color: black;
+  transform: translateY(-2px);
+}
+
+.view-more-btn:hover svg {
+  transform: translateX(5px);
+}

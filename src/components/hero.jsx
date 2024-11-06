@@ -97,9 +97,7 @@ const Hero = () => {
             className={`image-container ${link.className}`}
           >
             <div className="overlay">
-              <span className="overlay-text">
-                {link.path.replace("/", "").replace("-", " ").toUpperCase()}
-              </span>
+              <span className="overlay-text">RESERVE YOUR SPOT</span>
             </div>
           </Link>
         ))}

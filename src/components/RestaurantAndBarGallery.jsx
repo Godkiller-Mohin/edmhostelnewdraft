@@ -1,7 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import "./imageGallery.css";
-
 import image1 from "../assets/image1.jpg";
 import image2 from "../assets/image1.jpg";
 import image3 from "../assets/image1.jpg";
@@ -14,6 +13,39 @@ import image8 from "../assets/image1.jpg";
 const RestaurantAndBarGallery = () => {
   const imageContainerRef = useRef(null);
   const backgroundTextRef = useRef(null);
+  const sectionRef = useRef(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const section = sectionRef.current;
+
+      if (section) {
+        const rect = section.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        const elementHeight = rect.height;
+
+        let progress =
+          (viewportHeight - rect.top) / (viewportHeight + elementHeight);
+        progress = Math.min(Math.max(progress, 0), 1);
+
+        setScrollProgress(progress);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const backgroundText = backgroundTextRef.current;
+    if (backgroundText) {
+      const xPosition = (scrollProgress - 0.5) * 200;
+      backgroundText.style.transform = `translate(-50%, -50%) translateX(${xPosition}%)`;
+    }
+  }, [scrollProgress]);
 
   useEffect(() => {
     const imageElements = Array.from(imageContainerRef.current.children);
@@ -30,12 +62,15 @@ const RestaurantAndBarGallery = () => {
       loop.kill();
     };
   }, []);
-
+  const handleViewMore = () => {
+    // Add your view more functionality here
+    console.log("View More clicked");
+  };
   return (
-    <div className="wrapper">
+    <div className="gallery-wrapper" ref={sectionRef}>
       <div className="heading-container">
         <h2 className="background-text" ref={backgroundTextRef}>
-          RESTAURANT & BAR
+          GALLERY
         </h2>
         <h2 className="main-heading">IMAGE GALLERY</h2>
       </div>
@@ -49,11 +84,29 @@ const RestaurantAndBarGallery = () => {
         <div className="image" style={{ backgroundImage: `url(${image7})` }} />
         <div className="image" style={{ backgroundImage: `url(${image8})` }} />
       </div>
+      <div className="button-container">
+        <button className="view-more-btn" onClick={handleViewMore}>
+          <span>View More</span>
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M5 12H19M19 12L12 5M19 12L12 19"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
   );
 };
-
-export default RestaurantAndBarGallery;
 
 function horizontalLoop(items, config) {
   items = gsap.utils.toArray(items);
@@ -142,3 +195,5 @@ function horizontalLoop(items, config) {
   }
   return tl;
 }
+
+export default RestaurantAndBarGallery;

@@ -110,6 +110,7 @@ body {
 }
 
 .image1 {
+  display: inline-block;
   width: 25%;
   height: 30%;
   top: 10%;
@@ -118,25 +119,28 @@ body {
 }
 
 .image2 {
+  display: inline-block;
   width: 25%;
   height: 30%;
   top: 10%;
-  left: 60%;
+  left: 35%;
   background-image: url("../assets/image2.jpg");
 }
 
 .image3 {
+  display: inline-block;
   width: 25%;
   height: 30%;
   top: 50%;
-  right: 15%;
+  right: -10%;
   background-image: url("../assets/image3.jpg");
 }
 
 .image4 {
+  display: inline-block;
   width: 30%;
   height: 25%;
-  bottom: 20%;
+  bottom: -20%;
   left: 20%;
   background-image: url("../assets/image4.jpg");
 }
