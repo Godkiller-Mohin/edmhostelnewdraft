@@ -5,8 +5,10 @@ import "./hero.css";
 const Hero = () => {
   const videoRef = useRef(null);
   const videoSectionRef = useRef(null);
+  const welcomeOverlayRef = useRef(null);
 
   useEffect(() => {
+    // IntersectionObserver for video play/pause logic
     const options = {
       root: null,
       rootMargin: "0px",
@@ -37,7 +39,9 @@ const Hero = () => {
   }, []);
 
   useEffect(() => {
+    // Welcome animation
     const welcomeOverlay = document.createElement("div");
+    welcomeOverlayRef.current = welcomeOverlay;
     welcomeOverlay.classList.add("welcome-overlay");
     const welcomeText = document.createElement("div");
     welcomeText.classList.add("welcome-text");
@@ -46,10 +50,18 @@ const Hero = () => {
     document.body.appendChild(welcomeOverlay);
 
     const timer = setTimeout(() => {
-      welcomeOverlay.remove();
+      welcomeOverlay.classList.add("fade-out");
+      setTimeout(() => {
+        welcomeOverlay.remove();
+      }, 500);
     }, 5000);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      if (welcomeOverlayRef.current) {
+        welcomeOverlayRef.current.remove();
+      }
+    };
   }, []);
 
   const imageLinks = [
