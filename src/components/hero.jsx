@@ -83,7 +83,7 @@ const Hero = () => {
           <span>PARTY HOSTEL</span>
         </div>
       </section>
-      <section className="hero">
+      <section className="hero" id="events">
         <div className="hero-content">
           <h1 className="hero-title">
             <span>EVENTS</span>
