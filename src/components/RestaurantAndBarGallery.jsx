@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
+import { useNavigate } from "react-router-dom";
 import "./imageGallery.css";
 import image1 from "../assets/image1.jpg";
 import image2 from "../assets/image1.jpg";
@@ -15,6 +16,7 @@ const RestaurantAndBarGallery = () => {
   const backgroundTextRef = useRef(null);
   const sectionRef = useRef(null);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -62,10 +64,11 @@ const RestaurantAndBarGallery = () => {
       loop.kill();
     };
   }, []);
+
   const handleViewMore = () => {
-    // Add your view more functionality here
-    console.log("View More clicked");
+    navigate("/restaurant-and-bar");
   };
+
   return (
     <div className="gallery-wrapper" ref={sectionRef} id="restrobar">
       <div className="heading-container">
