@@ -1,14 +1,16 @@
 .accommodation-selector {
   background-color: #01231f;
   color: white;
-  padding: 2rem;
+  padding: clamp(1rem, 4vw, 2rem);
   text-align: center;
   overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .heading-container {
   position: relative;
-  margin: 100px 0;
+  margin: clamp(50px, 10vw, 100px) 0;
   height: auto;
 }
 
@@ -18,7 +20,6 @@
   left: 50%;
   width: 100%;
   transform: translate(-50%, -50%);
-  font-size: 150px;
   opacity: 0.1;
   margin: 0;
   z-index: 1;
@@ -28,28 +29,37 @@
 
 .main-heading {
   position: relative;
-  font-size: 40px;
+  font-size: clamp(24px, 5vw, 40px);
   margin: 0;
   z-index: 2;
-  padding: 20px 0;
+  padding: clamp(10px, 2vw, 20px) 0;
 }
 
 .accommodation-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  margin-top: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: clamp(0.5rem, 2vw, 1rem);
+  margin-top: clamp(1rem, 4vw, 2rem);
+  width: 100%;
 }
 
 .accommodation-card {
   position: relative;
   cursor: pointer;
   overflow: hidden;
+  aspect-ratio: 4/3;
+}
+
+.image-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .accommodation-card img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   transition: transform 0.3s ease;
 }
 
@@ -62,15 +72,37 @@
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 1rem;
+  padding: clamp(0.5rem, 2vw, 1rem);
   background: rgba(0, 0, 0, 0.7);
 }
 
 .subtitle {
-  font-size: 0.8rem;
+  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
   margin-bottom: 0.5rem;
 }
 
 h3 {
   margin: 0;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+}
+
+/* Media Queries for specific adjustments */
+@media screen and (max-width: 768px) {
+  .accommodation-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+  }
+
+  .accommodation-card {
+    aspect-ratio: 3/2;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .accommodation-card {
+    aspect-ratio: 16/9;
+  }
+
+  .accommodation-info {
+    padding: 0.5rem;
+  }
 }

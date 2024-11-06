@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import "./accommodationSelector.css";
+import React, { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import './accommodationSelector.css';
 
 const AccommodationSelector = () => {
   const backgroundTextRef = useRef(null);
@@ -17,18 +17,17 @@ const AccommodationSelector = () => {
         const elementHeight = rect.height;
 
         // Calculate scroll progress
-        let progress =
-          (viewportHeight - rect.top) / (viewportHeight + elementHeight);
+        let progress = (viewportHeight - rect.top) / (viewportHeight + elementHeight);
         progress = Math.min(Math.max(progress, 0), 1);
 
         setScrollProgress(progress);
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
     handleScroll(); // Initial check
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
@@ -36,27 +35,32 @@ const AccommodationSelector = () => {
     if (backgroundText) {
       const xPosition = (scrollProgress - 0.5) * 200; // Adjust multiplier for speed
       backgroundText.style.transform = `translate(-50%, -50%) translateX(${xPosition}%)`;
+
+      // Adjust font size based on viewport width
+      const viewportWidth = window.innerWidth;
+      const fontSize = Math.min(150, viewportWidth * 0.2); // 20% of viewport width, max 150px
+      backgroundText.style.fontSize = `${fontSize}px`;
     }
   }, [scrollProgress]);
 
   const accommodations = [
     {
       id: 1,
-      name: "PRIVATE ROOM",
-      image: "/images/private-room.jpeg",
-      subtitle: "COMFORT AND PRIVACY",
+      name: 'PRIVATE ROOM',
+      image: '/images/private-room.jpeg',
+      subtitle: 'COMFORT AND PRIVACY',
     },
     {
       id: 2,
-      name: "FEMALE DORMITORY",
-      image: "/images/female-dorm.jpeg",
-      subtitle: "LADIES ONLY",
+      name: 'FEMALE DORMITORY',
+      image: '/images/female-dorm.jpeg',
+      subtitle: 'LADIES ONLY',
     },
     {
       id: 3,
-      name: "MIXED DORMITORY",
-      image: "/images/mixed-dorm.jpeg",
-      subtitle: "SOCIAL AND AFFORDABLE",
+      name: 'MIXED DORMITORY',
+      image: '/images/mixed-dorm.jpeg',
+      subtitle: 'SOCIAL AND AFFORDABLE',
     },
   ];
 
@@ -72,7 +76,9 @@ const AccommodationSelector = () => {
         {accommodations.map((accommodation) => (
           <div key={accommodation.id} className="accommodation-card">
             <Link to={`/stays`}>
-              <img src={accommodation.image} alt={accommodation.name} />
+              <div className="image-container">
+                <img src={accommodation.image} alt={accommodation.name} />
+              </div>
               <div className="accommodation-info">
                 <p className="subtitle">{accommodation.subtitle}</p>
                 <h3>{accommodation.name}</h3>

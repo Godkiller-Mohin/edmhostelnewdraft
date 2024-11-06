@@ -64,7 +64,6 @@ function App() {
               element={
                 <>
                   <Hero />
-                  <EventSelector />
                   <AccommodationSelector />
                   <Testimonials />
                 </>
