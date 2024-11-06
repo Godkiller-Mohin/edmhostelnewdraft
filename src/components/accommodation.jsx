@@ -66,7 +66,7 @@ const AccommodationSelector = () => {
   ];
 
   return (
-    <div className="accommodation-selector" ref={sectionRef}>
+    <div className="accommodation-selector" ref={sectionRef} id="stay">
       <div className="heading-container">
         <h2 className="background-text" ref={backgroundTextRef}>
           STAYS

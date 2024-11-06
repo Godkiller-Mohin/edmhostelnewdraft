@@ -70,7 +70,7 @@ const BlogSelector = () => {
   ];
 
   return (
-    <div className="blog-selector" ref={sectionRef}>
+    <div className="blog-selector" ref={sectionRef} id="blogs">
       <div className="heading-container">
         <h2 className="background-text" ref={backgroundTextRef}>
           BLOGS

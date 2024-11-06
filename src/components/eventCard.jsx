@@ -64,7 +64,7 @@ const EventSelector = () => {
   }, [scrollProgress]);
 
   return (
-    <div className="event-selector" ref={sectionRef}>
+    <div className="event-selector" ref={sectionRef} id="events">
       <div className="heading-container">
         <h2 className="background-text" ref={backgroundTextRef}>
           EVENTS
@@ -81,7 +81,9 @@ const EventSelector = () => {
         ) : (
           events.map((event) => {
             // Extract the image URL (splitting on '||' if necessary)
-            const eventImage = event.event_images?.[0]?.url.split("||")[0].trim();
+            const eventImage = event.event_images?.[0]?.url
+              .split("||")[0]
+              .trim();
 
             return (
               <div key={event.id} className="event-card">

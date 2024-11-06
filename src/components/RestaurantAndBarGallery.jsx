@@ -67,7 +67,7 @@ const RestaurantAndBarGallery = () => {
     console.log("View More clicked");
   };
   return (
-    <div className="gallery-wrapper" ref={sectionRef}>
+    <div className="gallery-wrapper" ref={sectionRef} id="restrobar">
       <div className="heading-container">
         <h2 className="background-text" ref={backgroundTextRef}>
           GALLERY

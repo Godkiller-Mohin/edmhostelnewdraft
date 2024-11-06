@@ -1,11 +1,11 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { MapPin, Phone, Mail } from 'lucide-react';
+import React from "react";
+import { Link } from "react-router-dom";
+import { MapPin, Phone, Mail } from "lucide-react";
 
 const Footer = () => {
   // Note: Uncomment and add API key when ready to implement weather
   // const [weather, setWeather] = useState(null);
-  
+
   // useEffect(() => {
   //   const fetchWeather = async () => {
   //     try {
@@ -22,7 +22,7 @@ const Footer = () => {
   // }, []);
 
   return (
-    <footer className="bg-[#01231f] text-white py-12 font-sans">
+    <footer className="bg-[#01231f] text-white py-12 font-sans" id="contact">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* About Section */}
@@ -44,7 +44,9 @@ const Footer = () => {
             <ul className="space-y-6 text-sm">
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 mt-1 flex-shrink-0" />
-                <span>EDM Hostel, Upper Dharamkot, Dharamshala, HP. 176219</span>
+                <span>
+                  EDM Hostel, Upper Dharamkot, Dharamshala, HP. 176219
+                </span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-5 h-5 flex-shrink-0" />
@@ -84,21 +86,23 @@ const Footer = () => {
         <div className="mt-12 pt-8 border-t border-gray-200/10">
           {/* Social Icons */}
           <div className="flex justify-center space-x-6 mb-6">
-            {['facebook', 'instagram', 'linkedin', 'twitter'].map((platform) => (
-              <a
-                key={platform}
-                href={`https://www.${platform}.com/yourpage`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:opacity-80 transition-opacity"
-              >
-                <img
-                  src={`/images/${platform}-icon.png`}
-                  alt={platform}
-                  className="w-6 h-6"
-                />
-              </a>
-            ))}
+            {["facebook", "instagram", "linkedin", "twitter"].map(
+              (platform) => (
+                <a
+                  key={platform}
+                  href={`https://www.${platform}.com/yourpage`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:opacity-80 transition-opacity"
+                >
+                  <img
+                    src={`/images/${platform}-icon.png`}
+                    alt={platform}
+                    className="w-6 h-6"
+                  />
+                </a>
+              )
+            )}
           </div>
 
           {/* Copyright */}
@@ -111,27 +115,27 @@ const Footer = () => {
             </Link>
             <div className="flex items-center">
               <span className="mr-2">WEBSITE BY</span>
-              <a 
-                href="https://www.linkedin.com/in/mohin-profile" 
-                target="_blank" 
+              <a
+                href="https://www.linkedin.com/in/mohin-profile"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="hover:underline mx-1"
               >
                 Mohin
               </a>
               <span className="mx-1">•</span>
-              <a 
-                href="https://www.linkedin.com/in/anant-profile" 
-                target="_blank" 
+              <a
+                href="https://www.linkedin.com/in/anant-profile"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="hover:underline mx-1"
               >
                 Anant
               </a>
               <span className="mx-1">•</span>
-              <a 
-                href="https://www.linkedin.com/in/suryansh-profile" 
-                target="_blank" 
+              <a
+                href="https://www.linkedin.com/in/suryansh-profile"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="hover:underline mx-1"
               >
