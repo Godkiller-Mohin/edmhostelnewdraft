@@ -22,7 +22,7 @@ import EventLists from "./pages/eventlist";
 import "./App.css";
 import AnimatedCursor from "react-animated-cursor";
 import BlogSelector from "./components/blog";
-
+import RestaurantAndBarGallery from "./components/RestaurantAndBarGallery";
 function App() {
   const containerRef = useRef(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -55,7 +55,6 @@ function App() {
           }}
         />
         <Navbar isLoggedIn={isLoggedIn} />
-        {/* <VerticalSocialBar /> */}
         <main data-scroll-section>
           <Routes>
             <Route
@@ -64,6 +63,8 @@ function App() {
                 <>
                   <Hero />
                   <AccommodationSelector />
+                  <RestaurantAndBarGallery />
+
                   <Testimonials />
                   <BlogSelector />
                 </>

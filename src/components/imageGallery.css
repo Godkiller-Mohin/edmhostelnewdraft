@@ -1,0 +1,20 @@
+.wrapper {
+  position: relative;
+  overflow: hidden;
+  padding: 4rem 2rem;
+}
+
+.imageContainer {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  width: max-content;
+}
+
+.image {
+  width: 300px;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+}
