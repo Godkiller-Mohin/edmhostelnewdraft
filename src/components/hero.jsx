@@ -7,7 +7,6 @@ const Hero = () => {
   const videoSectionRef = useRef(null);
 
   useEffect(() => {
-    // IntersectionObserver for video play/pause logic
     const options = {
       root: null,
       rootMargin: "0px",
@@ -35,6 +34,22 @@ const Hero = () => {
         observer.unobserve(videoSectionRef.current);
       }
     };
+  }, []);
+
+  useEffect(() => {
+    const welcomeOverlay = document.createElement("div");
+    welcomeOverlay.classList.add("welcome-overlay");
+    const welcomeText = document.createElement("div");
+    welcomeText.classList.add("welcome-text");
+    welcomeText.textContent = "WELCOME TO EDM HOSTEL";
+    welcomeOverlay.appendChild(welcomeText);
+    document.body.appendChild(welcomeOverlay);
+
+    const timer = setTimeout(() => {
+      welcomeOverlay.remove();
+    }, 5000);
+
+    return () => clearTimeout(timer);
   }, []);
 
   const imageLinks = [
