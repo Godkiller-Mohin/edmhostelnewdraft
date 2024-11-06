@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 function Navigation() {
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isAtTop, setIsAtTop] = useState(true);
@@ -32,8 +34,8 @@ function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const handleLogoClick = () => {
+    navigate('/');
   };
 
   const menuItems = [
@@ -82,7 +84,7 @@ function Navigation() {
                   initial={{ opacity: 0, x: -50 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  onClick={scrollToTop}
+                  onClick={handleLogoClick}
                 >
                   <img src="/images/logo.png" alt="EDM Logo" className="h-32 w-auto object-contain" />
                 </motion.div>
@@ -134,7 +136,13 @@ function Navigation() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="flex flex-col items-center justify-center min-h-screen py-20 px-4 space-y-6">
+            <div className="flex flex-col items-center justify-center min-h-screen py-20 px-4 space-y-6 relative">
+              <button
+                onClick={() => setIsMenuOpen(false)}
+                className="absolute top-4 right-4 text-white"
+              >
+                <X size={24} />
+              </button>
               {menuItems.map(({ label, href }) => (
                 <motion.a
                   key={label}
