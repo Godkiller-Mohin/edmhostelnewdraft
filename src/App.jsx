@@ -22,7 +22,7 @@ import EventDetails from "./pages/eventdetails";
 import EventLists from "./pages/eventlist";
 import "./App.css";
 import AnimatedCursor from "react-animated-cursor";
-
+import BlogSelector from "./components/blog";
 function App() {
   const containerRef = useRef(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -64,7 +64,7 @@ function App() {
               element={
                 <>
                   <Hero />
-                  <EventSelector />
+                  {/* <EventSelector /> */}
                   <AccommodationSelector />
                   <Testimonials />
                 </>
@@ -75,20 +75,15 @@ function App() {
             <Route path="/events" element={<Events />} />
             <Route path="/restaurant-and-bar" element={<RestaurantAndBar />} />
             <Route path="/stays" element={<Stays />} />
-            <Route
-              path="/RoomList"
-              element={<RoomList />}
-            />
-            <Route
-              path="/RoomDetail/:id"
-              element={<RoomDetail />}
-            />
-            <Route path="/book-room/:id" element={<RoomBooking />}/>
+            <Route path="/RoomList" element={<RoomList />} />
+            <Route path="/RoomDetail/:id" element={<RoomDetail />} />
+            <Route path="/book-room/:id" element={<RoomBooking />} />
             <Route path="/login" element={<SignIn onLogin={handleLogin} />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/event" element={<EventLists />} />
             <Route path="/events/:id" element={<EventDetails />} />
           </Routes>
+          <BlogSelector />
         </main>
         <Footer />
       </div>

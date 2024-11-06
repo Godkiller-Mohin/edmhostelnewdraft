@@ -38,10 +38,10 @@ const Hero = () => {
   }, []);
 
   const imageLinks = [
-    { path: "/introduction", className: "image1" },
+    { path: "/events", className: "image1" },
     { path: "/events", className: "image2" },
-    { path: "/restaurant-and-bar", className: "image3" },
-    { path: "/stays", className: "image4" },
+    { path: "/events", className: "image3" },
+    { path: "/events", className: "image4" },
   ];
 
   return (
@@ -60,7 +60,7 @@ const Hero = () => {
       <section className="hero">
         <div className="hero-content">
           <h1 className="hero-title">
-            <span>EXPLORE</span>
+            <span>EVENTS</span>
           </h1>
         </div>
         {imageLinks.map((link) => (
