@@ -51,12 +51,12 @@ const TestimonialSelector = () => {
   return (
     <section 
       ref={sectionRef}
-      className="relative min-h-screen bg-[#01231f] px-4 py-16 md:py-24 overflow-hidden"
+      className="relative py-16 md:py-24 overflow-hidden"
     >
-      {/* Background Text */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+      {/* Background Text (Hidden on Mobile) */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none hidden sm:flex">
         <h2 
-          className={`text-[4rem] sm:text-[5rem] md:text-[6rem] lg:text-[8rem] font-bold text-white/5 whitespace-nowrap transition-all duration-1000 transform
+          className={`text-7xl sm:text-8xl md:text-9xl font-bold text-white/5 whitespace-nowrap transition-all duration-1000 transform
             ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}
         >
           TESTIMONIALS
@@ -64,7 +64,7 @@ const TestimonialSelector = () => {
       </div>
 
       {/* Main Content Container */}
-      <div className="container mx-auto relative z-10 max-w-6xl">
+      <div className="container mx-auto relative z-10 px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
           <h3 
@@ -82,7 +82,7 @@ const TestimonialSelector = () => {
         </div>
 
         {/* Testimonials Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {testimonials.map((testimonial, index) => (
             <div
               key={testimonial.id}

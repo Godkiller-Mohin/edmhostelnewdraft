@@ -73,7 +73,7 @@ const BlogSelector = () => {
     <div className="blog-selector" ref={sectionRef}>
       <div className="heading-container">
         <h2 className="background-text" ref={backgroundTextRef}>
-          BLOG POSTS
+          BLOGS
         </h2>
         <h2 className="main-heading">LATEST ARTICLES</h2>
       </div>
