@@ -5,7 +5,6 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/hero";
 import VerticalSocialBar from "./components/verticalSocialBar";
 import Footer from "./components/footer";
-import EventSelector from "./components/eventCard";
 import EventDetail from "./components/eventDetail";
 import Testimonials from "./components/TestimonialCard";
 import AccommodationSelector from "./components/accommodation";
@@ -14,7 +13,7 @@ import Events from "./components/events";
 import RestaurantAndBar from "./components/RestaurantAndBar";
 import Stays from "./components/stays";
 import RoomDetail from "./pages/roomdetails";
-import RoomList from "./pages/roomlist"; // Import RoomList component
+import RoomList from "./pages/roomlist";
 import RoomBooking from "./pages/roombooking";
 import SignIn from "./components/login";
 import SignUp from "./components/signup";
@@ -37,7 +36,6 @@ function App() {
     <LocomotiveScrollProvider
       options={{
         smooth: true,
-        // You can add more options here as needed
       }}
       containerRef={containerRef}
     >
@@ -67,6 +65,7 @@ function App() {
                   <Hero />
                   <AccommodationSelector />
                   <Testimonials />
+                  <BlogSelector />
                 </>
               }
             />
@@ -83,7 +82,6 @@ function App() {
             <Route path="/event" element={<EventLists />} />
             <Route path="/events/:id" element={<EventDetails />} />
           </Routes>
-          <BlogSelector />
         </main>
         <Footer />
       </div>
