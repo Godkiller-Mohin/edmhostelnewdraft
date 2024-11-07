@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "./hero.css";
+
 const Hero = () => {
   const videoRef = useRef(null);
   const videoSectionRef = useRef(null);
   const welcomeOverlayRef = useRef(null);
 
   useEffect(() => {
-    // IntersectionObserver for video play/pause logic
     const options = {
       root: null,
       rootMargin: "0px",
@@ -38,7 +38,6 @@ const Hero = () => {
   }, []);
 
   useEffect(() => {
-    // Welcome animation
     const welcomeOverlay = document.createElement("div");
     welcomeOverlayRef.current = welcomeOverlay;
     welcomeOverlay.classList.add("welcome-overlay");
@@ -89,17 +88,19 @@ const Hero = () => {
             <span>EVENTS</span>
           </h1>
         </div>
-        {imageLinks.map((link) => (
-          <Link
-            key={link.path}
-            to={link.path}
-            className={`image-container ${link.className}`}
-          >
-            <div className="overlay">
-              <span className="overlay-text">RESERVE YOUR SPOT</span>
-            </div>
-          </Link>
-        ))}
+        <div className="events-grid">
+          {imageLinks.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              className={`image-container ${link.className}`}
+            >
+              <div className="overlay">
+                <span className="overlay-text">RESERVE YOUR SPOT</span>
+              </div>
+            </Link>
+          ))}
+        </div>
       </section>
     </div>
   );

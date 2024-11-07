@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 function Navigation() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isAtTop, setIsAtTop] = useState(true);
@@ -38,33 +39,50 @@ function Navigation() {
     navigate("/");
   };
 
-  // New smooth scroll handler
-  const handleSmoothScroll = (e, targetId) => {
+  const scrollToSection = (elementId) => {
+    const element = document.getElementById(elementId);
+    if (element) {
+      // Close menu first
+      setIsMenuOpen(false);
+
+      // Add a delay to ensure menu closing animation completes
+      setTimeout(() => {
+        // Get updated element position after menu closes
+        const headerOffset = window.innerWidth >= 1024 ? 128 : 80; // Adjust offset based on screen size
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth",
+        });
+      }, 300); // Increased delay to account for menu closing animation
+    }
+  };
+
+  const handleSmoothScroll = async (e, targetId) => {
     e.preventDefault();
 
-    // Don't scroll if it's the About Us link (it uses router navigation)
+    // Handle About Us page navigation
     if (targetId === "./introduction") {
+      setIsMenuOpen(false);
       navigate(targetId);
       return;
     }
 
-    // Remove the # from the targetId
     const elementId = targetId.replace("#", "");
-    const element = document.getElementById(elementId);
+    const isHomePage = location.pathname === "/";
 
-    if (element) {
-      // Close mobile menu if open
-      setIsMenuOpen(false);
-
-      const headerOffset = 128; // Height of your navbar (32px * 4 = 128px)
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition =
-        elementPosition + window.pageYOffset - headerOffset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
+    if (!isHomePage) {
+      // If not on home page, navigate to home first
+      await navigate("/");
+      // Wait for navigation and render to complete
+      setTimeout(() => {
+        scrollToSection(elementId);
+      }, 300);
+    } else {
+      // If already on home page, just scroll
+      scrollToSection(elementId);
     }
   };
 
@@ -108,7 +126,7 @@ function Navigation() {
             transition={{ duration: 0.3 }}
           >
             <div className="w-full px-4 md:px-6 lg:px-8">
-              <div className="max-w-[1440px] mx-auto flex items-center justify-between h-32">
+              <div className="max-w-[1440px] mx-auto flex items-center justify-between h-20 lg:h-32">
                 <motion.div
                   className="pointer-events-auto cursor-pointer"
                   initial={{ opacity: 0, x: -50 }}
@@ -119,7 +137,7 @@ function Navigation() {
                   <img
                     src="/images/logo.png"
                     alt="EDM Logo"
-                    className="h-32 w-auto object-contain"
+                    className="h-16 lg:h-32 w-auto object-contain"
                   />
                 </motion.div>
                 <motion.div
