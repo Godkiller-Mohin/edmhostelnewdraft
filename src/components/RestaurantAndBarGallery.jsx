@@ -73,9 +73,9 @@ const RestaurantAndBarGallery = () => {
     <div className="gallery-wrapper" ref={sectionRef} id="restrobar">
       <div className="heading-container">
         <h2 className="background-text" ref={backgroundTextRef}>
-          GALLERY
+          RESTROBAR
         </h2>
-        <h2 className="main-heading">IMAGE GALLERY</h2>
+        <h2 className="main-heading">GALLERY</h2>
       </div>
       <div className="imageContainer" ref={imageContainerRef}>
         <div className="image" style={{ backgroundImage: `url(${image1})` }} />
