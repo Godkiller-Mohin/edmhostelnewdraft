@@ -48,7 +48,7 @@ function Navigation() {
       // Add a delay to ensure menu closing animation completes
       setTimeout(() => {
         // Get updated element position after menu closes
-        const headerOffset = window.innerWidth >= 1024 ? 128 : 80; // Adjust offset based on screen size
+        const headerOffset = window.innerWidth >= 1024 ? 80 : 56; // Reduced offset
         const elementPosition = element.getBoundingClientRect().top;
         const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
@@ -125,10 +125,10 @@ function Navigation() {
             animate={{ y: isVisible ? 0 : "-100%" }}
             transition={{ duration: 0.3 }}
           >
-            <div className="w-full px-4 md:px-6 lg:px-8">
-              <div className="max-w-[1440px] mx-auto flex items-center justify-between h-20 lg:h-32">
+            <div className="w-full lg:px-6">
+              <div className="max-w-[1440px] mx-auto flex items-center justify-between h-28 lg:h-24">
                 <motion.div
-                  className="pointer-events-auto cursor-pointer"
+                  className="pointer-events-auto cursor-pointer ml-0 lg:ml-0 mt-8 mb-4"
                   initial={{ opacity: 0, x: -50 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
@@ -137,7 +137,7 @@ function Navigation() {
                   <img
                     src="/images/logo.png"
                     alt="EDM Logo"
-                    className="h-16 lg:h-32 w-auto object-contain"
+                    className="h-48 w-auto object-contain"
                   />
                 </motion.div>
                 <motion.div
@@ -146,13 +146,13 @@ function Navigation() {
                   initial="hidden"
                   animate="visible"
                 >
-                  <div className="flex items-center text-lg">
+                  <div className="flex items-center text-base mr-6">
                     {menuItems.map(({ label, href }) => (
                       <motion.a
                         key={label}
                         href={href}
                         onClick={(e) => handleSmoothScroll(e, href)}
-                        className="mr-8 text-white hover:text-[#c69947] transition-colors duration-200"
+                        className="mr-7 text-white hover:text-[#c69947] transition-colors duration-200"
                         variants={itemVariants}
                       >
                         {label}
@@ -161,15 +161,15 @@ function Navigation() {
                   </div>
                   <motion.button
                     variants={itemVariants}
-                    className="border-2 border-[#c69947] text-[#c69947] px-6 py-2 text-lg cursor-pointer hover:bg-white hover:text-black transition-colors duration-300"
+                    className="border-2 border-[#c69947] text-[#c69947] px-2 py-2 text-base cursor-pointer hover:bg-white hover:text-black transition-colors duration-300"
                   >
                     PLAN YOUR EXPERIENCE WITH US
                   </motion.button>
                 </motion.div>
-                <div className="lg:hidden flex items-center justify-end pointer-events-auto">
+                <div className="lg:hidden flex items-center justify-end pointer-events-auto mt-6 mb-4">
                   <button
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    className="text-white z-50"
+                    className="text-white mr-5 z-50"
                   >
                     {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
                   </button>
@@ -189,7 +189,7 @@ function Navigation() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="flex flex-col items-center justify-center min-h-screen py-20 px-4 space-y-6 relative">
+            <div className="flex flex-col items-center justify-center min-h-screen py-20 px-6 space-y-5 relative">
               <button
                 onClick={() => setIsMenuOpen(false)}
                 className="absolute top-4 right-4 text-white"
@@ -200,7 +200,7 @@ function Navigation() {
                 <motion.a
                   key={label}
                   href={href}
-                  className="text-xl text-white hover:text-[#c69947] transition-colors duration-200"
+                  className="text-lg text-white hover:text-[#c69947] transition-colors duration-200"
                   variants={itemVariants}
                   onClick={(e) => handleSmoothScroll(e, href)}
                 >
@@ -209,7 +209,7 @@ function Navigation() {
               ))}
               <motion.button
                 variants={itemVariants}
-                className="mt-8 border-2 border-[#c69947] text-[#c69947] px-8 py-3 text-lg hover:bg-[#c69947] hover:text-white transition-all duration-300"
+                className="border-2 border-[#c69947] text-[#c69947] px-6 py-2 text-lg hover:bg-[#c69947] hover:text-white transition-all duration-300"
                 onClick={() => setIsMenuOpen(false)}
               >
                 PLAN YOUR EXPERIENCE
