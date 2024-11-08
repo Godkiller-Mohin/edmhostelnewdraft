@@ -19,6 +19,7 @@ import SignIn from "./components/login";
 import SignUp from "./components/signup";
 import EventDetails from "./pages/eventdetails";
 import EventLists from "./pages/eventlist";
+import Test from "./components/test";
 import "./App.css";
 import AnimatedCursor from "react-animated-cursor";
 import BlogSelector from "./components/blog";
@@ -80,6 +81,7 @@ function App() {
             <Route path="/login" element={<SignIn onLogin={handleLogin} />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/event" element={<EventLists />} />
+            <Route path="/test" element={<Test />} />
             <Route path="/events/:id" element={<EventDetails />} />
           </Routes>
         </main>

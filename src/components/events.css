@@ -2,74 +2,162 @@ body {
   background-color: #01231f;
   font-family: Arial, sans-serif;
   margin: 0;
-  padding: 0;
+  padding-top: 80px; /* Add top padding to avoid overlapping with navbar */
 }
 
 .events-container {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px;
-  padding-top: 200px;
-  padding-left: 40px;
+  padding: 60px 40px; /* Increase top and bottom padding */
+}
+
+.events-heading {
+  text-align: center;
+  color: #fff;
+  font-size: 36px; /* Increase heading font size */
+  margin-bottom: 20px;
+}
+
+.events-subheading {
+  text-align: center;
+  color: #ccc;
+  font-size: 20px; /* Increase subheading font size */
+  margin-bottom: 60px;
 }
 
 .event-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  grid-gap: 20px;
-  width: 50%;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); /* Increase minimum width */
+  grid-gap: 40px;
+  margin-bottom: 40px;
 }
 
 .event-card {
-  background-color: white;
+  background-color: transparent; /* Remove white background */
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
-  /* max-width: 300px; */
-  margin: 20px auto;
+  height: 500px; /* Increase card height */
+  position: relative;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.event-front,
+.event-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  transition: transform 0.6s;
+}
+
+.event-front {
+  transform: rotateY(0deg);
+}
+
+.event-back {
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px; /* Increase padding */
+}
+
+.event-card.flipped .event-front {
+  transform: rotateY(-180deg);
+}
+
+.event-card.flipped .event-back {
+  transform: rotateY(0deg);
 }
 
 .event-image {
   width: 100%;
-  height: 200px;
+  height: 100%;
   object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.event-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.event-card:hover .event-image {
+  transform: scale(1.1);
+}
+
+.event-card:hover .event-overlay {
+  opacity: 1;
 }
 
 .event-details {
-  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 }
 
-.event-date {
+.event-name {
+  font-size: 28px; /* Increase event name font size */
+  font-weight: bold;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.event-info {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
-.event-date svg {
-  margin-right: 5px;
+.event-info svg {
+  margin-right: 8px;
   color: #333;
 }
 
-.event-date span {
-  font-size: 14px;
+.event-info span {
+  font-size: 16px; /* Increase event info font size */
   color: #333;
 }
 
-.event-price {
-  margin-bottom: 15px;
+.event-pricing {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .event-price span {
   display: block;
-  font-size: 12px;
+  font-size: 14px; /* Increase event price font size */
   color: #666;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
 }
 
 .event-price strong {
-  font-size: 18px;
+  font-size: 22px; /* Increase event price font size */
   color: #000;
+}
+
+.event-capacity {
+  display: flex;
+  align-items: center;
+  font-size: 16px; /* Increase event capacity font size */
+  color: #333;
+}
+
+.event-capacity svg {
+  margin-right: 8px;
 }
 
 .select-btn {
@@ -80,7 +168,6 @@ body {
   cursor: pointer;
   font-size: 16px;
   padding: 10px 20px;
-  width: 100%;
   transition: background-color 0.3s ease;
 }
 
@@ -92,14 +179,15 @@ body {
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  width: 30%;
-  height: 100%;
+  padding: 40px; /* Increase padding */
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .booking-component h2 {
   margin-top: 0;
-  font-size: 24px;
+  font-size: 28px; /* Increase heading font size */
   font-weight: bold;
 }
 
@@ -109,32 +197,33 @@ body {
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 30px; /* Increase margin */
 }
 
 .form-group label {
-  font-size: 14px;
+  font-size: 16px; /* Increase label font size */
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   display: block;
 }
 
 .form-group select {
   width: 100%;
-  padding: 10px;
+  padding: 12px; /* Increase select field padding */
   border: 1px solid #ccc;
   border-radius: 5px;
+  font-size: 16px; /* Increase select field font size */
 }
 
 .price-summary {
   border-top: 1px solid #ccc;
-  padding-top: 20px;
+  padding-top: 30px; /* Increase padding */
 }
 
 .price-summary .row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 15px; /* Increase margin */
 }
 
 .price-summary .row.total {
@@ -148,14 +237,98 @@ body {
   color: white;
   cursor: pointer;
   font-size: 16px;
-  padding: 10px;
+  padding: 12px; /* Increase button padding */
   width: 100%;
+  transition: background-color 0.3s ease;
 }
 
-.date-picker {
-  width: 100%;
+.book-now-btn:hover {
+  background-color: #023e37;
 }
 
-.date-picker .MuiTextField-root {
-  width: 100%;
+@media (max-width: 768px) {
+  .events-container {
+    padding: 40px 20px;
+  }
+
+  .events-heading {
+    font-size: 28px;
+  }
+
+  .events-subheading {
+    font-size: 16px;
+    margin-bottom: 40px;
+  }
+
+  .event-list {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-gap: 30px;
+  }
+
+  .event-card {
+    height: 400px;
+  }
+
+  .event-back {
+    padding: 30px;
+  }
+
+  .event-name {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+
+  .event-info,
+  .event-pricing {
+    margin-bottom: 15px;
+  }
+
+  .event-info span,
+  .event-price span,
+  .event-capacity {
+    font-size: 14px;
+  }
+
+  .event-price strong {
+    font-size: 18px;
+  }
+
+  .select-btn {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  .booking-component {
+    max-width: 100%;
+    padding: 30px;
+  }
+
+  .booking-component h2 {
+    font-size: 24px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    font-size: 14px;
+  }
+
+  .form-group select {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .price-summary {
+    padding-top: 20px;
+  }
+
+  .price-summary .row {
+    margin-bottom: 12px;
+  }
+
+  .book-now-btn {
+    padding: 10px;
+  }
 }
