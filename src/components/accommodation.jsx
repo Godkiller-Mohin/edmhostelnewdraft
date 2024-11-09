@@ -76,7 +76,7 @@ const AccommodationSelector = () => {
       <div className="accommodation-grid">
         {accommodations.map((accommodation) => (
           <div key={accommodation.id} className="accommodation-card">
-            <Link to={`/stays`}>
+            <Link to={`/teststay`}>
               <div className="image-container-accod">
                 <img src={accommodation.image} alt={accommodation.name} />
               </div>

@@ -10,6 +10,24 @@ function Navigation() {
   const [isVisible, setIsVisible] = useState(true);
   const [isAtTop, setIsAtTop] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [shouldRender, setShouldRender] = useState(false);
+
+  useEffect(() => {
+    // Check if welcome animation has already been played
+    const welcomePlayed = localStorage.getItem("welcomeAnimationPlayed");
+    
+    if (welcomePlayed) {
+      // If animation was already played, render navbar immediately
+      setShouldRender(true);
+    } else {
+      // If animation hasn't been played, wait for 5 seconds before rendering
+      const timer = setTimeout(() => {
+        setShouldRender(true);
+      }, 5000); // Match this with the welcome animation duration
+
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -42,13 +60,10 @@ function Navigation() {
   const scrollToSection = (elementId) => {
     const element = document.getElementById(elementId);
     if (element) {
-      // Close menu first
       setIsMenuOpen(false);
 
-      // Add a delay to ensure menu closing animation completes
       setTimeout(() => {
-        // Get updated element position after menu closes
-        const headerOffset = window.innerWidth >= 1024 ? 80 : 56; // Reduced offset
+        const headerOffset = window.innerWidth >= 1024 ? 80 : 56;
         const elementPosition = element.getBoundingClientRect().top;
         const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
@@ -56,14 +71,13 @@ function Navigation() {
           top: offsetPosition,
           behavior: "smooth",
         });
-      }, 300); // Increased delay to account for menu closing animation
+      }, 300);
     }
   };
 
   const handleSmoothScroll = async (e, targetId) => {
     e.preventDefault();
 
-    // Handle About Us page navigation
     if (targetId === "./introduction") {
       setIsMenuOpen(false);
       navigate(targetId);
@@ -74,14 +88,11 @@ function Navigation() {
     const isHomePage = location.pathname === "/";
 
     if (!isHomePage) {
-      // If not on home page, navigate to home first
       await navigate("/");
-      // Wait for navigation and render to complete
       setTimeout(() => {
         scrollToSection(elementId);
       }, 300);
     } else {
-      // If already on home page, just scroll
       scrollToSection(elementId);
     }
   };
@@ -113,6 +124,10 @@ function Navigation() {
     },
   };
 
+  if (!shouldRender) {
+    return null;
+  }
+
   return (
     <>
       <AnimatePresence>
@@ -121,9 +136,9 @@ function Navigation() {
             className={`fixed top-0 w-full z-50 transition-all duration-300 ${
               !isAtTop ? "bg-black/50 backdrop-blur-sm" : ""
             }`}
-            initial={{ y: 0 }}
-            animate={{ y: isVisible ? 0 : "-100%" }}
-            transition={{ duration: 0.3 }}
+            initial={{ y: -100, opacity: 0 }}
+            animate={{ y: isVisible ? 0 : "-100%", opacity: 1 }}
+            transition={{ duration: 0.5 }}
           >
             <div className="w-full lg:px-6">
               <div className="max-w-[1440px] mx-auto flex items-center justify-between h-28 lg:h-24">

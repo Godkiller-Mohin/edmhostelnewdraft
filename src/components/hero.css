@@ -82,7 +82,7 @@ body {
 .image-container {
   position: relative;
   width: 100%;
-  padding-bottom: 75%; /* 4:3 aspect ratio */
+  padding-bottom: 75%;
   background-size: cover;
   background-position: center;
   transition: transform 0.3s ease;
@@ -161,8 +161,7 @@ body {
   justify-content: center;
   align-items: center;
   z-index: 100;
-  opacity: 0;
-  animation: fadeOutAnimation 5s forwards;
+  opacity: 1;
 }
 
 .welcome-text {
@@ -216,7 +215,6 @@ body {
   }
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .events-grid {
     grid-template-columns: 1fr;
@@ -229,7 +227,7 @@ body {
   }
 
   .image-container {
-    padding-bottom: 100%; /* Square aspect ratio on mobile */
+    padding-bottom: 100%;
   }
 
   .hero-content {
