@@ -86,10 +86,10 @@ h3 {
   font-size: clamp(1rem, 2vw, 1.2rem);
 }
 
-/* Media Queries for specific adjustments */
 @media screen and (max-width: 768px) {
   .accommodation-grid {
     grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+    gap: 2rem;
   }
 
   .accommodation-card {
@@ -98,6 +98,10 @@ h3 {
 }
 
 @media screen and (max-width: 480px) {
+  .accommodation-grid {
+    gap: 2.5rem;
+  }
+  
   .accommodation-card {
     aspect-ratio: 16/9;
   }

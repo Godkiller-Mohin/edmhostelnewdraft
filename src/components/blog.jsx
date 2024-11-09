@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./blog.css";
+
 const BlogSelector = () => {
   const backgroundTextRef = useRef(null);
   const sectionRef = useRef(null);
@@ -14,8 +15,7 @@ const BlogSelector = () => {
         const viewportHeight = window.innerHeight;
         const elementHeight = rect.height;
 
-        let progress =
-          (viewportHeight - rect.top) / (viewportHeight + elementHeight);
+        let progress = (viewportHeight - rect.top) / (viewportHeight + elementHeight);
         progress = Math.min(Math.max(progress, 0), 1);
 
         setScrollProgress(progress);
@@ -33,6 +33,10 @@ const BlogSelector = () => {
     if (backgroundText) {
       const xPosition = (scrollProgress - 0.5) * 200;
       backgroundText.style.transform = `translate(-50%, -50%) translateX(${xPosition}%)`;
+
+      const viewportWidth = window.innerWidth;
+      const fontSize = Math.min(150, viewportWidth * 0.2);
+      backgroundText.style.fontSize = `${fontSize}px`;
     }
   }, [scrollProgress]);
 
@@ -40,8 +44,7 @@ const BlogSelector = () => {
     {
       id: 1,
       title: "Top 10 Travel Destinations for 2024",
-      excerpt:
-        "Discover the most exciting places to visit this year, from hidden gems to popular hotspots.",
+      excerpt: "Discover the most exciting places to visit this year, from hidden gems to popular hotspots.",
       author: "Sarah Wilson",
       date: "April 15, 2024",
       category: "Travel",
@@ -50,8 +53,7 @@ const BlogSelector = () => {
     {
       id: 2,
       title: "Essential Travel Photography Tips",
-      excerpt:
-        "Learn how to capture stunning photos during your travels with these professional techniques.",
+      excerpt: "Learn how to capture stunning photos during your travels with these professional techniques.",
       author: "David Chen",
       date: "April 12, 2024",
       category: "Photography",
@@ -60,8 +62,7 @@ const BlogSelector = () => {
     {
       id: 3,
       title: "Budget Travel Guide: Europe Edition",
-      excerpt:
-        "Everything you need to know about traveling through Europe on a budget.",
+      excerpt: "Everything you need to know about traveling through Europe on a budget.",
       author: "Emma Thompson",
       date: "April 10, 2024",
       category: "Travel Tips",

@@ -16,7 +16,6 @@ const AccommodationSelector = () => {
         const viewportHeight = window.innerHeight;
         const elementHeight = rect.height;
 
-        // Calculate scroll progress
         let progress =
           (viewportHeight - rect.top) / (viewportHeight + elementHeight);
         progress = Math.min(Math.max(progress, 0), 1);
@@ -26,7 +25,7 @@ const AccommodationSelector = () => {
     };
 
     window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Initial check
+    handleScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -34,12 +33,11 @@ const AccommodationSelector = () => {
   useEffect(() => {
     const backgroundText = backgroundTextRef.current;
     if (backgroundText) {
-      const xPosition = (scrollProgress - 0.5) * 200; // Adjust multiplier for speed
+      const xPosition = (scrollProgress - 0.5) * 200;
       backgroundText.style.transform = `translate(-50%, -50%) translateX(${xPosition}%)`;
 
-      // Adjust font size based on viewport width
       const viewportWidth = window.innerWidth;
-      const fontSize = Math.min(150, viewportWidth * 0.2); // 20% of viewport width, max 150px
+      const fontSize = Math.min(150, viewportWidth * 0.2);
       backgroundText.style.fontSize = `${fontSize}px`;
     }
   }, [scrollProgress]);

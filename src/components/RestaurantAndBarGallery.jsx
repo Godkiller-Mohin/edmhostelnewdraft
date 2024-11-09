@@ -27,8 +27,7 @@ const RestaurantAndBarGallery = () => {
         const viewportHeight = window.innerHeight;
         const elementHeight = rect.height;
 
-        let progress =
-          (viewportHeight - rect.top) / (viewportHeight + elementHeight);
+        let progress = (viewportHeight - rect.top) / (viewportHeight + elementHeight);
         progress = Math.min(Math.max(progress, 0), 1);
 
         setScrollProgress(progress);
@@ -46,23 +45,22 @@ const RestaurantAndBarGallery = () => {
     if (backgroundText) {
       const xPosition = (scrollProgress - 0.5) * 200;
       backgroundText.style.transform = `translate(-50%, -50%) translateX(${xPosition}%)`;
+
+      const viewportWidth = window.innerWidth;
+      const fontSize = Math.min(150, viewportWidth * 0.2);
+      backgroundText.style.fontSize = `${fontSize}px`;
     }
   }, [scrollProgress]);
 
   useEffect(() => {
     const imageElements = Array.from(imageContainerRef.current.children);
-
     let loop = horizontalLoop(imageElements, {
       speed: 1,
       repeat: -1,
       paddingRight: 25,
     });
-
     loop.play();
-
-    return () => {
-      loop.kill();
-    };
+    return () => loop.kill();
   }, []);
 
   const handleViewMore = () => {
@@ -73,7 +71,7 @@ const RestaurantAndBarGallery = () => {
     <div className="gallery-wrapper" ref={sectionRef} id="restrobar">
       <div className="heading-container">
         <h2 className="background-text" ref={backgroundTextRef}>
-          RESTROBAR
+          FOOD
         </h2>
         <h2 className="main-heading">GALLERY</h2>
       </div>

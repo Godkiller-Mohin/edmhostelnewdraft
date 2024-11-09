@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "./hero.css"
+
 const Hero = () => {
   const videoRef = useRef(null);
   const videoSectionRef = useRef(null);

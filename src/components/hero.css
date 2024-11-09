@@ -218,7 +218,7 @@ body {
 @media (max-width: 768px) {
   .events-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 2.5rem;
     padding: 1rem;
   }
 
@@ -238,7 +238,7 @@ body {
 @media (min-width: 769px) and (max-width: 1024px) {
   .events-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
+    gap: 2rem;
   }
 }
 
