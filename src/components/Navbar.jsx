@@ -14,7 +14,7 @@ function Navigation() {
 
   useEffect(() => {
     // Check if welcome animation has already been played
-    const welcomePlayed = localStorage.getItem("welcomeAnimationPlayed");
+    const welcomePlayed = sessionStorage.getItem("welcomeAnimationPlayed");
     
     if (welcomePlayed) {
       // If animation was already played, render navbar immediately
