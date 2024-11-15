@@ -82,7 +82,7 @@ body {
 .image-container {
   position: relative;
   width: 100%;
-  padding-bottom: 75%;
+  padding-bottom: 100%;
   background-size: cover;
   background-position: center;
   transition: transform 0.3s ease;
@@ -120,7 +120,7 @@ body {
 }
 
 .image1 {
-  background-image: url("../assets/image1.jpg");
+  background-image: url("../assets/event2.png");
 }
 
 .image2 {
@@ -224,10 +224,6 @@ body {
 
   .hero {
     padding: 1rem;
-  }
-
-  .image-container {
-    padding-bottom: 100%;
   }
 
   .hero-content {

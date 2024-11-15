@@ -59,7 +59,7 @@ const Events = () => {
   const events = [
     {
       name: "Summer Music Festival",
-      image: "/images/events.jpg",
+      image: "/images/event.png",
       price: 599,
       date: "29-09-2024",
       maxAttendees: 1000,
@@ -67,7 +67,7 @@ const Events = () => {
     },
     {
       name: "Tech Conference",
-      image: "/images/events.jpg",
+      image: "../assets/event.png",
       price: 799,
       date: "15-10-2024",
       maxAttendees: 500,

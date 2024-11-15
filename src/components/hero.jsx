@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "./hero.css"
-
 const Hero = () => {
   const videoRef = useRef(null);
   const videoSectionRef = useRef(null);
@@ -38,7 +37,7 @@ const Hero = () => {
   }, []);
 
   useEffect(() => {
-    const welcomePlayed = localStorage.getItem("welcomeAnimationPlayed");
+    const welcomePlayed = sessionStorage.getItem("welcomeAnimationPlayed");
 
     if (!welcomePlayed) {
       const welcomeOverlay = document.createElement("div");
@@ -52,7 +51,7 @@ const Hero = () => {
 
       setTimeout(() => {
         welcomeOverlay.remove();
-        localStorage.setItem("welcomeAnimationPlayed", "true");
+        sessionStorage.setItem("welcomeAnimationPlayed", "true");
       }, 5000);
 
       return () => {
