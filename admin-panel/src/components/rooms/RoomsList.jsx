@@ -38,7 +38,7 @@ function RoomsList({ add }) {
       content: 'Are you sure delete this Room permanently?',
       onOk() {
         return new Promise((resolve, reject) => {
-          ApiService.delete(`/api/v1/delete-room/${id}`)
+          ApiService.delete(`/api/room/delete-room/${id}`)
             .then((res) => {
               if (res?.result_code === 0) {
                 notificationWithIcon('success', 'SUCCESS', res?.result?.message || 'Room delete successful');

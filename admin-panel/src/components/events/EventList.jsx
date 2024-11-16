@@ -38,7 +38,7 @@ function EventsList({ add }) {
       content: 'Are you sure you want to delete this event permanently?',
       onOk() {
         return new Promise((resolve, reject) => {
-          ApiService.delete(`/api/v1/delete-event/${id}`)
+          ApiService.delete(`/api/event/delete/${id}`)
             .then((res) => {
               if (res?.result_code === 0) {
                 notificationWithIcon('success', 'SUCCESS', res?.result?.message || 'Event delete successful');
