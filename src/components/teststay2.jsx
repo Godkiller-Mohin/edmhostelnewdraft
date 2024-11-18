@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBed, faUsers, faDollarSign, faHotel } from '@fortawesome/free-solid-svg-icons';
+import { faBed, faUsers, faDollarSign, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
 const AccommodationCard = ({ accommodation, onSelect, isSelected }) => {
   const [isFlipped, setIsFlipped] = useState(false);
@@ -29,101 +29,122 @@ const AccommodationCard = ({ accommodation, onSelect, isSelected }) => {
     }
   };
 
-  const handleSelectClick = () => {
-    onSelect(accommodation);
-  };
+  const getPriceText = () => `₹${accommodation?.room_price || 0}/Night`;
 
-  const getAvailabilityText = () => {
-    if (accommodation.type === 'dormitory') {
-      return `${accommodation.availableBeds} Beds Available`;
-    }
-    return `${accommodation.availableRooms} Rooms Available`;
-  };
-
-  const getPriceText = () => {
-    if (accommodation.type === 'dormitory') {
-      return `Rs ${accommodation.pricePerNight}/Person`;
-    }
-    return `Rs ${accommodation.pricePerNight}/Night`;
-  };
+  const amenities = accommodation?.extra_facilities || [];
+  const imageUrl =
+    accommodation?.room_images?.[0]?.url?.split(" || ")?.[1] || 
+    '/default-image.jpg';
 
   return (
-    <div className={`event-card w-full h-[500px] relative cursor-pointer ${isFlipped ? 'flipped' : ''}`}
-      onClick={handleCardClick}
-      onMouseEnter={handleCardHover}
-      onMouseLeave={handleCardHover}>
-      <div className={`event-front absolute inset-0 bg-cover bg-center transition-transform duration-500 transform-preserve-3d ${isFlipped ? '-rotate-y-180' : ''}`}
-        style={{ backgroundImage: `url(${accommodation.image})` }}>
-        <div className="absolute inset-0 bg-black bg-opacity-40">
-          <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-            <h3 className="text-2xl font-bold mb-2">{accommodation.name}</h3>
-            <div className="flex flex-wrap gap-4 mb-3">
-              <div className="flex items-center">
-                <FontAwesomeIcon icon={faBed} className="mr-2" />
-                <span className="text-sm">{accommodation.type.charAt(0).toUpperCase() + accommodation.type.slice(1)}</span>
-              </div>
-              <div className="flex items-center">
-                <FontAwesomeIcon icon={faUsers} className="mr-2" />
-                <span className="text-sm">Up to {accommodation.maxGuests}</span>
-              </div>
-              <div className="flex items-center">
-                <FontAwesomeIcon icon={faHotel} className="mr-2" />
-                <span className="text-sm">{getAvailabilityText()}</span>
-              </div>
-            </div>
+    <>
+      <style>
+        {`
+          .accommodation-card {
+            position: relative;
+            cursor: pointer;
+            width: 100%;
+            height: 500px;
+            perspective: 1000px;
+          }
+          .card-front, .card-back {
+            position: absolute;
+            inset: 0;
+            transition: transform 0.5s;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+          }
+          .card-front {
+            background-size: cover;
+            background-position: center;
+          }
+          .card-back {
+            background-color: white;
+            padding: 1rem;
+            transform: rotateY(180deg);
+          }
+          .accommodation-card.flipped .card-front {
+            transform: rotateY(180deg);
+          }
+          .accommodation-card.flipped .card-back {
+            transform: rotateY(0deg);
+          }
+          .card-front .bg-black {
+            background-color: rgba(0, 0, 0, 0.5);
+          }
+          .accommodation-card:hover .card-front {
+            transform: scale(1.05);
+          }
+          .accommodation-card:hover .card-back {
+            transform: scale(1.05);
+          }
+        `}
+      </style>
+
+      <div
+        className={`accommodation-card ${isFlipped ? 'flipped' : ''}`}
+        onClick={handleCardClick}
+        onMouseEnter={handleCardHover}
+        onMouseLeave={handleCardHover}
+      >
+        {/* Front Side */}
+        <div
+          className={`card-front`}
+          style={{ backgroundImage: `url(${imageUrl})` }}
+        >
+          <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-end p-4">
+            <h3 className="text-2xl font-bold text-white">{accommodation.room_name}</h3>
+            <p className="text-sm text-gray-300">{accommodation.room_description}</p>
             <div className="flex items-center mt-2">
-              <FontAwesomeIcon icon={faDollarSign} className="mr-2" />
-              <span className="text-lg font-semibold">{getPriceText()}</span>
+              <FontAwesomeIcon icon={faDollarSign} className="mr-2 text-white" />
+              <span className="text-lg font-semibold text-white">{getPriceText()}</span>
             </div>
           </div>
         </div>
-      </div>
-      <div className={`event-back absolute inset-0 bg-white p-4 transition-transform duration-500 transform-preserve-3d rotate-y-180 ${isFlipped ? 'rotate-y-0' : ''}`}>
-        <div className="h-full flex flex-col">
-          <h3 className="text-xl font-bold mb-4">{accommodation.name}</h3>
+
+        {/* Back Side */}
+        <div
+          className={`card-back`}
+        >
+          <h3 className="text-xl font-bold mb-2">{accommodation.room_name}</h3>
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
-              <span className="text-gray-500 text-sm">Type</span>
-              <p className="font-medium">{accommodation.type.charAt(0).toUpperCase() + accommodation.type.slice(1)}</p>
+              <span className="text-gray-500 text-sm">Room Type:</span>
+              <p className="font-medium">{accommodation.room_type}</p>
             </div>
             <div>
-              <span className="text-gray-500 text-sm">Max Capacity</span>
-              <p className="font-medium">{accommodation.maxGuests} persons</p>
+              <span className="text-gray-500 text-sm">Capacity:</span>
+              <p className="font-medium">{accommodation.room_capacity} Guests</p>
             </div>
             <div>
-              <span className="text-gray-500 text-sm">{accommodation.type === 'dormitory' ? 'Available Beds' : 'Available Rooms'}</span>
-              <p className="font-medium">{accommodation.type === 'dormitory' ? accommodation.availableBeds : accommodation.availableRooms}</p>
+              <span className="text-gray-500 text-sm">Size:</span>
+              <p className="font-medium">{accommodation.room_size} m²</p>
             </div>
             <div>
-              <span className="text-gray-500 text-sm">Price</span>
-              <p className="font-medium text-blue-500">{getPriceText()}</p>
+              <span className="text-gray-500 text-sm">Price:</span>
+              <p className="font-medium text-green-500">{getPriceText()}</p>
             </div>
           </div>
-          <div className="space-y-4 flex-grow">
-            <div>
-              <h4 className="text-base font-bold mb-2">Amenities:</h4>
-              <div className="grid grid-cols-2 gap-2">
-                {accommodation.amenities.map((amenity, index) => (
-                  <div key={index} className="text-sm text-gray-600">• {amenity}</div>
-                ))}
-              </div>
-            </div>
-            <div>
-              <h4 className="text-base font-bold mb-2">Remember:</h4>
-              <ul className="list-disc pl-4">
-                {accommodation.rules.map((rule, index) => (
-                  <li key={index} className="text-sm text-gray-600 mb-1">{rule}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          <button className={`select-btn ${isSelected ? 'bg-green-500 hover:bg-green-600' : 'bg-blue-500 hover:bg-blue-600'} text-white font-medium py-2 px-4 rounded text-sm mt-4`}
-            onClick={handleSelectClick}>
-            {isSelected ? 'Selected' : 'Select Room'}
+          <h4 className="text-base font-bold mb-2">Amenities:</h4>
+          <ul className="list-disc pl-4">
+            {amenities.map((facility, index) => (
+              <li key={index} className="text-sm text-gray-600">
+                <FontAwesomeIcon icon={faCheckCircle} className="mr-2 text-green-500" />
+                {facility}
+              </li>
+            ))}
+          </ul>
+          <button
+            onClick={() => onSelect(accommodation)}
+            className={`mt-4 p-2 w-full text-white rounded-lg ${
+              isSelected ? 'bg-green-600' : 'bg-blue-600 hover:bg-blue-700'
+            }`}
+          >
+            {isSelected ? 'Selected' : 'Select'}
           </button>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

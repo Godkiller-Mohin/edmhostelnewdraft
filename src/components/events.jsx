@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendar, faMusic, faUsers } from "@fortawesome/free-solid-svg-icons";
+import ApiService from "../api/apiService"; // Backend service to make API requests
 import "./events.css";
 
 const EventCard = ({ event, onSelect }) => {
@@ -55,35 +56,20 @@ const EventCard = ({ event, onSelect }) => {
 const Events = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [guests, setGuests] = useState(1);
+  const [events, setEvents] = useState([]);
 
-  const events = [
-    {
-      name: "Summer Music Festival",
-      image: "/images/event.png",
-      price: 599,
-      date: "29-09-2024",
-      maxAttendees: 1000,
-      genre: "Psytrance",
-    },
-    {
-      name: "Tech Conference",
-      image: "../assets/event.png",
-      price: 799,
-      date: "15-10-2024",
-      maxAttendees: 500,
-      genre: "EDM",
-    },
-    {
-      name: "Food and Wine Expo",
-      image: "/images/events.jpg",
-      price: 399,
-      date: "05-11-2024",
-      maxAttendees: 750,
-      genre: "Live Music",
-    },
-    
-    // Add more events as needed
-  ];
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await ApiService.get('/api/event/list');  // Call backend to fetch events
+        setEvents(response.data);
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      }
+    };
+
+    fetchEvents();
+  }, []);
 
   const handleEventSelect = (event) => {
     setSelectedEvent(event);
