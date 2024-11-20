@@ -35,60 +35,115 @@ const EventCard = ({ event, onSelect, isSelected }) => {
   };
 
   return (
-    <div
-      className={`event-card w-full md:w-1/3 h-[500px] relative cursor-pointer ${isFlipped ? 'flipped' : ''}`}
-      onClick={handleCardClick}
-      onMouseEnter={handleCardHover}
-      onMouseLeave={handleCardHover}
-    >
-      {/* Front of the Card */}
+    <>
+      <style>
+        {`
+          .event-card {
+            position: relative;
+            cursor: pointer;
+            width: 100%;
+            height: 500px;
+            perspective: 1000px;
+          }
+          .event-front, .event-back {
+            position: absolute;
+            inset: 0;
+            transition: transform 0.5s;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+          }
+          .event-front {
+            background-size: cover;
+            background-position: center;
+          }
+          .event-back {
+            background-color: white;
+            padding: 1rem;
+            transform: rotateY(180deg);
+          }
+          .event-card.flipped .event-front {
+            transform: rotateY(180deg);
+          }
+          .event-card.flipped .event-back {
+            transform: rotateY(0deg);
+          }
+          .event-front .bg-black {
+            background-color: rgba(0, 0, 0, 0.5);
+          }
+          .event-card:hover .event-front {
+            transform: scale(1.05);
+          }
+          .event-card:hover .event-back {
+            transform: scale(1.05);
+          }
+        `}
+      </style>
+
       <div
-        className={`event-front absolute inset-0 bg-cover bg-center transition-transform duration-500 transform-preserve-3d ${isFlipped ? '-rotate-y-180' : ''}`}
-        style={{ backgroundImage: `url(${event.event_images[0]?.url})` }} // Using the first image URL
-      />
-      
-      {/* Back of the Card */}
-      <div
-        className={`event-back absolute inset-0 bg-white p-4 transition-transform duration-500 transform-preserve-3d rotate-y-180 ${isFlipped ? 'rotate-y-0' : ''}`}
+        className={`event-card ${isFlipped ? 'flipped' : ''}`}
+        onClick={handleCardClick}
+        onMouseEnter={handleCardHover}
+        onMouseLeave={handleCardHover}
       >
-        <div className="event-details h-full flex flex-col justify-between">
-          <div>
-            <h3 className="event-name text-xl font-bold mb-2">{event.event_name}</h3>
-            <div className="event-info flex items-center space-x-2 mb-2">
-              <div className="event-date flex items-center">
-                <FontAwesomeIcon icon={faCalendar} className="mr-1" />
-                <span className="text-sm">{new Date(event.event_date).toLocaleDateString()}</span>
-              </div>
-              <div className="event-time flex items-center">
-                <FontAwesomeIcon icon={faClockFour} className="mr-1" />
-                <span className="text-sm">{event.event_duration} hours</span>
-              </div>
-            </div>
-            <div className="event-pricing flex justify-between items-center">
-              <div className="event-price">
-                <span className="text-gray-500 text-sm">Price per Ticket</span>
-                <strong className="text-blue-500">Rs {event.event_capacity}</strong> {/* Placeholder, replace as needed */}
-              </div>
-              <div className="event-capacity flex items-center">
-                <FontAwesomeIcon icon={faUsers} className="mr-1" />
-                <span className="text-sm">{event.event_capacity} Capacity</span>
-              </div>
-            </div>
-            <div className="event-description mb-4">
-              <p className="text-sm">{event.event_description}</p>
+        {/* Front of the Card */}
+        <div
+          className={`event-front`}
+          style={{ backgroundImage: `url(${event.event_images[0]?.url})` }}
+        >
+          <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-end p-4">
+            <h3 className="text-2xl font-bold text-white">{event.event_name}</h3>
+            <p className="text-sm text-gray-300">{event.event_description}</p>
+            <div className="flex items-center mt-2">
+              <FontAwesomeIcon icon={faCalendar} className="mr-2 text-white" />
+              <span className="text-lg font-semibold text-white">
+                {new Date(event.event_date).toLocaleDateString()}
+              </span>
             </div>
           </div>
+        </div>
 
-          {/* Select Button */}
-          <button
-            className={`select-btn ${isSelected ? 'bg-green-500 hover:bg-green-600' : 'bg-blue-500 hover:bg-blue-600'} text-white font-medium py-1 px-3 rounded text-sm`}
-            onClick={handleSelectClick}
-          >
-            {isSelected ? 'Selected' : 'Select'}
-          </button>
+        {/* Back of the Card */}
+        <div
+          className={`event-back`}
+        >
+          <div className="flex flex-col justify-between h-full">
+            <div>
+              <h3 className="text-xl font-bold mb-2">{event.event_name}</h3>
+              <div className="flex items-center space-x-2 mb-2">
+                <div className="flex items-center">
+                  <FontAwesomeIcon icon={faCalendar} className="mr-1" />
+                  <span className="text-sm">
+                    {new Date(event.event_date).toLocaleDateString()}
+                  </span>
+                </div>
+                <div className="flex items-center">
+                  <FontAwesomeIcon icon={faClockFour} className="mr-1" />
+                  <span className="text-sm">{event.event_duration} hours</span>
+                </div>
+              </div>
+              <div className="flex justify-between items-center mb-4">
+                <div className="text-gray-500 text-sm">Capacity</div>
+                <div className="flex items-center">
+                  <FontAwesomeIcon icon={faUsers} className="mr-1" />
+                  <span className="text-sm">{event.event_capacity} Guests</span>
+                </div>
+              </div>
+              <p className="text-sm mb-4">{event.event_description}</p>
+            </div>
+
+            {/* Select Button */}
+            <button
+              className={`mt-4 p-2 w-full text-white rounded-lg ${
+                isSelected ? 'bg-green-600' : 'bg-blue-600 hover:bg-blue-700'
+              }`}
+              onClick={handleSelectClick}
+            >
+              {isSelected ? 'Selected' : 'Select'}
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
