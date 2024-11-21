@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import ApiService from "../api/apiService";
+import ApiService from "../api/apiService"; // Assuming ApiService handles HTTP requests
 import EventCard from "./test2"; // Component for individual event cards
 
 const EventSelectionPage = () => {
@@ -7,16 +7,17 @@ const EventSelectionPage = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [guests, setGuests] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [bookingError, setBookingError] = useState(null);
   const bookingFormRef = useRef(null);
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const response = await ApiService.get("/api/event/list");
-  
+
         console.log("API Response:", response); // Debugging log
-  
-        // Parse the response correctly
+
         if (
           response &&
           response.result &&
@@ -25,19 +26,18 @@ const EventSelectionPage = () => {
         ) {
           setEvents(response.result.data.rows || []);
         } else {
-          setEvents([]); // No events found
+          setEvents([]);
         }
       } catch (error) {
         console.error("Error fetching events:", error);
-        setEvents([]); // Handle API errors
+        setEvents([]);
       } finally {
-        setIsLoading(false); // Ensure the loading state is updated
+        setIsLoading(false);
       }
     };
-  
+
     fetchEvents();
   }, []);
-  
 
   useEffect(() => {
     if (selectedEvent && bookingFormRef.current) {
@@ -55,6 +55,39 @@ const EventSelectionPage = () => {
     const taxes = Math.round(basePrice * 0.12);
     const serviceFee = 50;
     return basePrice + taxes + serviceFee;
+  };
+
+  const handleBookingSubmit = async (e) => {
+    e.preventDefault();
+    if (guests <= 0) return;
+
+    setIsSubmitting(true);
+    setBookingError(null);
+
+    try {
+      // Assuming ApiService has a post method for sending POST requests
+      const response = await ApiService.post("/api/event/:id/book", {
+        eventId: selectedEvent.event_id,
+        guests,
+        totalAmount: calculateTotal(),
+        customerDetails: {
+          // Assuming you'd collect customer details like name, email, etc.
+          name: "John Doe", // Example, replace with actual form data
+          email: "johndoe@example.com",
+        },
+      });
+
+      alert(response.data.message); // Notify user about the booking success
+
+      // Optionally, reset state after successful booking
+      setSelectedEvent(null);
+      setGuests(1);
+    } catch (error) {
+      console.error("Error submitting booking:", error);
+      setBookingError("Failed to submit the booking. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -76,12 +109,16 @@ const EventSelectionPage = () => {
           <p>No events available.</p>
         )}
       </div>
+
       {selectedEvent && (
         <div ref={bookingFormRef} className="booking-form mt-8">
           <h2 className="text-center font-bold text-xl mb-4">
             Book "{selectedEvent.event_name}"
           </h2>
-          <form className="bg-gray-800 text-white p-4 rounded-lg max-w-md mx-auto">
+          <form
+            onSubmit={handleBookingSubmit}
+            className="bg-gray-800 text-white p-4 rounded-lg max-w-md mx-auto"
+          >
             <label>Guests:</label>
             <select value={guests} onChange={(e) => setGuests(Number(e.target.value))}>
               {Array.from({ length: selectedEvent.event_capacity }, (_, i) => i + 1).map(
@@ -98,8 +135,13 @@ const EventSelectionPage = () => {
               <p>Service Fee: ₹50</p>
               <p>Total: ₹{calculateTotal()}</p>
             </div>
-            <button type="submit" disabled={guests <= 0}>
-              Book Now
+            {bookingError && <p className="text-red-500">{bookingError}</p>}
+            <button
+              type="submit"
+              disabled={guests <= 0 || isSubmitting}
+              className="mt-4 p-2 bg-blue-600 text-white rounded"
+            >
+              {isSubmitting ? "Booking..." : "Book Now"}
             </button>
           </form>
         </div>
