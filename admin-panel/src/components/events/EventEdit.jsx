@@ -19,7 +19,7 @@ function EventEdit({ eventEditModal, setEventEditModal }) {
 
   // Fetch event-details API data
   const [fetchLoading, fetchError, fetchResponse] = useFetchData(
-    `/api/event/get-event-by-id-or-slug-name/${eventEditModal.eventId}`
+    `/api/event/edit/${eventEditModal.eventId}`
   );
 
   // Set form data from API data

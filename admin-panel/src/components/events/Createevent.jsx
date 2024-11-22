@@ -33,7 +33,10 @@ function CreateEvent() {
     formdata.append('featured_event', values.featured_event);
     formdata.append('event_description', values.event_description);
     formdata.append('organized_by', values.organized_by);
-
+    formdata.append('event_theme', values.event_theme);
+    formdata.append('performing_artists', values.performing_artists);
+    formdata.append('event_timings[start_time]', values.event_timings.start_time);
+    formdata.append('event_timings[end_time]', values.event_timings.end_time);
     // Attach event images
     values.event_images.forEach((image) => {
       formdata.append('event_images', image.originFileObj);
@@ -190,6 +193,42 @@ function CreateEvent() {
         >
           <Input.TextArea placeholder='Type here Event Description' rows={4} />
         </Form.Item>
+
+        <Form.Item
+          className='w-full md:w-1/2'
+          label='event theme'
+          name='event_theme'
+          rules={[{ required: true, message: 'Please input the event theme!' }]}
+        >
+          <Input placeholder='Organizer' size='large' allowClear />
+        </Form.Item>
+        <Form.Item
+          className='w-full md:w-1/2'
+          label='performing artists'
+          name='performing_artists'
+          rules={[{ required: true, message: 'Please input the performing artists!' }]}
+        >
+          <Input placeholder='Organizer' size='large' allowClear />
+        </Form.Item>
+        <div className='two-grid-column'>
+  <Form.Item
+    className='w-full md:w-1/2'
+    label='Start Time'
+    name={['event_timings', 'start_time']}
+    rules={[{ required: true, message: 'Please input the Start Time!' }]}
+  >
+    <Input type='time' className='w-full' size='large' />
+  </Form.Item>
+
+  <Form.Item
+    className='w-full md:w-1/2'
+    label='End Time'
+    name={['event_timings', 'end_time']}
+    rules={[{ required: true, message: 'Please input the End Time!' }]}
+  >
+    <Input type='time' className='w-full' size='large' />
+  </Form.Item>
+</div>
 
         <Form.Item
           className='w-full md:w-1/2'

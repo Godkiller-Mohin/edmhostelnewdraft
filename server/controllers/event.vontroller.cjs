@@ -24,7 +24,7 @@ const createEvent = async (req, res) => {
   try {
     const {
       event_name, event_slug, event_type, event_date, event_duration, event_capacity, allow_guests, provide_meals,
-      featured_event, event_description, organized_by
+      featured_event, event_description, organized_by, forming_artists,event_timings,event_theme
     } = req.body;
 
     // Validate required fields
@@ -51,6 +51,9 @@ const createEvent = async (req, res) => {
       featured_event: Boolean(featured_event),
       event_description,
       organized_by,
+      event_theme,
+      forming_artists,
+      event_timings,
       event_images: req.files.map((file) => ({ url: `/uploads/events/${file.filename}` })),
       created_by: req.user.id
     };
@@ -88,6 +91,9 @@ const getEventsList = async (req, res) => {
       provide_meals: data.provide_meals,
       featured_event: data.featured_event,
       event_description: data.event_description,
+      event_theme:data.event_theme,
+      forming_artists:data.forming_artists,
+      event_timings:data.event_timings,
       event_images: data.event_images.map((img) => ({ url: process.env.APP_BASE_URL + img.url })),
       created_by: data.created_by,
       created_at: data.createdAt,
@@ -133,6 +139,9 @@ const getEventByIdOrSlugName = async (req, res) => {
       allow_guests: event.allow_guests,
       provide_meals: event.provide_meals,
       featured_event: event.featured_event,
+      event_theme:event.event_theme,
+      performing_artists:event.performing_artists,
+      event_timings:event.event_timings,
       event_description: event.event_description,
       event_images: event.event_images.map((img) => ({ url: process.env.APP_BASE_URL + img.url })),
       created_by: event.created_by ? {
@@ -195,6 +204,9 @@ const editEventByAdmin = async (req, res) => {
         provide_meals: Boolean(provide_meals),
         featured_event: Boolean(featured_event),
         event_description,
+        event_theme,
+        forming_artists,
+        event_timings,
         organized_by,
         event_images: req.files.map((file) => ({ url: `/uploads/events/${file.filename}` })),
         updatedAt: Date.now()
@@ -249,6 +261,9 @@ const getFeaturedEventsList = async (req, res) => {
       provide_meals: data.provide_meals,
       featured_event: data.featured_event,
       event_description: data.event_description,
+      event_theme:data.event_theme,
+      performing_artists:data.performing_artists,
+      event_timings:data.event_timings,
       event_images: data.event_images.map((img) => ({ url: process.env.APP_BASE_URL + img.url })),
       created_by: data.created_by,
       created_at: data.createdAt,

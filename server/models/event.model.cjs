@@ -15,7 +15,7 @@ const eventSchema = new mongoose.Schema({
   },
   event_type: {
     type: String,
-    enum: ['conference', 'workshop', 'seminar', 'webinar', 'meetup'],
+    enum: ['party', 'concert', 'get-together', 'meetup'],
     required: [true, 'Event type is required']
   },
   event_date: {
@@ -64,6 +64,26 @@ const eventSchema = new mongoose.Schema({
     type: String,
     ref: 'Users',
     required: [true, 'Organizer is required']
+  },
+  performing_artists: [
+    {
+      type: String,
+      required: [true, 'Performing artist name is required']
+    }
+  ],
+  event_timings: {
+    start_time: {
+      type: String,
+      required: [true, 'Start time is required']
+    },
+    end_time: {
+      type: String,
+      required: [true, 'End time is required']
+    }
+  },
+  event_theme: {
+    type: String,
+    required: [true, 'Event theme is required']
   },
   createdAt: {
     type: Date,
