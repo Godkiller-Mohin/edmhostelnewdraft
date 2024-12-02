@@ -27,23 +27,23 @@ const TestimonialSelector = () => {
   const testimonials = [
     {
       id: 1,
-      name: "John Doe",
-      role: "Digital Nomad",
-      text: "This place exceeded all my expectations. The staff was incredibly friendly and the atmosphere was perfect for both work and relaxation.",
+      name: "Darya Soboleva",
+      role: "Local Guide",
+      text: "Great place to connect with people , artists and music! Very cozy accommodation, all wooden- makes you want to spend time there. Be mindful if you need a quite space because this can be an issue. Staff is incredibly friendly and food there is also very good.",
       avatar: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='35' r='25' fill='%234F46E5'/%3E%3Ccircle cx='50' cy='95' r='40' fill='%234F46E5'/%3E%3C/svg%3E"
     },
     {
       id: 2,
-      name: "Jane Smith",
-      role: "Travel Blogger",
-      text: "I've stayed in many hostels, but this one truly felt like home. The community events were a great way to meet new people!",
+      name: "Tobias B.",
+      role: "Traveller",
+      text: "I was 5 nights at the EDM Hostel. At Weekend there where live DJ's and good Party and during the week it was really chill Out. I had Private room, which was super clean and IT Had a stunning view over the Hills. All in all IT was an amazing experience which i definitely recommend to everyone. Much Love to the super welcoming staff. You are amazing.",
       avatar: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='35' r='25' fill='%23EC4899'/%3E%3Ccircle cx='50' cy='95' r='40' fill='%23EC4899'/%3E%3C/svg%3E"
     },
     {
       id: 3,
-      name: "Mike Johnson",
-      role: "Adventure Seeker",
-      text: "Clean, comfortable, and conveniently located. I couldn't have asked for a better place to stay during my travels.",
+      name: "Qaiser Lone",
+      role: "Guest",
+      text: "You might have heard about the saying  that it took my breath away, the place is such that it will surely 'take your breath away'. The food, mocktails and smoke  were no different. I would surely want to be here again.",
       avatar: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='35' r='25' fill='%2310B981'/%3E%3Ccircle cx='50' cy='95' r='40' fill='%2310B981'/%3E%3C/svg%3E"
     }
   ];

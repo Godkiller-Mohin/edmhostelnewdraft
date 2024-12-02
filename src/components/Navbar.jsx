@@ -13,17 +13,14 @@ function Navigation() {
   const [shouldRender, setShouldRender] = useState(false);
 
   useEffect(() => {
-    // Check if welcome animation has already been played
     const welcomePlayed = sessionStorage.getItem("welcomeAnimationPlayed");
     
     if (welcomePlayed) {
-      // If animation was already played, render navbar immediately
       setShouldRender(true);
     } else {
-      // If animation hasn't been played, wait for 5 seconds before rendering
       const timer = setTimeout(() => {
         setShouldRender(true);
-      }, 5000); // Match this with the welcome animation duration
+      }, 5000);
 
       return () => clearTimeout(timer);
     }
@@ -45,7 +42,7 @@ function Navigation() {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       setIsAtTop(currentScrollY === 0);
-      setIsVisible(currentScrollY <= lastScrollY);
+      setIsVisible(currentScrollY <= lastScrollY || currentScrollY === 0);
       setLastScrollY(currentScrollY);
     };
 

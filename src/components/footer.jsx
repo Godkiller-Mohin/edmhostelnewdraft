@@ -1,31 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { MapPin, Phone, Mail } from "lucide-react";
+import { MapPin, Phone, Mail, Instagram, Youtube, Linkedin, X } from "lucide-react";
 
 const Footer = () => {
-  // Note: Uncomment and add API key when ready to implement weather
-  // const [weather, setWeather] = useState(null);
-
-  // useEffect(() => {
-  //   const fetchWeather = async () => {
-  //     try {
-  //       const response = await fetch(
-  //         `https://api.openweathermap.org/data/2.5/weather?q=Dharamshala&units=metric&appid=YOUR_API_KEY`
-  //       );
-  //       const data = await response.json();
-  //       setWeather(data);
-  //     } catch (error) {
-  //       console.error('Error fetching weather:', error);
-  //     }
-  //   };
-  //   fetchWeather();
-  // }, []);
-
   return (
     <footer className="bg-[#01231f] text-white py-12 font-sans" id="contact">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          {/* About Section */}
           <div className="lg:border-r lg:border-gray-200/10 lg:pr-8">
             <h3 className="text-xl font-bold mb-6">EDM HOSTEL</h3>
             <p className="text-sm leading-relaxed">
@@ -38,7 +19,6 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Contact Section */}
           <div className="lg:border-r lg:border-gray-200/10 lg:pr-8">
             <h3 className="text-xl font-bold mb-6">CONTACT US</h3>
             <ul className="space-y-6 text-sm">
@@ -59,22 +39,18 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Weather Section */}
           <div className="lg:border-r lg:border-gray-200/10 lg:pr-8">
             <h3 className="text-xl font-bold mb-6">WEATHER</h3>
             <div className="text-sm space-y-2">
               <h4 className="text-lg font-semibold">DHARAMSHALA</h4>
-              {/* Weather API integration will go here */}
               <p>Rainy</p>
               <p>22°C</p>
             </div>
           </div>
 
-          {/* Maps Section */}
           <div>
             <h3 className="text-xl font-bold mb-6">LOCATION</h3>
             <div className="w-full h-48 bg-gray-700 rounded-lg overflow-hidden">
-              {/* Google Maps integration will go here */}
               <div className="w-full h-full flex items-center justify-center text-sm">
                 Map Loading...
               </div>
@@ -82,35 +58,50 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Footer Bottom */}
         <div className="mt-12 pt-8 border-t border-gray-200/10">
-          {/* Social Icons */}
           <div className="flex justify-center space-x-6 mb-6">
-            {["facebook", "instagram", "linkedin", "twitter"].map(
-              (platform) => (
-                <a
-                  key={platform}
-                  href={`https://www.${platform}.com/yourpage`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:opacity-80 transition-opacity"
-                >
-                  <img
-                    src={`/images/${platform}-icon.png`}
-                    alt={platform}
-                    className="w-6 h-6"
-                  />
-                </a>
-              )
-            )}
+            <a
+              href="https://www.instagram.com/edm_hostel"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:opacity-80 transition-opacity"
+            >
+              <Instagram className="w-6 h-6" />
+            </a>
+            <a
+              href="https://www.youtube.com/c/edmhostel"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:opacity-80 transition-opacity"
+            >
+              <Youtube className="w-6 h-6" />
+            </a>
+            <a
+              href="https://www.linkedin.com/company/edm-hostel"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:opacity-80 transition-opacity"
+            >
+              <Linkedin className="w-6 h-6" />
+            </a>
+            <a
+              href="https://www.x.com/edm_hostel"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:opacity-80 transition-opacity"
+            >
+              <X className="w-6 h-6" />
+            </a>
           </div>
 
-          {/* Copyright */}
           <p className="text-center text-sm mb-4">© 2024 EDM Hostel</p>
 
-          {/* Footer Links */}
           <div className="flex flex-wrap justify-center items-center gap-4 text-sm">
-            <Link to="/privacy" className="hover:underline">
+            <Link 
+              to="/policy" 
+              className="hover:underline"
+              onClick={() => window.scrollTo(0, 0)}
+            >
               PRIVACY POLICY
             </Link>
             <div className="flex items-center">

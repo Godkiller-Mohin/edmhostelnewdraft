@@ -21,6 +21,7 @@ import EventDetails from "./pages/eventdetails";
 import EventLists from "./pages/eventlist";
 import Test from "./components/test";
 import Teststay from "./components/teststay";
+import Policy from "./components/privacy";
 import "./App.css";
 import AnimatedCursor from "react-animated-cursor";
 import BlogSelector from "./components/blog";
@@ -85,6 +86,7 @@ function App() {
             <Route path="/test" element={<Test />} />
             <Route path="/teststay" element={<Teststay />} />
             <Route path="/events/:id" element={<EventDetails />} />
+            <Route path="/policy" element={<Policy />} />
           </Routes>
         </main>
         <Footer />
