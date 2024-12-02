@@ -26,6 +26,7 @@ import "./App.css";
 import AnimatedCursor from "react-animated-cursor";
 import BlogSelector from "./components/blog";
 import RestaurantAndBarGallery from "./components/RestaurantAndBarGallery";
+import BlogPostPage from "./components/BlogPostPage";
 function App() {
   const containerRef = useRef(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -86,6 +87,8 @@ function App() {
             <Route path="/test" element={<Test />} />
             <Route path="/teststay" element={<Teststay />} />
             <Route path="/events/:id" element={<EventDetails />} />
+            <Route path="/" element={<BlogSelector />} />
+            <Route path="/blog/:id" element={<BlogPostPage />} />
             <Route path="/policy" element={<Policy />} />
           </Routes>
         </main>
