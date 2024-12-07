@@ -1,8 +1,78 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { MapPin, Phone, Mail, Instagram, Youtube, Linkedin, X } from "lucide-react";
 
 const Footer = () => {
+  const [weatherData, setWeatherData] = useState(null);
+  const [mapData, setMapData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Weather API configuration (OpenWeatherMap - Free Tier)
+  const WEATHER_API_KEY = 'YOUR_OPENWEATHER_API_KEY';
+  const LOCATION_LAT = 32.2514; 
+  const LOCATION_LON = 76.3310; 
+
+  // MapmyIndia (Mappls) API configuration
+  const MAPPLS_API_KEY = 'YOUR_MAPPLS_API_KEY';
+  const MAPPLS_CLIENT_ID = 'YOUR_MAPPLS_CLIENT_ID';
+
+  useEffect(() => {
+    const fetchWeatherData = async () => {
+      try {
+        const response = await fetch(
+          `https://api.openweathermap.org/data/2.5/weather?lat=${LOCATION_LAT}&lon=${LOCATION_LON}&appid=${WEATHER_API_KEY}&units=metric`
+        );
+        
+        if (!response.ok) {
+          throw new Error('Weather data fetch failed');
+        }
+        
+        const data = await response.json();
+        setWeatherData({
+          temperature: Math.round(data.main.temp),
+          description: data.weather[0].description.charAt(0).toUpperCase() + 
+                       data.weather[0].description.slice(1),
+          humidity: data.main.humidity,
+          windSpeed: data.wind.speed
+        });
+      } catch (error) {
+        console.error('Error fetching weather:', error);
+        setWeatherData(null);
+      }
+    };
+
+    const fetchMapData = async () => {
+      try {
+        // Mappls Static Map API endpoint
+        const mapUrl = `https://apis.mappls.com/advancedmaps/v1/${MAPPLS_API_KEY}/map_style?center=${LOCATION_LAT},${LOCATION_LON}&zoom=15&size=400x200&markers=color:red|${LOCATION_LAT},${LOCATION_LON}&ssf=true`;
+        
+        // Verify the map URL (this is a simplified example)
+        const response = await fetch(mapUrl, {
+          headers: {
+            'Authorization': `Bearer ${MAPPLS_CLIENT_ID}`,
+            'Content-Type': 'image/png'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Map data fetch failed');
+        }
+
+        // Assuming the API returns the image directly
+        const mapBlob = await response.blob();
+        setMapData(URL.createObjectURL(mapBlob));
+      } catch (error) {
+        console.error('Error fetching map:', error);
+        setMapData(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchWeatherData();
+    fetchMapData();
+  }, []);
+
   return (
     <footer className="bg-[#01231f] text-white py-12 font-sans" id="contact">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -43,21 +113,44 @@ const Footer = () => {
             <h3 className="text-xl font-bold mb-6">WEATHER</h3>
             <div className="text-sm space-y-2">
               <h4 className="text-lg font-semibold">DHARAMSHALA</h4>
-              <p>Rainy</p>
-              <p>22°C</p>
+              {isLoading ? (
+                <p>Loading weather...</p>
+              ) : weatherData ? (
+                <>
+                  <p>{weatherData.description}</p>
+                  <p>{weatherData.temperature}°C</p>
+                  <p>Humidity: {weatherData.humidity}%</p>
+                  <p>Wind: {weatherData.windSpeed} m/s</p>
+                </>
+              ) : (
+                <p>Weather unavailable</p>
+              )}
             </div>
           </div>
 
           <div>
             <h3 className="text-xl font-bold mb-6">LOCATION</h3>
             <div className="w-full h-48 bg-gray-700 rounded-lg overflow-hidden">
-              <div className="w-full h-full flex items-center justify-center text-sm">
-                Map Loading...
-              </div>
+              {isLoading ? (
+                <div className="w-full h-full flex items-center justify-center text-sm">
+                  Loading map...
+                </div>
+              ) : mapData ? (
+                <img 
+                  src={mapData} 
+                  alt="Hostel Location" 
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-sm">
+                  Map unavailable
+                </div>
+              )}
             </div>
           </div>
         </div>
 
+        {/* Rest of the footer remains the same as in the previous version */}
         <div className="mt-12 pt-8 border-t border-gray-200/10">
           <div className="flex justify-center space-x-6 mb-6">
             <a
