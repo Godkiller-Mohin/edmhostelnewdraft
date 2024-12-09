@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendar, faMusic, faUsers } from "@fortawesome/free-solid-svg-icons";
-import ApiService from "../api/apiService"; // Backend service to make API requests
-import "./events.css";
+import {
+  faCalendar,
+  faMusic,
+  faUsers,
+} from "@fortawesome/free-solid-svg-icons";
+import ApiService from "../api/apiService";
 
 const EventCard = ({ event, onSelect }) => {
   const [isFlipped, setIsFlipped] = useState(false);
@@ -12,11 +15,20 @@ const EventCard = ({ event, onSelect }) => {
   };
 
   return (
-    <div className={`event-card ${isFlipped ? "flipped" : ""}`} onClick={handleCardClick}>
+    <div
+      className={`event-card ${isFlipped ? "flipped" : ""}`}
+      onClick={handleCardClick}
+    >
       <div className="event-front">
         <img src={event.image} alt={event.name} className="event-image" />
         <div className="event-overlay">
-          <button className="select-btn" onClick={(e) => { e.stopPropagation(); onSelect(event); }}>
+          <button
+            className="select-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              onSelect(event);
+            }}
+          >
             Select
           </button>
         </div>
@@ -44,7 +56,13 @@ const EventCard = ({ event, onSelect }) => {
               <span>{event.maxAttendees} Capacity</span>
             </div>
           </div>
-          <button className="select-btn" onClick={(e) => { e.stopPropagation(); onSelect(event); }}>
+          <button
+            className="select-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              onSelect(event);
+            }}
+          >
             Select
           </button>
         </div>
@@ -61,10 +79,10 @@ const Events = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await ApiService.get('/api/event/list');  // Call backend to fetch events
+        const response = await ApiService.get("/api/event/list");
         setEvents(response.data);
       } catch (error) {
-        console.error('Error fetching events:', error);
+        console.error("Error fetching events:", error);
       }
     };
 

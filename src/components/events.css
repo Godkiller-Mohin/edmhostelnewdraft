@@ -2,41 +2,41 @@ body {
   background-color: #01231f;
   font-family: Arial, sans-serif;
   margin: 0;
-  padding-top: 80px; /* Add top padding to avoid overlapping with navbar */
+  padding-top: 80px;
 }
 
 .events-container {
-  padding: 60px 40px; /* Increase top and bottom padding */
+  padding: 60px 40px;
 }
 
 .events-heading {
   text-align: center;
   color: #fff;
-  font-size: 36px; /* Increase heading font size */
+  font-size: 36px;
   margin-bottom: 20px;
 }
 
 .events-subheading {
   text-align: center;
   color: #ccc;
-  font-size: 20px; /* Increase subheading font size */
+  font-size: 20px;
   margin-bottom: 60px;
 }
 
 .event-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); /* Increase minimum width */
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   grid-gap: 40px;
   margin-bottom: 40px;
 }
 
 .event-card {
-  background-color: transparent; /* Remove white background */
+  background-color: transparent;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   width: 100%;
-  height: 500px; /* Increase card height */
+  height: 500px;
   position: relative;
   perspective: 1000px;
   cursor: pointer;
@@ -57,10 +57,8 @@ body {
 
 .event-back {
   transform: rotateY(180deg);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 40px; /* Increase padding */
+  background: linear-gradient(to bottom right, #ffffff, #f8f9fa);
+  padding: 2rem;
 }
 
 .event-card.flipped .event-front {
@@ -86,7 +84,7 @@ body {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -103,83 +101,120 @@ body {
 .event-details {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   height: 100%;
+  gap: 1.5rem;
 }
 
 .event-name {
-  font-size: 28px; /* Increase event name font size */
+  font-size: 2rem;
   font-weight: bold;
-  margin-top: 0;
-  margin-bottom: 15px;
+  color: #01231f;
+  margin: 0;
+  text-align: center;
 }
 
 .event-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.event-date,
+.event-genre {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background-color: rgba(1, 35, 31, 0.05);
+  border-radius: 8px;
 }
 
-.event-info svg {
-  margin-right: 8px;
-  color: #333;
+.event-date svg,
+.event-genre svg {
+  color: #01231f;
+  font-size: 1.2rem;
 }
 
-.event-info span {
-  font-size: 16px; /* Increase event info font size */
-  color: #333;
+.event-date span,
+.event-genre span {
+  color: #01231f;
+  font-size: 1rem;
+  font-weight: 500;
 }
 
 .event-pricing {
   display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: rgba(1, 35, 31, 0.05);
+  border-radius: 8px;
+}
+
+.event-price {
+  display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
 }
 
 .event-price span {
-  display: block;
-  font-size: 14px; /* Increase event price font size */
-  color: #666;
-  margin-bottom: 8px;
+  color: #01231f;
+  font-size: 1rem;
+  font-weight: 500;
 }
 
 .event-price strong {
-  font-size: 22px; /* Increase event price font size */
-  color: #000;
+  color: #01231f;
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
 .event-capacity {
   display: flex;
   align-items: center;
-  font-size: 16px; /* Increase event capacity font size */
-  color: #333;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background-color: #01231f;
+  border-radius: 8px;
+  color: white;
 }
 
 .event-capacity svg {
-  margin-right: 8px;
+  color: white;
+}
+
+.event-capacity span {
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
 }
 
 .select-btn {
   background-color: #01231f;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   color: white;
   cursor: pointer;
-  font-size: 16px;
-  padding: 10px 20px;
-  transition: background-color 0.3s ease;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 1rem;
+  width: 100%;
+  transition: all 0.3s ease;
+  margin-top: auto;
 }
 
 .select-btn:hover {
   background-color: #023e37;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .booking-component {
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 40px; /* Increase padding */
+  padding: 40px;
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
@@ -187,7 +222,7 @@ body {
 
 .booking-component h2 {
   margin-top: 0;
-  font-size: 28px; /* Increase heading font size */
+  font-size: 28px;
   font-weight: bold;
 }
 
@@ -197,11 +232,11 @@ body {
 }
 
 .form-group {
-  margin-bottom: 30px; /* Increase margin */
+  margin-bottom: 30px;
 }
 
 .form-group label {
-  font-size: 16px; /* Increase label font size */
+  font-size: 16px;
   font-weight: bold;
   margin-bottom: 10px;
   display: block;
@@ -209,21 +244,21 @@ body {
 
 .form-group select {
   width: 100%;
-  padding: 12px; /* Increase select field padding */
+  padding: 12px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 16px; /* Increase select field font size */
+  font-size: 16px;
 }
 
 .price-summary {
   border-top: 1px solid #ccc;
-  padding-top: 30px; /* Increase padding */
+  padding-top: 30px;
 }
 
 .price-summary .row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 15px; /* Increase margin */
+  margin-bottom: 15px;
 }
 
 .price-summary .row.total {
@@ -237,7 +272,7 @@ body {
   color: white;
   cursor: pointer;
   font-size: 16px;
-  padding: 12px; /* Increase button padding */
+  padding: 12px;
   width: 100%;
   transition: background-color 0.3s ease;
 }
@@ -270,36 +305,31 @@ body {
   }
 
   .event-back {
-    padding: 30px;
+    padding: 1.5rem;
   }
 
   .event-name {
-    font-size: 22px;
-    margin-bottom: 10px;
+    font-size: 1.5rem;
   }
 
-  .event-info,
+  .event-info {
+    gap: 0.75rem;
+  }
+
+  .event-date,
+  .event-genre {
+    padding: 0.5rem;
+  }
+
   .event-pricing {
-    margin-bottom: 15px;
-  }
-
-  .event-info span,
-  .event-price span,
-  .event-capacity {
-    font-size: 14px;
-  }
-
-  .event-price strong {
-    font-size: 18px;
+    padding: 0.75rem;
   }
 
   .select-btn {
-    font-size: 14px;
-    padding: 8px 16px;
+    padding: 0.75rem;
   }
 
   .booking-component {
-    max-width: 100%;
     padding: 30px;
   }
 
