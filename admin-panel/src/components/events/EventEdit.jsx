@@ -19,7 +19,7 @@ function EventEdit({ eventEditModal, setEventEditModal }) {
 
   // Fetch event-details API data
   const [fetchLoading, fetchError, fetchResponse] = useFetchData(
-    `/api/event/edit/${eventEditModal.eventId}`
+    `/api/event/${eventEditModal.eventId}`
   );
 
   // Set form data from API data
@@ -65,7 +65,7 @@ function EventEdit({ eventEditModal, setEventEditModal }) {
     });
 
     setLoading(true);
-    ApiService.put(`/api/v1/edit-event/${eventEditModal.eventId}`, formData, {
+    ApiService.put(`/api/edit/${eventEditModal.eventId}`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     })
       .then((response) => {

@@ -6,6 +6,7 @@ const logger = require('../middleware/winston.logger.cjs');
 const { errorResponse, successResponse } = require('../configs/app.response');
 const MyQueryHelper = require('../configs/api.feature');
 const multer = require('multer');
+const mongoose = require("mongoose")
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -116,20 +117,47 @@ const getEventsList = async (req, res) => {
 };
 
 // Controller for finding an event by ID or event slug
-const getEventByIdOrSlugName = async (req, res) => {
+const getEventById = async (req, res) => {
   try {
     let event = null;
 
+    // If 'organized_by' is a string (like "anant"), fetch the user's ObjectId first
     if (/^[0-9a-fA-F]{24}$/.test(req.params.id)) {
-      event = await Event.findById(req.params.id).populate('created_by');
+      // If it's a valid ObjectId, fetch event by ID and populate 'organized_by' and 'created_by'
+      event = await Event.findById(req.params.id)
+        .populate('organized_by', 'userName fullName email phone avatar gender dob address role status createdAt updatedAt')
+        .populate('created_by', 'userName fullName email phone avatar gender dob address role status createdAt updatedAt');
     } else {
-      event = await Event.findOne({ event_slug: req.params.id }).populate('created_by');
+      // If it's not a valid ObjectId, try to fetch event by event_slug
+      event = await Event.findOne({ event_slug: req.params.id })
+        .populate('organized_by', 'userName fullName email phone avatar gender dob address role status createdAt updatedAt')
+        .populate('created_by', 'userName fullName email phone avatar gender dob address role status createdAt updatedAt');
     }
 
+    // Check if event is found
     if (!event) {
-      return res.status(404).json(errorResponse(4, 'UNKNOWN ACCESS', 'Event does not exist'));
+      return res.status(404).json(errorResponse(
+        4,
+        'UNKNOWN ACCESS',
+        'Event does not exist'
+      ));
     }
 
+    // If 'organized_by' is a string (e.g., "anant"), replace it with the user's ObjectId
+    if (typeof event.organized_by === 'string') {
+      const user = await User.findOne({ userName: event.organized_by }); // Assuming you have a 'userName' field
+      if (user) {
+        event.organized_by = user._id; // Set the correct ObjectId
+      } else {
+        return res.status(404).json(errorResponse(
+          4,
+          'USER NOT FOUND',
+          'Organizer user not found'
+        ));
+      }
+    }
+
+    // Build the response object with necessary details
     const organizedEvent = {
       id: event._id,
       event_name: event.event_name,
@@ -141,38 +169,39 @@ const getEventByIdOrSlugName = async (req, res) => {
       allow_guests: event.allow_guests,
       provide_meals: event.provide_meals,
       featured_event: event.featured_event,
-      event_theme:event.event_theme,
-      performing_artists:event.performing_artists,
-      event_timings:event.event_timings,
       event_description: event.event_description,
-      event_genre:event.genre,
-      event_images: event.event_images.map((img) => ({ url: process.env.APP_BASE_URL + img.url })),
-      created_by: event.created_by ? {
-        id: event.created_by._id,
-        userName: event.created_by.userName,
-        fullName: event.created_by.fullName,
-        email: event.created_by.email,
-        phone: event.created_by.phone,
-        avatar: process.env.APP_BASE_URL + event.created_by.avatar,
-        gender: event.created_by.gender,
-        dob: event.created_by.dob,
-        address: event.created_by.address,
-        role: event.created_by.role,
-        verified: event.created_by.verified,
-        status: event.created_by.status,
-        createdAt: event.created_by.createdAt,
-        updatedAt: event.created_by.updatedAt
-      } : null,
+      event_theme: event.event_theme,
+      performing_artists: event.performing_artists,
+      event_timings: event.event_timings,
+      event_genre: event.genre,
+      event_status: event.event_status,
+      event_images: event.event_images.map(img => ({ url: process.env.APP_BASE_URL + img.url })),
+      organized_by: event.organized_by,
+      created_by: event.created_by,
       created_at: event.createdAt,
       updated_at: event.updatedAt
     };
 
-    // Success response
-    res.status(200).json(successResponse(0, 'SUCCESS', 'Event information retrieved successfully', organizedEvent));
+    // Return success response with the event data
+    res.status(200).json(successResponse(
+      0,
+      'SUCCESS',
+      'Event information retrieved successfully',
+      organizedEvent
+    ));
   } catch (error) {
-    res.status(500).json(errorResponse(2, 'SERVER SIDE ERROR', error));
+    // Handle any server-side errors and respond with error
+    res.status(500).json(errorResponse(
+      2,
+      'SERVER SIDE ERROR',
+      error.message || error
+    ));
   }
 };
+
+
+
+
 
 // Controller for editing an event by admin
 const editEventByAdmin = async (req, res) => {
@@ -291,7 +320,7 @@ const getFeaturedEventsList = async (req, res) => {
 module.exports = {
   createEvent,
   getEventsList,
-  getEventByIdOrSlugName,
+  getEventById,
   editEventByAdmin,
   deleteEventById,
   getFeaturedEventsList,

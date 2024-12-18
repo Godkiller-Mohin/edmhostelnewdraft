@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const eventSchema = new mongoose.Schema({
   event_name: {
     type: String,
@@ -85,11 +84,11 @@ const eventSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Event theme is required']
   },
-  genre: {
-    type: String,
-    enum: ['rock', 'pop', 'jazz', 'classical', 'electronic', 'hip-hop', 'folk', 'blues', 'country', 'other'],
-    required: [true, 'Genre is required']
-  },
+   created_by: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Users',
+      required: [true, 'Room created by is required field']
+    },
   createdAt: {
     type: Date,
     default: Date.now

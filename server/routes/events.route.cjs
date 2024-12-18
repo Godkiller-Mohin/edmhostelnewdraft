@@ -4,7 +4,7 @@ dotenv.config();
 const {
   createEvent,
   getEventsList,
-  getEventByIdOrSlugName,
+  getEventById,
   editEventByAdmin,
   deleteEventById,
   getFeaturedEventsList
@@ -20,7 +20,7 @@ router.post('/create', isAuthenticatedUser, isAdmin, eventImageUpload.array('eve
 router.get('/list', getEventsList);
 
 // Route to get a specific event by ID or slug
-router.get('/:id', getEventByIdOrSlugName);
+router.get('/:id', getEventById);
 
 // Route to edit an event by admin
 router.put('/edit/:id', isAuthenticatedUser, isAdmin, eventImageUpload.array('event_images', 10), editEventByAdmin);

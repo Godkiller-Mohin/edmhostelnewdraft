@@ -8,7 +8,7 @@ import { eventStatusAsResponse, eventTypeAsColor } from '../../utils/responseAsS
 
 function EventDetails({ id }) {
   // Fetch event details API data
-  const [loading, error, response] = useFetchData(`/api/event/list`);
+  const [loading, error, response] = useFetchData(`/api/event/${id}`);
 
   return (
     <Skeleton loading={loading} paragraph={{ rows: 10 }} active avatar>
