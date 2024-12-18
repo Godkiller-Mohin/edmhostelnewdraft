@@ -121,10 +121,8 @@ function CreateRoom() {
             placeholder='-- select room type --'
             optionFilterProp='children'
             options={[
-              { value: 'single', label: 'Single' },
-              { value: 'couple', label: 'Couple' },
-              { value: 'family', label: 'Family' },
-              { value: 'presidential', label: 'Presidential' }
+              { value: 'Private', label: 'Private' },
+              { value: 'Dormitory', label: 'Dormitory' },
             ]}
             size='large'
             allowClear
@@ -192,29 +190,29 @@ function CreateRoom() {
       </div>
 
       <Form.Item
-        label='Room Description'
+        label='Room Rules and description'
         name='room_description'
         rules={[{
           required: true,
-          message: 'Please input your Room Description!'
+          message: 'Please input your Room Rules along with description!'
         }]}
       >
         <Input.TextArea
-          placeholder='Type here Room Description'
+          placeholder='Type here Room Rules here'
           rows={4}
         />
       </Form.Item>
 
       <Form.Item
-        label='Extra Facilities'
+        label='Amenities'
         name='extra_facilities'
         rules={[{
           required: true,
-          message: 'Please input your Extra Facilities!'
+          message: 'Please input your Amenities!'
         }]}
       >
         <Select
-          placeholder='-- select room extra facilities --'
+          placeholder='-- select room Amenities --'
           optionFilterProp='children'
           options={EF}
           mode='multiple'

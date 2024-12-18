@@ -71,7 +71,7 @@ function RoomEdit({ roomEditModal, setRoomEditModal }) {
     }
 
     setLoading(true);
-    ApiService.put(`/api/v1/edit-room/${roomEditModal.roomId}`, formdata, {
+    ApiService.put(`/api/room/edit-room/${roomEditModal.roomId}`, formdata, {
       headers: { 'Content-Type': 'multipart/form-data' }
     })
       .then((response) => {

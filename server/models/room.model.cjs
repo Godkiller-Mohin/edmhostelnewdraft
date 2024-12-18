@@ -17,7 +17,7 @@ const roomsSchema = new mongoose.Schema({
   },
   room_type: {
     type: String,
-    enum: ['single', 'couple', 'family', 'presidential'],
+    enum: ['Private','Dormitary'],
     required: [true, 'Room type filed is required']
   },
   room_price: {

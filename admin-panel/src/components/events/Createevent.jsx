@@ -1,5 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Form, Input, InputNumber, Select, Upload, Switch, notification } from 'antd';
+import { Button, Form, Input, InputNumber, Select, Upload, Switch } from 'antd';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import ApiService from '../../utils/apiService';
@@ -19,7 +19,6 @@ function CreateEvent() {
     return e?.fileList;
   };
 
-  // Function to handle form submission
   const onFinish = (values) => {
     const formdata = new FormData();
     formdata.append('event_name', values.event_name);
@@ -34,27 +33,16 @@ function CreateEvent() {
     formdata.append('event_description', values.event_description);
     formdata.append('organized_by', values.organized_by);
     formdata.append('event_theme', values.event_theme);
-    formdata.append('performing_artists', values.performing_artists);
+    formdata.append('genre', values.genre);
+    values.performing_artists.forEach((artist) => {
+      formdata.append('performing_artists[]', artist);
+    });
     formdata.append('event_timings[start_time]', values.event_timings.start_time);
     formdata.append('event_timings[end_time]', values.event_timings.end_time);
-    // Attach event images
+    
     values.event_images.forEach((image) => {
       formdata.append('event_images', image.originFileObj);
     });
-
-    // Validate required fields
-    if (!values.organized_by) {
-      notification.error({ message: 'Validation Error', description: 'Organizer is required.' });
-      return;
-    }
-    if (!values.event_capacity) {
-      notification.error({ message: 'Validation Error', description: 'Event capacity is required.' });
-      return;
-    }
-    if (!values.event_duration) {
-      notification.error({ message: 'Validation Error', description: 'Event duration is required.' });
-      return;
-    }
 
     setLoading(true);
     ApiService.post('/api/event/create', formdata, {
@@ -114,11 +102,10 @@ function CreateEvent() {
           <Select
             placeholder='-- Select Event Type --'
             options={[
-              { value: 'conference', label: 'Conference' },
-              { value: 'workshop', label: 'Workshop' },
-              { value: 'seminar', label: 'Seminar' },
-              { value: 'webinar', label: 'Webinar' },
-              { value: 'meetup', label: 'Meetup' }
+              { value: 'party', label: 'Party' },
+              { value: 'concert', label: 'Concert' },
+              { value: 'get-together', label: 'Get-together' },
+              { value: 'meetup', label: 'Meetup' },
             ]}
             size='large'
             allowClear
@@ -184,99 +171,125 @@ function CreateEvent() {
         <Switch />
       </Form.Item>
 
+      <Form.Item
+        className='w-full'
+        label='Event Description'
+        name='event_description'
+        rules={[{ required: true, message: 'Please input the Event Description!' }]}
+      >
+        <Input.TextArea placeholder='Type here Event Description' rows={4} />
+      </Form.Item>
+
       <div className='two-grid-column'>
         <Form.Item
           className='w-full md:w-1/2'
-          label='Event Description'
-          name='event_description'
-          rules={[{ required: true, message: 'Please input the Event Description!' }]}
-        >
-          <Input.TextArea placeholder='Type here Event Description' rows={4} />
-        </Form.Item>
-
-        <Form.Item
-          className='w-full md:w-1/2'
-          label='event theme'
+          label='Event Theme'
           name='event_theme'
-          rules={[{ required: true, message: 'Please input the event theme!' }]}
+          rules={[{ required: true, message: 'Please input the Event Theme!' }]}
         >
-          <Input placeholder='Organizer' size='large' allowClear />
+          <Input placeholder='Event Theme' size='large' allowClear />
         </Form.Item>
-        <Form.Item
-          className='w-full md:w-1/2'
-          label='performing artists'
-          name='performing_artists'
-          rules={[{ required: true, message: 'Please input the performing artists!' }]}
-        >
-          <Input placeholder='Organizer' size='large' allowClear />
-        </Form.Item>
-        <div className='two-grid-column'>
-  <Form.Item
-    className='w-full md:w-1/2'
-    label='Start Time'
-    name={['event_timings', 'start_time']}
-    rules={[{ required: true, message: 'Please input the Start Time!' }]}
-  >
-    <Input type='time' className='w-full' size='large' />
-  </Form.Item>
-
-  <Form.Item
-    className='w-full md:w-1/2'
-    label='End Time'
-    name={['event_timings', 'end_time']}
-    rules={[{ required: true, message: 'Please input the End Time!' }]}
-  >
-    <Input type='time' className='w-full' size='large' />
-  </Form.Item>
-</div>
 
         <Form.Item
           className='w-full md:w-1/2'
-          label='Organizer'
-          name='organized_by'
-          rules={[{ required: true, message: 'Please input the Organizer!' }]}
+          label='Genre'
+          name='genre'
+          rules={[{ required: true, message: 'Please select a Genre!' }]}
         >
-          <Input placeholder='Organizer' size='large' allowClear />
+          <Select
+            placeholder='-- Select Genre --'
+            options={[
+              { value: 'rock', label: 'Rock' },
+              { value: 'jazz', label: 'Jazz' },
+              { value: 'pop', label: 'Pop' },
+              { value: 'classical', label: 'Classical' },
+              { value: 'electronic', label: 'Electronic' }
+            ]}
+            size='large'
+            allowClear
+          />
         </Form.Item>
       </div>
 
       <Form.Item
-        name='event_images'
-        label='Event Images'
-        valuePropName='fileList'
-        getValueFromEvent={normFile}
-        rules={[{ required: true, message: 'Please upload Event Images!' }]}
+        className='w-full'
+        label='Performing Artists'
+        name='performing_artists'
+        rules={[{ required: true, message: 'Please input Performing Artists!' }]}
       >
-        <Upload
-          listType='picture-card'
-          onChange={({ fileList: newFileList }) => setFileList(newFileList)}
-          accept='.jpg,.jpeg,.png'
-          beforeUpload={() => false}
-          fileList={fileList}
-          maxCount={10}
+        <Select
+          mode='tags'
+          placeholder='Add Performing Artists'
+          size='large'          allowClear
+          />
+        </Form.Item>
+  
+        <div className='two-grid-column'>
+          <Form.Item
+            className='w-full md:w-1/2'
+            label='Start Time'
+            name={['event_timings', 'start_time']}
+            rules={[{ required: true, message: 'Please input the Start Time!' }]}
+          >
+            <Input type='time' className='w-full' size='large' />
+          </Form.Item>
+  
+          <Form.Item
+            className='w-full md:w-1/2'
+            label='End Time'
+            name={['event_timings', 'end_time']}
+            rules={[{ required: true, message: 'Please input the End Time!' }]}
+          >
+            <Input type='time' className='w-full' size='large' />
+          </Form.Item>
+        </div>
+  
+        <Form.Item
+          className='w-full'
+          label='Organized By'
+          name='organized_by'
+          rules={[{ required: true, message: 'Please input the Organizer Name!' }]}
         >
-          {fileList.length >= 10 ? null : (
-            <div>
-              <PlusOutlined />
-              <div style={{ marginTop: 8 }}>Upload</div>
-            </div>
-          )}
-        </Upload>
-      </Form.Item>
-
-      <Form.Item>
-        <Button
-          type='primary'
-          htmlType='submit'
-          size='large'
-          loading={loading}
-          disabled={loading}
+          <Input placeholder='Organizer Name' size='large' allowClear />
+        </Form.Item>
+  
+        <Form.Item
+          className='w-full'
+          label='Event Images'
+          name='event_images'
+          valuePropName='fileList'
+          getValueFromEvent={normFile}
+          rules={[{ required: true, message: 'Please upload at least one image!' }]}
         >
-          Create New Event
-        </Button>
-      </Form.Item>
-    </Form>
-  );
-}
-
-export default React.memo(CreateEvent);
+          <Upload
+            name='event_images'
+            listType='picture-card'
+            beforeUpload={() => false}
+            onChange={(info) => setFileList(info.fileList)}
+          >
+            {fileList.length < 5 && (
+              <div>
+                <PlusOutlined />
+                <div style={{ marginTop: 8 }}>Upload</div>
+              </div>
+            )}
+          </Upload>
+        </Form.Item>
+  
+        <Form.Item>
+          <Button
+            type='primary'
+            htmlType='submit'
+            size='large'
+            loading={loading}
+            className='w-full'
+          >
+            Create Event
+          </Button>
+        </Form.Item>
+      </Form>
+    );
+  }
+  
+  export default CreateEvent;
+  

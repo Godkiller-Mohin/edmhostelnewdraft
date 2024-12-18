@@ -85,6 +85,11 @@ const eventSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Event theme is required']
   },
+  genre: {
+    type: String,
+    enum: ['rock', 'pop', 'jazz', 'classical', 'electronic', 'hip-hop', 'folk', 'blues', 'country', 'other'],
+    required: [true, 'Genre is required']
+  },
   createdAt: {
     type: Date,
     default: Date.now
