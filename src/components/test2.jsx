@@ -6,6 +6,7 @@ import {
   faUsers,
   faClockFour,
 } from "@fortawesome/free-solid-svg-icons";
+const baseURL = import.meta.env.VITE_BASE_URL;
 
 const EventCard = ({ event, onSelect, isSelected }) => {
   const [isFlipped, setIsFlipped] = useState(false);
@@ -116,8 +117,14 @@ const EventCard = ({ event, onSelect, isSelected }) => {
         {/* Front of the Card */}
         <div
           className="event-front"
-          style={{ backgroundImage: `url(${event.event_images[0]?.url})` }}
-        >
+          style={{
+            backgroundImage: event.event_images[0]?.url
+              ? `url(${baseURL}${event.event_images[0].url})`
+              : null,
+            backgroundColor: event.event_images[0]?.url ? 'transparent' : '#ccc', // Fallback color if no image
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}        >
           <div className="overlay absolute inset-0 flex flex-col justify-end p-6">
             <h3 className="text-3xl font-bold text-white mb-2">
               {event.event_name}
