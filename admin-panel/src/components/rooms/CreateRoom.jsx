@@ -1,6 +1,6 @@
-import { PlusOutlined } from '@ant-design/icons';
+import {MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import {
-  Button, Checkbox, Form, Input, InputNumber, Select, Upload
+  Button, Checkbox, Form, Input, InputNumber, Select, Upload ,Space
 } from 'antd';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -19,6 +19,14 @@ function CreateRoom() {
     if (Array.isArray(e)) { return e; }
     return e?.fileList;
   };
+  const predefinedAmenities = [
+    { value: 'WiFi', label: 'WiFi' },
+    { value: 'Parking', label: 'Parking' },
+    { value: 'Swimming Pool', label: 'Swimming Pool' },
+    { value: 'Room Service', label: 'Room Service' },
+    { value: 'Air Conditioning', label: 'Air Conditioning' },
+    { value: 'Laundry', label: 'Laundry' },
+  ];
 
   // function to handle create new room
   const onFinish = (values) => {
@@ -94,7 +102,7 @@ function CreateRoom() {
           label='Room Slug'
           name='room_slug'
           rules={[{
-            required: true,
+            required: false,
             message: 'Please input your Room Slug!'
           }]}
         >
@@ -155,7 +163,7 @@ function CreateRoom() {
           label='Room Size'
           name='room_size'
           rules={[{
-            required: true,
+            required: false,
             message: 'Please input your Room Size!'
           }]}
         >
@@ -190,34 +198,53 @@ function CreateRoom() {
       </div>
 
       <Form.Item
-        label='Room Rules and description'
-        name='room_description'
+        label="Room Rules and Description"
+        name="room_description"
         rules={[{
           required: true,
-          message: 'Please input your Room Rules along with description!'
+          message: 'Please input at least one Room Rule or Description!'
         }]}
       >
-        <Input.TextArea
-          placeholder='Type here Room Rules here'
-          rows={4}
-        />
+        <Form.List name="room_description">
+          {(fields, { add, remove }) => (
+            <>
+              {fields.map(({ key, name, fieldKey, ...restField }) => (
+                <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
+                  <Input.TextArea
+                    {...restField}
+                    placeholder="Type Room Rule or Description here"
+                    rows={2}
+                  />
+                  <MinusCircleOutlined onClick={() => remove(name)} />
+                </Space>
+              ))}
+              <Form.Item>
+                <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                  Add Rule/Description
+                </Button>
+              </Form.Item>
+            </>
+          )}
+        </Form.List>
       </Form.Item>
 
       <Form.Item
-        label='Amenities'
-        name='extra_facilities'
-        rules={[{
-          required: true,
-          message: 'Please input your Amenities!'
-        }]}
+        label="Amenities"
+        name="extra_facilities"
+        rules={[
+          {
+            required: true,
+            message: 'Please input your Amenities!',
+          },
+        ]}
       >
         <Select
-          placeholder='-- select room Amenities --'
-          optionFilterProp='children'
-          options={EF}
-          mode='multiple'
-          size='large'
+          mode="tags"
+          placeholder="-- Add or select Room Amenities --"
+          options={predefinedAmenities}
+          size="large"
           allowClear
+          tokenSeparators={[',']}
         />
       </Form.Item>
 
@@ -238,7 +265,7 @@ function CreateRoom() {
           beforeUpload={() => false}
           fileList={fileList}
           name='room_images'
-          maxCount={5}
+          maxCount={1}
         >
           {fileList.length >= 5 ? null : (
             <div>
@@ -251,7 +278,7 @@ function CreateRoom() {
         </Upload>
       </Form.Item>
 
-      <div className='flex flex-col items-start justify-start gap-y-2'>
+      {/* <div className='flex flex-col items-start justify-start gap-y-2'>
         <Form.Item name='allow_pets' valuePropName='checked' noStyle>
           <Checkbox className='ml-2.5'>Allow pets?</Checkbox>
         </Form.Item>
@@ -261,7 +288,7 @@ function CreateRoom() {
         <Form.Item name='featured_room' valuePropName='checked' noStyle>
           <Checkbox>Featured Room?</Checkbox>
         </Form.Item>
-      </div>
+      </div> */}
 
       <Form.Item>
         <Button

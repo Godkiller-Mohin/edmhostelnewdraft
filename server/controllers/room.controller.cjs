@@ -11,7 +11,7 @@ const MyQueryHelper = require('../configs/api.feature');
 const createRoom = async (req, res) => {
   try {
     const {
-      room_name, room_slug, room_type, room_price, room_size, room_capacity, allow_pets, provide_breakfast, featured_room, room_description, extra_facilities
+      room_name, room_slug, room_type, room_price, room_size, room_capacity, room_description, extra_facilities
     } = req.body;
 
     // check `room_name` filed exits
@@ -29,18 +29,18 @@ const createRoom = async (req, res) => {
     }
 
     // check `room_slug` filed exits
-    if (!room_slug) {
-      for (const element of req.files) {
-        fs.unlink(`${appRoot}/public/uploads/rooms/${element.filename}`, (err) => {
-          if (err) { logger.error(err); }
-        });
-      }
-      return res.status(400).json(errorResponse(
-        1,
-        'FAILED',
-        '`room_slug` filed is required'
-      ));
-    }
+    // if (!room_slug) {
+    //   for (const element of req.files) {
+    //     fs.unlink(`${appRoot}/public/uploads/rooms/${element.filename}`, (err) => {
+    //       if (err) { logger.error(err); }
+    //     });
+    //   }
+    //   return res.status(400).json(errorResponse(
+    //     1,
+    //     'FAILED',
+    //     '`room_slug` filed is required'
+    //   ));
+    // }
 
     // check `room_type` filed exits
     if (!room_type) {
@@ -71,18 +71,18 @@ const createRoom = async (req, res) => {
     }
 
     // check `room_size` filed exits
-    if (!room_size) {
-      for (const element of req.files) {
-        fs.unlink(`${appRoot}/public/uploads/rooms/${element.filename}`, (err) => {
-          if (err) { logger.error(err); }
-        });
-      }
-      return res.status(400).json(errorResponse(
-        1,
-        'FAILED',
-        '`room_size` filed is required'
-      ));
-    }
+    // if (!room_size) {
+    //   for (const element of req.files) {
+    //     fs.unlink(`${appRoot}/public/uploads/rooms/${element.filename}`, (err) => {
+    //       if (err) { logger.error(err); }
+    //     });
+    //   }
+    //   return res.status(400).json(errorResponse(
+    //     1,
+    //     'FAILED',
+    //     '`room_size` filed is required'
+    //   ));
+    // }
 
     // check `room_capacity` filed exits
     if (!room_capacity) {
@@ -98,7 +98,7 @@ const createRoom = async (req, res) => {
       ));
     }
 
-    // check `room_description` filed exits
+    //check `room_description` filed exits
     if (!room_description) {
       for (const element of req.files) {
         fs.unlink(`${appRoot}/public/uploads/rooms/${element.filename}`, (err) => {
@@ -178,9 +178,9 @@ const createRoom = async (req, res) => {
       room_price,
       room_size,
       room_capacity,
-      allow_pets,
-      provide_breakfast,
-      featured_room,
+      //allow_pets,
+     // provide_breakfast,
+     // featured_room,
       room_description,
       extra_facilities,
       room_images: req?.files?.map((file) => ({ url: `/uploads/rooms/${file.filename}` })),
@@ -230,9 +230,9 @@ const getRoomsList = async (req, res) => {
       room_price: data.room_price,
       room_size: data.room_size,
       room_capacity: data.room_capacity,
-      allow_pets: data.allow_pets,
-      provide_breakfast: data.provide_breakfast,
-      featured_room: data.featured_room,
+      // allow_pets: data.allow_pets,
+      // provide_breakfast: data.provide_breakfast,
+      // featured_room: data.featured_room,
       room_description: data.room_description,
       room_status: data.room_status,
       extra_facilities: data.extra_facilities,
@@ -292,9 +292,9 @@ const getRoomByIdOrSlugName = async (req, res) => {
       room_price: room?.room_price,
       room_size: room?.room_size,
       room_capacity: room?.room_capacity,
-      allow_pets: room?.allow_pets,
-      provide_breakfast: room?.provide_breakfast,
-      featured_room: room?.featured_room,
+      // allow_pets: room?.allow_pets,
+      // provide_breakfast: room?.provide_breakfast,
+      // featured_room: room?.featured_room,
       room_description: room?.room_description,
       room_status: room?.room_status,
       extra_facilities: room?.extra_facilities,
@@ -358,18 +358,18 @@ const editRoomByAdmin = async (req, res) => {
     }
 
     // check `room_slug` filed exits
-    if (!room_slug) {
-      for (const element of req.files) {
-        fs.unlink(`${appRoot}/public/uploads/rooms/${element.filename}`, (err) => {
-          if (err) { logger.error(err); }
-        });
-      }
-      return res.status(400).json(errorResponse(
-        1,
-        'FAILED',
-        '`room_slug` filed is required '
-      ));
-    }
+    // if (!room_slug) {
+    //   for (const element of req.files) {
+    //     fs.unlink(`${appRoot}/public/uploads/rooms/${element.filename}`, (err) => {
+    //       if (err) { logger.error(err); }
+    //     });
+    //   }
+    //   return res.status(400).json(errorResponse(
+    //     1,
+    //     'FAILED',
+    //     '`room_slug` filed is required '
+    //   ));
+    // }
 
     // check `room_type` filed exits
     if (!room_type) {
@@ -400,18 +400,18 @@ const editRoomByAdmin = async (req, res) => {
     }
 
     // check `room_size` filed exits
-    if (!room_size) {
-      for (const element of req.files) {
-        fs.unlink(`${appRoot}/public/uploads/rooms/${element.filename}`, (err) => {
-          if (err) { logger.error(err); }
-        });
-      }
-      return res.status(400).json(errorResponse(
-        1,
-        'FAILED',
-        '`room_size` filed is required '
-      ));
-    }
+    // if (!room_size) {
+    //   for (const element of req.files) {
+    //     fs.unlink(`${appRoot}/public/uploads/rooms/${element.filename}`, (err) => {
+    //       if (err) { logger.error(err); }
+    //     });
+    //   }
+    //   return res.status(400).json(errorResponse(
+    //     1,
+    //     'FAILED',
+    //     '`room_size` filed is required '
+    //   ));
+    // }
 
     // check `room_capacity` filed exits
     if (!room_capacity) {
@@ -503,9 +503,9 @@ const editRoomByAdmin = async (req, res) => {
         room_price,
         room_size,
         room_capacity,
-        allow_pets,
-        provide_breakfast,
-        featured_room,
+        // allow_pets,
+        // provide_breakfast,
+        // featured_room,
         room_description,
         extra_facilities,
         room_images: req?.files?.map(
@@ -598,9 +598,9 @@ const getFeaturedRoomsList = async (req, res) => {
       room_price: data.room_price,
       room_size: data.room_size,
       room_capacity: data.room_capacity,
-      allow_pets: data.allow_pets,
-      provide_breakfast: data.provide_breakfast,
-      featured_room: data.featured_room,
+      // allow_pets: data.allow_pets,
+      // provide_breakfast: data.provide_breakfast,
+      // featured_room: data.featured_room,
       room_description: data.room_description,
       room_status: data.room_status,
       extra_facilities: data.extra_facilities,

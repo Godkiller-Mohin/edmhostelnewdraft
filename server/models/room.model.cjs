@@ -13,11 +13,11 @@ const roomsSchema = new mongoose.Schema({
     trim: true,
     unique: true,
     lowercase: true,
-    required: [true, 'Room slug filed is required']
+    required: [false, 'Room slug filed is optional']
   },
   room_type: {
     type: String,
-    enum: ['Private','Dormitary'],
+    enum: ['Private','Dormitory'],
     required: [true, 'Room type filed is required']
   },
   room_price: {
@@ -25,38 +25,47 @@ const roomsSchema = new mongoose.Schema({
     required: [true, 'Room price filed is required']
   },
   room_size: {
-    type: Number,
-    required: [true, 'Room size filed is required']
+    type: String,
+    required: [false, 'Room size filed is optional']
   },
   room_capacity: {
     type: Number,
     required: [true, 'Room capacity filed is required']
   },
-  allow_pets: {
-    type: Boolean,
-    default: false
-  },
-  provide_breakfast: {
-    type: Boolean,
-    default: false
-  },
-  featured_room: {
-    type: Boolean,
-    default: false
-  },
+  // allow_pets: {
+  //   type: Boolean,
+  //   default: false
+  // },
+  // provide_breakfast: {
+  //   type: Boolean,
+  //   default: false
+  // },
+  // featured_room: {
+  //   type: Boolean,
+  //   default: false
+  // },
   room_description: {
-    type: String,
-    required: [true, 'Room description filed is required']
+    type: [String],
+    required: [true, 'Room rules and description field is required']
   },
   extra_facilities: [String],
-  room_images: [
-    {
-      url: {
-        type: String,
-        required: [true, 'Room image filed is required']
+  room_images: {
+    type: [
+      {
+        url: {
+          type: String,
+          required: [true, 'Room image field is required']
+        }
       }
+    ],
+    validate: {
+      validator: function (v) {
+        return v.length === 1;
+      },
+      message: 'Only one room image is allowed'
     }
-  ],
+  }
+  ,
   room_status: {
     type: String,
     enum: ['available', 'unavailable', 'booked'],

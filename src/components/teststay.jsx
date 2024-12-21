@@ -76,7 +76,7 @@ const AccommodationSelectionPage = () => {
     setBookingError(null);
 
     try {
-      const response = await ApiService.post("/api/room/:id/book", {
+      const response = await ApiService.post("/api/booking/placed-booking-order/:id", {
         roomId: selectedAccommodation.room_id,
         checkIn,
         checkOut,
