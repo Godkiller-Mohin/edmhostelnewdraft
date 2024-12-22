@@ -24,19 +24,18 @@ const upload = multer({ storage });
 const createEvent = async (req, res) => {
   try {
     const {
-      event_name, event_slug, event_type, event_date, event_duration, event_capacity, allow_guests, provide_meals,
-      featured_event, event_description, organized_by, forming_artists,event_timings,event_theme,genre
+      event_name, event_slug, event_type, event_date, event_duration, event_capacity, event_description, forming_artists,event_timings,event_genre,event_price
     } = req.body;
 
     // Validate required fields
-    if (!event_name || !event_slug || !event_type || !event_date) {
-      return res.status(400).json(errorResponse(1, 'FAILED', '`event_name`, `event_slug`, `event_type`, and `event_date` fields are required'));
+    if (!event_name || !event_date) {
+      return res.status(400).json(errorResponse(1, 'FAILED', '`event_name` and `event_date` fields are required'));
     }
 
     // Check if event already exists
-    const existingEvent = await Event.findOne({ event_slug });
+    const existingEvent = await Event.findOne({ event_name });
     if (existingEvent) {
-      return res.status(409).json(errorResponse(9, 'ALREADY EXIST', '`event_slug` already exists'));
+      return res.status(409).json(errorResponse(9, 'ALREADY EXIST', '`event_name` already exists'));
     }
 
     // Prepare event data to store in the database
@@ -47,15 +46,11 @@ const createEvent = async (req, res) => {
       event_date,
       event_duration: Number(event_duration),
       event_capacity: Number(event_capacity),
-      allow_guests: Boolean(allow_guests),
-      provide_meals: Boolean(provide_meals),
-      featured_event: Boolean(featured_event),
       event_description,
-      organized_by,
-      event_theme,
+      event_genre,
+      event_price,
       forming_artists,
       event_timings,
-      genre,
       event_images: req.files.map((file) => ({ url: `/uploads/events/${file.filename}` })),
       created_by: req.user.id
     };
@@ -93,10 +88,10 @@ const getEventsList = async (req, res) => {
       provide_meals: data.provide_meals,
       featured_event: data.featured_event,
       event_description: data.event_description,
-      event_theme:data.event_theme,
+      event_genre:data.event_genre,
+      event_price:data.event_price,
       forming_artists:data.forming_artists,
       event_timings:data.event_timings,
-      event_genre:data.genre,
       event_images: data.event_images.map((img) => ({ url: process.env.APP_BASE_URL + img.url })),
       created_by: data.created_by,
       created_at: data.createdAt,

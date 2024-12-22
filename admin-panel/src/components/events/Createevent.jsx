@@ -27,18 +27,17 @@ function CreateEvent() {
     formdata.append('event_date', values.event_date);
     formdata.append('event_duration', values.event_duration);
     formdata.append('event_capacity', values.event_capacity);
-    formdata.append('allow_guests', values.allow_guests);
-    formdata.append('provide_meals', values.provide_meals);
-    formdata.append('featured_event', values.featured_event);
+    // formdata.append('allow_guests', values.allow_guests);
+    // formdata.append('provide_meals', values.provide_meals);
+    // formdata.append('featured_event', values.featured_event);
     formdata.append('event_description', values.event_description);
-    formdata.append('organized_by', values.organized_by);
-    formdata.append('event_theme', values.event_theme);
-    formdata.append('genre', values.genre);
+    formdata.append('event_genre', values.event_genre);
+    formdata.append('event_price', values.event_price);
+
     values.performing_artists.forEach((artist) => {
       formdata.append('performing_artists[]', artist);
     });
     formdata.append('event_timings[start_time]', values.event_timings.start_time);
-    formdata.append('event_timings[end_time]', values.event_timings.end_time);
     
     values.event_images.forEach((image) => {
       formdata.append('event_images', image.originFileObj);
@@ -97,7 +96,7 @@ function CreateEvent() {
           className='w-full md:w-1/2'
           label='Event Type'
           name='event_type'
-          rules={[{ required: true, message: 'Please select Event Type!' }]}
+          rules={[{ required: false, message: 'Please select Event Type!' }]}
         >
           <Select
             placeholder='-- Select Event Type --'
@@ -142,34 +141,7 @@ function CreateEvent() {
         </Form.Item>
       </div>
 
-      <div className='two-grid-column'>
-        <Form.Item
-          className='w-full md:w-1/2'
-          label='Allow Guests'
-          name='allow_guests'
-          valuePropName='checked'
-        >
-          <Switch />
-        </Form.Item>
-
-        <Form.Item
-          className='w-full md:w-1/2'
-          label='Provide Meals'
-          name='provide_meals'
-          valuePropName='checked'
-        >
-          <Switch />
-        </Form.Item>
-      </div>
-
-      <Form.Item
-        className='w-full'
-        label='Featured Event'
-        name='featured_event'
-        valuePropName='checked'
-      >
-        <Switch />
-      </Form.Item>
+      
 
       <Form.Item
         className='w-full'
@@ -183,8 +155,8 @@ function CreateEvent() {
       <div className='two-grid-column'>
         <Form.Item
           className='w-full md:w-1/2'
-          label='Event Theme'
-          name='event_theme'
+          label='Event Genre'
+          name='event_genre'
           rules={[{ required: true, message: 'Please input the Event Theme!' }]}
         >
           <Input placeholder='Event Theme' size='large' allowClear />
@@ -192,22 +164,11 @@ function CreateEvent() {
 
         <Form.Item
           className='w-full md:w-1/2'
-          label='Genre'
-          name='genre'
-          rules={[{ required: true, message: 'Please select a Genre!' }]}
+          label='Event Price'
+          name='event_price'
+          rules={[{ required: true, message: 'Please input the Event Price!' }]}
         >
-          <Select
-            placeholder='-- Select Genre --'
-            options={[
-              { value: 'rock', label: 'Rock' },
-              { value: 'jazz', label: 'Jazz' },
-              { value: 'pop', label: 'Pop' },
-              { value: 'classical', label: 'Classical' },
-              { value: 'electronic', label: 'Electronic' }
-            ]}
-            size='large'
-            allowClear
-          />
+          <Input placeholder='Event Price' size='large' allowClear />
         </Form.Item>
       </div>
 
@@ -234,24 +195,9 @@ function CreateEvent() {
             <Input type='time' className='w-full' size='large' />
           </Form.Item>
   
-          <Form.Item
-            className='w-full md:w-1/2'
-            label='End Time'
-            name={['event_timings', 'end_time']}
-            rules={[{ required: true, message: 'Please input the End Time!' }]}
-          >
-            <Input type='time' className='w-full' size='large' />
-          </Form.Item>
+         
         </div>
   
-        <Form.Item
-          className='w-full'
-          label='Organized By'
-          name='organized_by'
-          rules={[{ required: true, message: 'Please input the Organizer Name!' }]}
-        >
-          <Input placeholder='Organizer Name' size='large' allowClear />
-        </Form.Item>
   
         <Form.Item
           className='w-full'
@@ -267,7 +213,7 @@ function CreateEvent() {
             beforeUpload={() => false}
             onChange={(info) => setFileList(info.fileList)}
           >
-            {fileList.length < 5 && (
+            {fileList.length < 2 && (
               <div>
                 <PlusOutlined />
                 <div style={{ marginTop: 8 }}>Upload</div>

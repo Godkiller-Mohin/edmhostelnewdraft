@@ -10,12 +10,11 @@ const eventSchema = new mongoose.Schema({
     trim: true,
     unique: true,
     lowercase: true,
-    required: [true, 'Event slug is required']
+    required: [false, 'Event slug is required']
   },
   event_type: {
     type: String,
-    enum: ['party', 'concert', 'get-together', 'meetup'],
-    required: [true, 'Event type is required']
+    required: [false, 'Event type is required']
   },
   event_date: {
     type: Date,
@@ -29,21 +28,21 @@ const eventSchema = new mongoose.Schema({
     type: Number,
     required: [true, 'Event capacity is required']
   },
-  allow_guests: {
-    type: Boolean,
-    default: false
-  },
-  provide_meals: {
-    type: Boolean,
-    default: false
-  },
-  featured_event: {
-    type: Boolean,
-    default: false
-  },
+  // allow_guests: {
+  //   type: Boolean,
+  //   default: false
+  // },
+  // provide_meals: {
+  //   type: Boolean,
+  //   default: false
+  // },
+  // featured_event: {
+  //   type: Boolean,
+  //   default: false
+  // },
   event_description: {
     type: String,
-    required: [true, 'Event description is required']
+    required: [false, 'Event description is required']
   },
   event_images: [
     {
@@ -59,11 +58,6 @@ const eventSchema = new mongoose.Schema({
     required: [true, 'Event status is required'],
     default: 'scheduled'
   },
-  organized_by: {
-    type: String,
-    ref: 'Users',
-    required: [true, 'Organizer is required']
-  },
   performing_artists: [
     {
       type: String,
@@ -74,15 +68,15 @@ const eventSchema = new mongoose.Schema({
     start_time: {
       type: String,
       required: [true, 'Start time is required']
-    },
-    end_time: {
-      type: String,
-      required: [true, 'End time is required']
     }
   },
-  event_theme: {
+  event_genre: {
     type: String,
-    required: [true, 'Event theme is required']
+    required: [true, 'Event genre is required']
+  },
+  event_price: {
+    type: Number,
+    required: [true, 'Event price is required']
   },
    created_by: {
       type: mongoose.Schema.Types.ObjectId,
