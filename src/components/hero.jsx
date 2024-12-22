@@ -1,10 +1,33 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import "./hero.css"
+import ApiService from "../api/apiService";
+import "./hero.css";
+
+import img from "../assets/events.jpg"; 
 const Hero = () => {
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const videoRef = useRef(null);
   const videoSectionRef = useRef(null);
   const welcomeOverlayRef = useRef(null);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        setLoading(true);
+        const response = await ApiService.get("/api/event/list");
+        setEvents(response?.result?.data?.rows || []); // Map API response to events
+      } catch (err) {
+        setError("Failed to fetch events. Please try again later.");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchEvents();
+  }, []);
 
   useEffect(() => {
     const options = {
@@ -60,27 +83,20 @@ const Hero = () => {
         }
       };
     } else {
-      const heroContainer = document.querySelector('.hero-container');
+      const heroContainer = document.querySelector(".hero-container");
       if (heroContainer) {
-        heroContainer.style.animation = 'none';
-        heroContainer.style.opacity = '1';
+        heroContainer.style.animation = "none";
+        heroContainer.style.opacity = "1";
       }
-      const videoSection = document.querySelector('.video-section');
+      const videoSection = document.querySelector(".video-section");
       if (videoSection) {
-        videoSection.classList.add('in-view');
+        videoSection.classList.add("in-view");
       }
       if (videoRef.current) {
         videoRef.current.play();
       }
     }
   }, []);
-
-  const imageLinks = [
-    { path: "/test", className: "image1" },
-    { path: "/test", className: "image2" },
-    { path: "/test", className: "image3" },
-    { path: "/test", className: "image4" },
-  ];
 
   return (
     <div className="hero-container">
@@ -102,17 +118,42 @@ const Hero = () => {
           </h1>
         </div>
         <div className="events-grid">
-          {imageLinks.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              className={`image-container ${link.className}`}
-            >
-              <div className="overlay">
-                <span className="overlay-text">RESERVE YOUR SPOT</span>
-              </div>
-            </Link>
-          ))}
+          {loading ? (
+            <p>Loading events...</p>
+          ) : error ? (
+            <p>{error}</p>
+          ) : events.length > 0 ? (
+            events.map((event) => (
+              <Link
+                key={event.id}
+                to={{
+                  pathname: "/test",
+                  state: { event },
+                }}
+                className="image-container"
+                style={{
+                  backgroundImage: `url(${
+                    (img).trim()
+                  })`,
+                }}
+              >
+                <div className="overlay">
+                  <span className="overlay-text">{event.event_name}</span>
+                  <div className="event-details">
+                    {event.date && <span>Date: {event.date}</span>}
+                    {event.start_time && (
+                      <span>Start Time: {event.start_time}</span>
+                    )}
+                    {event.price !== undefined && (
+                      <span>Price: ₹{event.price}</span>
+                    )}
+                  </div>
+                </div>
+              </Link>
+            ))
+          ) : (
+            <p>No events available</p>
+          )}
         </div>
       </section>
     </div>
