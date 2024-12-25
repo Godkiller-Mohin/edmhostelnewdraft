@@ -1,5 +1,3 @@
-
-
 const mongoose = require('mongoose');
 const { validateBookingDates } = require('../lib/booking.dates.validator');
 
@@ -24,6 +22,24 @@ const bookingSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users',
     required: [true, 'User id is required field']
+  },
+  booking_type: {
+    type: String,
+    required: [true, 'Booking type is required field.'],
+    enum: ['single', 'dormitory'], // 'single' for per bed, 'dormitory' for fill room
+  },
+  beds_booked: {
+    type: Number,
+    required: function () {
+      return this.booking_type === 'single';
+    },
+    min: [1, 'At least one bed must be booked for single booking type.'],
+    validate: {
+      validator: function (value) {
+        return this.booking_type === 'dormitory' || value > 0;
+      },
+      message: 'Beds booked must be a positive number for single booking type.'
+    }
   },
   reviews: {
     type: mongoose.Schema.Types.ObjectId,

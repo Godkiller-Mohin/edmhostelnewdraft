@@ -1,5 +1,3 @@
-// booking.controller.js
-
 // Import necessary modules
 const Room = require('../models/room.model.cjs');
 const Booking = require('../models/booking.room.model.cjs');
@@ -12,40 +10,64 @@ const placedBookingOrder = async (req, res) => {
   try {
     let myRoom = null;
 
+    // Validate room ID
     if (/^[0-9a-fA-F]{24}$/.test(req.params.id)) {
       myRoom = await Room.findById(req.params.id);
     } else {
       return res.status(400).json(errorResponse(
         1,
         'FAILED',
-        'Something went wrong. Probably room id missing/incorrect'
+        'Invalid or missing room ID.'
       ));
     }
 
+    // Check if room exists
     if (!myRoom) {
       return res.status(404).json(errorResponse(
         4,
         'UNKNOWN ACCESS',
-        'Room does not exist'
+        'Room does not exist.'
       ));
     }
 
+    // Check room availability
     if (myRoom.room_status === 'unavailable' || myRoom.room_status === 'booked') {
       return res.status(400).json(errorResponse(
         1,
         'FAILED',
-        'Sorry! The selected room is not available.'
+        'The selected room is not available.'
       ));
     }
 
+    // Fetch booking type from room type
+    const booking_type = myRoom.room_type; // Assuming `room_type` in `Room` model contains "single" or "dormitory"
+
+    // Validate booking type-specific fields
+    const { booking_dates, beds_booked } = req.body;
+
+    if (booking_type === 'single') {
+      if (!beds_booked || beds_booked < 1) {
+        return res.status(400).json(errorResponse(
+          1,
+          'FAILED',
+          'For single booking type, at least one bed must be booked.'
+        ));
+      }
+    }
+
+    // Prepare booking data
     const data = {
       room_id: req.params.id,
-      booking_dates: req.body.booking_dates,
-      booking_by: req.user.id
+      booking_dates,
+      booking_by: req.user.id,
+      booking_type,
+      beds_booked: booking_type === 'single' ? beds_booked : undefined
     };
 
+    // Create booking
     const booking = await Booking.create(data);
 
+    // Success response
     res.status(201).json(successResponse(
       0,
       'SUCCESS',
@@ -53,13 +75,16 @@ const placedBookingOrder = async (req, res) => {
       booking
     ));
   } catch (error) {
+    // Handle server-side error
     res.status(500).json(errorResponse(
       2,
       'SERVER SIDE ERROR',
-      error
+      error.message || 'An unexpected error occurred.'
     ));
   }
 };
+
+
 
 // Controller for getting all bookings by a specific user
 const getBookingOrderByUserId = async (req, res) => {
@@ -189,6 +214,7 @@ const cancelSelfBookingOrder = (req, res) => {
       res.status(500).json({ message: 'Error canceling booking', error });
     });
 };
+
 
 // Controller for getting all booking orders (admin)
 const getBookingOrderForAdmin = async (req, res) => {
