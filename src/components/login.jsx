@@ -43,7 +43,7 @@ const SignIn = () => {
         localStorage.setItem('refreshToken', result.data.refreshToken);
 
         setError(null); // Clear any error messages
-        navigate("/RoomList"); // Redirect after successful login
+        navigate("/"); // Redirect after successful login
       } else {
         // If login fails, display the error message
         setError(result.message || "Login failed. Please try again.");

@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons"; // Import FontAwesome Google Icon
+import ApiService from "../api/apiService";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
+    userName: "",
     fullName: "",
     email: "",
     phone: "",
@@ -15,6 +17,7 @@ const SignUp = () => {
     role: "user" // Default role
   });
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);  // For successful registration messages
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -28,23 +31,23 @@ const SignUp = () => {
     e.preventDefault();
     try {
       const response = await ApiService.post("/api/auth/registration", formData);
-  
+
       // Log the full response for debugging
       console.log("Full response:", response);
-  
+
       const { result_code, result } = response; // Destructure the response as done in the login function
-  
+
       if (result_code === 0 && result.title === 'SUCCESS') {
         // If registration is successful
         setSuccess("User registered successfully!");
         setError(null);
-        navigate("/RoomList");
+        navigate("/"); // Redirect to the RoomList page
       } else {
         setError(result.message || "An error occurred during registration.");
       }
     } catch (err) {
       console.error("Error during registration:", err.response); // Log for debugging
-  
+
       if (err.response && err.response.data && err.response.data.message) {
         setError(err.response.data.message);
       } else {
@@ -73,6 +76,19 @@ const SignUp = () => {
           Sign up for an account
         </h2>
         <form onSubmit={handleSubmit}>
+          {/* User Name */}
+          <div className="mb-4">
+            <label htmlFor="userName" className="block text-sm font-medium text-gray-700">User Name</label>
+            <input
+              type="text"
+              id="userName"
+              value={formData.userName}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+              required
+            />
+          </div>
+
           {/* Full Name */}
           <div className="mb-4">
             <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">Full Name</label>
@@ -150,12 +166,25 @@ const SignUp = () => {
             >
               <option value="male">Male</option>
               <option value="female">Female</option>
-              <option value="other">Other</option>
             </select>
+          </div>
+
+          {/* Date of Birth */}
+          <div className="mb-4">
+            <label htmlFor="dob" className="block text-sm font-medium text-gray-700">Date of Birth</label>
+            <input
+              type="date"
+              id="dob"
+              value={formData.dob}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+              required
+            />
           </div>
 
           {/* Error Messages */}
           {error && <p className="text-red-500 mb-4">{error}</p>}
+          {success && <p className="text-green-500 mb-4">{success}</p>}
 
           <button
             type="submit"

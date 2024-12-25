@@ -139,12 +139,12 @@ const loginUser = async (req, res) => {
       return res.status(406).json(errorResponse(6, 'UNABLE TO ACCESS', 'User is blocked'));
     }
 
-    // Compare the password
-    //const isPasswordMatch = await bcrypt.compare(password, user.password);
-    //if (!isPasswordMatch) {
-    //  console.log('Password comparison failed');
-    //  return res.status(400).json(errorResponse(1, 'FAILED', 'User credentials are incorrect'));
-   // }
+    //Compare the password
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    if (!isPasswordMatch) {
+     console.log('Password comparison failed');
+     return res.status(400).json(errorResponse(1, 'FAILED', 'User credentials are incorrect'));
+   }
   
     // Generate tokens
     const accessToken = generateJWTToken(user);
