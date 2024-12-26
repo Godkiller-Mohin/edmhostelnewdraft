@@ -2,14 +2,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { useNavigate } from "react-router-dom";
 import "./imageGallery.css";
-import image1 from "../assets/image1.jpg";
-import image2 from "../assets/image1.jpg";
-import image3 from "../assets/image1.jpg";
-import image4 from "../assets/image1.jpg";
-import image5 from "../assets/image1.jpg";
-import image6 from "../assets/image1.jpg";
-import image7 from "../assets/image1.jpg";
-import image8 from "../assets/image1.jpg";
+import image1 from "../assets/our-gallery-01.jpeg";
+import image2 from "../assets/our-gallery-02.jpeg";
+import image3 from "../assets/our-gallery-03.jpeg";
+import image4 from "../assets/our-gallery-04.jpeg";
+import image5 from "../assets/our-gallery-05.jpeg";
+import image6 from "../assets/our-gallery-06.jpeg";
+import image7 from "../assets/our-gallery-07.jpeg";
+import image8 from "../assets/our-gallery-08.jpeg";
 
 const RestaurantAndBarGallery = () => {
   const imageContainerRef = useRef(null);
@@ -27,7 +27,8 @@ const RestaurantAndBarGallery = () => {
         const viewportHeight = window.innerHeight;
         const elementHeight = rect.height;
 
-        let progress = (viewportHeight - rect.top) / (viewportHeight + elementHeight);
+        let progress =
+          (viewportHeight - rect.top) / (viewportHeight + elementHeight);
         progress = Math.min(Math.max(progress, 0), 1);
 
         setScrollProgress(progress);
@@ -68,12 +69,14 @@ const RestaurantAndBarGallery = () => {
   };
 
   return (
-    <div className="gallery-wrapper" ref={sectionRef} id="restrobar">
+    <div className="gallery-wrapper" ref={sectionRef} id="restrobar ">
       <div className="heading-container">
         <h2 className="background-text" ref={backgroundTextRef}>
-          FOOD
+          GALLERY
         </h2>
-        <h2 className="main-heading">GALLERY</h2>
+        <h2 className="main-heading" id="gallery">
+          OUR GALLERY
+        </h2>
       </div>
       <div className="imageContainer" ref={imageContainerRef}>
         <div className="image" style={{ backgroundImage: `url(${image1})` }} />

@@ -17,6 +17,12 @@ const EventSelectionPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [bookingError, setBookingError] = useState(null);
   const bookingFormRef = useRef(null);
+  const pageTopRef = useRef(null);
+
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -77,6 +83,8 @@ const EventSelectionPage = () => {
       alert(response.data.message);
       setSelectedEvent(null);
       setGuests(1);
+      // Scroll back to top after successful booking
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (error) {
       console.error("Error submitting booking:", error);
       setBookingError("Failed to submit the booking. Please try again.");
@@ -146,9 +154,9 @@ const EventSelectionPage = () => {
         `}
       </style>
 
-      <div className="w-full px-4 py-12">
+      <div className="w-full px-4 py-24" ref={pageTopRef}>
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-4xl font-bold text-white text-center mt-[80px] mb-12">
+          <h1 className="text-4xl font-bold text-white text-center mb-12">
             Upcoming Events
           </h1>
 

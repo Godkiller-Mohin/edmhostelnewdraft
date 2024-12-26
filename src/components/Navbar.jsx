@@ -14,7 +14,7 @@ function Navigation() {
 
   useEffect(() => {
     const welcomePlayed = sessionStorage.getItem("welcomeAnimationPlayed");
-    
+
     if (welcomePlayed) {
       setShouldRender(true);
     } else {
@@ -62,7 +62,8 @@ function Navigation() {
       setTimeout(() => {
         const headerOffset = window.innerWidth >= 1024 ? 80 : 56;
         const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        const offsetPosition =
+          elementPosition + window.pageYOffset - headerOffset;
 
         window.scrollTo({
           top: offsetPosition,
@@ -72,10 +73,31 @@ function Navigation() {
     }
   };
 
+  const handleGalleryClick = async (e) => {
+    e.preventDefault();
+    setIsMenuOpen(false);
+
+    const isHomePage = location.pathname === "/";
+    if (!isHomePage) {
+      await navigate("/");
+      setTimeout(() => {
+        scrollToSection("gallery");
+      }, 300);
+    } else {
+      scrollToSection("gallery");
+    }
+  };
+
   const handleSmoothScroll = async (e, targetId) => {
     e.preventDefault();
 
-    if (targetId === "./introduction") {
+    if (targetId.startsWith("./")) {
+      setIsMenuOpen(false);
+      navigate(targetId);
+      return;
+    }
+
+    if (targetId === "./restaurant-and-bar") {
       setIsMenuOpen(false);
       navigate(targetId);
       return;
@@ -97,7 +119,7 @@ function Navigation() {
   const menuItems = [
     { label: "EVENTS", href: "#events" },
     { label: "STAY", href: "#stay" },
-    { label: "RESTAURANT & BAR", href: "#restrobar" },
+    { label: "RESTAURANT & BAR", href: "./restaurant-and-bar" },
     { label: "BLOGS", href: "#blogs" },
     { label: "ABOUT US", href: "./introduction" },
     { label: "CONTACT", href: "#contact" },
@@ -173,9 +195,10 @@ function Navigation() {
                   </div>
                   <motion.button
                     variants={itemVariants}
+                    onClick={handleGalleryClick}
                     className="border-2 border-[#c69947] text-[#c69947] px-2 py-2 text-base cursor-pointer hover:bg-white hover:text-black transition-colors duration-300"
                   >
-                    PLAN YOUR EXPERIENCE WITH US
+                    OUR GALLERY
                   </motion.button>
                 </motion.div>
                 <div className="lg:hidden flex items-center justify-end pointer-events-auto mt-6 mb-4">
@@ -221,10 +244,10 @@ function Navigation() {
               ))}
               <motion.button
                 variants={itemVariants}
+                onClick={handleGalleryClick}
                 className="border-2 border-[#c69947] text-[#c69947] px-6 py-2 text-lg hover:bg-[#c69947] hover:text-white transition-all duration-300"
-                onClick={() => setIsMenuOpen(false)}
               >
-                PLAN YOUR EXPERIENCE
+                OUR GALLERY
               </motion.button>
             </div>
           </motion.div>

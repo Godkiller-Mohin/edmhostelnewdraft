@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import "./RestaurantAndBar.css";
-
 const MenuCard = ({ title, description, image }) => (
   <div className="menu-card">
     <img src={image} alt={title} className="menu-card-image" />
@@ -12,18 +11,12 @@ const MenuCard = ({ title, description, image }) => (
   </div>
 );
 
-const GalleryImage = ({ src, alt }) => (
-  <div className="gallery-image-container">
-    <img src={src} alt={alt} className="gallery-image" />
-  </div>
-);
-
 const HorizontalScrollingGallery = () => {
   const galleryRef = useRef(null);
 
   const handleScroll = (direction) => {
     const gallery = galleryRef.current;
-    const scrollAmount = gallery.clientWidth * 0.8; // Scroll 80% of the visible width
+    const scrollAmount = gallery.clientWidth * 0.8;
 
     if (direction === "left") {
       gallery.scrollBy({ left: -scrollAmount, behavior: "smooth" });
@@ -39,10 +32,6 @@ const HorizontalScrollingGallery = () => {
     { src: "/images/bar1.jpg", alt: "Gallery Image 4" },
     { src: "/images/bar2.jpg", alt: "Gallery Image 5" },
     { src: "/images/bar3.jpg", alt: "Gallery Image 6" },
-    { src: "/images/food1.jpg", alt: "Gallery Image 7" },
-    { src: "/images/food1.jpg", alt: "Gallery Image 8" },
-    { src: "/images/food1.jpg", alt: "Gallery Image 9" },
-    { src: "/images/food1.jpg", alt: "Gallery Image 10" },
   ];
 
   return (
@@ -55,7 +44,9 @@ const HorizontalScrollingGallery = () => {
       </button>
       <div className="horizontal-scrolling-gallery" ref={galleryRef}>
         {images.map((image, index) => (
-          <GalleryImage key={index} {...image} />
+          <div key={index} className="gallery-image-container">
+            <img src={image.src} alt={image.alt} className="gallery-image" />
+          </div>
         ))}
       </div>
       <button
@@ -69,6 +60,7 @@ const HorizontalScrollingGallery = () => {
 };
 
 const RestaurantAndBarMenu = () => {
+  const [activeTab, setActiveTab] = useState("restaurant");
   const backgroundTextRef = useRef(null);
   const sectionRef = useRef(null);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -90,10 +82,12 @@ const RestaurantAndBarMenu = () => {
     };
 
     window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+  useEffect(() => {
+    // Scroll to top on component mount
+    window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
@@ -147,35 +141,56 @@ const RestaurantAndBarMenu = () => {
           MENU
         </h2>
       </div>
-      <section className="restaurant-menu">
-        <h1 className="main-title">RESTAURANT MENU</h1>
+
+      <div className="content-wrapper">
+        <h1 className="main-title">RESTAURANT AND BAR MENU</h1>
         <p className="subtitle">
-          Feast your eyes (and stomach) on this mouth-watering food
+          Discover our culinary delights and refreshing beverages
         </p>
-        <div className="menu-grid">
-          {restaurantMenuItems.map((item, index) => (
-            <MenuCard key={`restaurant-${index}`} {...item} />
-          ))}
+
+        <div className="menu-tabs">
+          <button
+            className={`menu-tab ${activeTab === "restaurant" ? "active" : ""}`}
+            onClick={() => setActiveTab("restaurant")}
+          >
+            Restaurant Menu
+          </button>
+          <button
+            className={`menu-tab ${activeTab === "bar" ? "active" : ""}`}
+            onClick={() => setActiveTab("bar")}
+          >
+            Bar Menu
+          </button>
         </div>
-      </section>
-      <section className="bar-menu">
-        <h1 className="main-title">BAR MENU</h1>
-        <p className="subtitle">
-          Discover our expertly crafted drinks and spirits
-        </p>
-        <div className="menu-grid">
-          {barMenuItems.map((item, index) => (
-            <MenuCard key={`bar-${index}`} {...item} />
-          ))}
-        </div>
-      </section>
-      <section className="gallery-section">
-        <h1 className="main-title">OUR GALLERY</h1>
-        <p className="subtitle">
-          Scroll through our beautiful restaurant and bar
-        </p>
-        <HorizontalScrollingGallery />
-      </section>
+
+        {activeTab === "restaurant" && (
+          <section className="restaurant-menu">
+            <div className="menu-grid">
+              {restaurantMenuItems.map((item, index) => (
+                <MenuCard key={`restaurant-${index}`} {...item} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {activeTab === "bar" && (
+          <section className="bar-menu">
+            <div className="menu-grid">
+              {barMenuItems.map((item, index) => (
+                <MenuCard key={`bar-${index}`} {...item} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        <section className="gallery-section">
+          <h1 className="main-title">FOOD GALLERY</h1>
+          <p className="subtitle">
+            Scroll through our beautiful restaurant and bar
+          </p>
+          <HorizontalScrollingGallery />
+        </section>
+      </div>
     </div>
   );
 };
