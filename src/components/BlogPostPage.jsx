@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Calendar, Clock, User } from "lucide-react";
-import "./BlogPostPage.css";
+
 const BlogPostPage = () => {
   const { id } = useParams();
+
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const blogs = [
     {
@@ -168,7 +173,7 @@ const BlogPostPage = () => {
   return (
     <div className="min-h-screen bg-emerald-950">
       {/* Hero Section */}
-      <header className="max-w-6xl mx-auto px-4 py-40">
+      <header className="max-w-6xl mx-auto px-4 pt-32  pb-8">
         <div className="text-center mb-8">
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
             {post.title}

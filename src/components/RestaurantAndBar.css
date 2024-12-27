@@ -4,12 +4,13 @@
   padding: 2rem;
   text-align: center;
   overflow: hidden;
-  padding-top: 5rem;
+  padding-top: 2rem;
+  min-height: 100vh;
 }
 
 .heading-container {
   position: relative;
-  margin: 100px 0;
+  margin: 50px 0;
   height: auto;
 }
 
@@ -18,25 +19,61 @@
   top: 50%;
   left: 50%;
   width: 100%;
-  font-size: 170px;
+  font-size: clamp(80px, 15vw, 150px);
   opacity: 0.1;
   margin: 0;
   z-index: 1;
   transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
   white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.content-wrapper {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .main-title {
   position: relative;
-  font-size: 40px;
+  font-size: clamp(28px, 5vw, 40px);
   margin: 0;
   z-index: 2;
   padding: 20px 0;
 }
 
 .subtitle {
-  font-size: 1rem;
+  font-size: clamp(14px, 2vw, 1rem);
   margin-bottom: 2rem;
+}
+
+.menu-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem 0 3rem 0;
+  flex-wrap: wrap;
+}
+
+.menu-tab {
+  padding: 0.8rem 2rem;
+  font-size: clamp(14px, 2vw, 1rem);
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 25px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.menu-tab:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.menu-tab.active {
+  background-color: #4fd1c5;
+  color: #01231f;
 }
 
 .menu-grid {
@@ -88,13 +125,22 @@
 }
 
 .gallery-wrapper {
+  position: relative;
   width: 100%;
   overflow: hidden;
 }
 
 .horizontal-scrolling-gallery {
   display: flex;
-  transition: transform 0.5s ease;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.horizontal-scrolling-gallery::-webkit-scrollbar {
+  display: none;
 }
 
 .gallery-image-container {
@@ -102,6 +148,7 @@
   width: 400px;
   height: 300px;
   margin-right: 1rem;
+  scroll-snap-align: start;
 }
 
 .gallery-image {
@@ -109,36 +156,6 @@
   height: 100%;
   object-fit: cover;
   border-radius: 8px;
-}
-
-@media (max-width: 768px) {
-  .menu-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .gallery-image-container {
-    width: 300px;
-    height: 225px;
-  }
-}
-
-@media (max-width: 480px) {
-  .menu-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .gallery-image-container {
-    width: 250px;
-    height: 187px;
-  }
-}
-
-/** changes **/
-
-/* Add these styles to your existing CSS file */
-
-.gallery-wrapper {
-  position: relative;
 }
 
 .gallery-arrow {
@@ -170,23 +187,44 @@
   right: 10px;
 }
 
-.horizontal-scrolling-gallery {
-  display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+@media (max-width: 768px) {
+  .restaurant-and-bar-menu {
+    padding: 1rem;
+    padding-top: 2rem;
+  }
+
+  .heading-container {
+    margin: 30px 0;
+  }
+
+  .menu-tabs {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .menu-tab {
+    width: 80%;
+    max-width: 300px;
+  }
+
+  .menu-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .gallery-image-container {
+    width: 300px;
+    height: 225px;
+  }
 }
 
-.horizontal-scrolling-gallery::-webkit-scrollbar {
-  display: none;
-}
+@media (max-width: 480px) {
+  .menu-grid {
+    grid-template-columns: 1fr;
+  }
 
-.gallery-image-container {
-  flex: 0 0 auto;
-  width: 400px;
-  height: 300px;
-  margin-right: 1rem;
-  scroll-snap-align: start;
+  .gallery-image-container {
+    width: 250px;
+    height: 187px;
+  }
 }

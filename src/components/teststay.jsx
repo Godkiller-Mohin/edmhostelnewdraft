@@ -19,6 +19,12 @@ const AccommodationSelectionPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [bookingError, setBookingError] = useState(null);
   const bookingFormRef = useRef(null);
+  const pageTopRef = useRef(null);
+
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const fetchAccommodations = async () => {
@@ -76,23 +82,28 @@ const AccommodationSelectionPage = () => {
     setBookingError(null);
 
     try {
-      const response = await ApiService.post("/api/booking/placed-booking-order/:id", {
-        roomId: selectedAccommodation.room_id,
-        checkIn,
-        checkOut,
-        guests,
-        totalAmount: calculateTotal(),
-        customerDetails: {
-          name: "John Doe",
-          email: "johndoe@example.com",
-        },
-      });
+      const response = await ApiService.post(
+        "/api/booking/placed-booking-order/:id",
+        {
+          roomId: selectedAccommodation.room_id,
+          checkIn,
+          checkOut,
+          guests,
+          totalAmount: calculateTotal(),
+          customerDetails: {
+            name: "John Doe",
+            email: "johndoe@example.com",
+          },
+        }
+      );
 
       alert(response.data.message);
       setSelectedAccommodation(null);
       setCheckIn("");
       setCheckOut("");
       setGuests(1);
+      // Scroll back to top after successful booking
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (error) {
       console.error("Error submitting booking:", error);
       setBookingError("Failed to submit the booking. Please try again.");
@@ -162,9 +173,9 @@ const AccommodationSelectionPage = () => {
         `}
       </style>
 
-      <div className="w-full px-4 py-12">
+      <div className="w-full px-4 py-24" ref={pageTopRef}>
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-4xl font-bold text-white text-center mt-[80px] mb-12">
+          <h1 className="text-4xl font-bold text-white text-center mb-12">
             Our Accommodations
           </h1>
 
