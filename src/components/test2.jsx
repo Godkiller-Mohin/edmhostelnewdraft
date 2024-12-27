@@ -119,8 +119,11 @@ const EventCard = ({ event, onSelect, isSelected }) => {
           className="event-front"
           style={{
             backgroundImage: event.event_images[0]?.url
-              ? `url(${baseURL}${event.event_images[0].url})`
-              : null,
+            ? event.event_images[0]?.url.startsWith('http') 
+              ? `url(${event.event_images[0]?.url})`
+              : `url(${baseURL}/uploads/rooms/${event.event_images[0]?.url.split('/').pop()})`
+            : null,
+          
             backgroundColor: event.event_images[0]?.url ? 'transparent' : '#ccc', // Fallback color if no image
             backgroundSize: 'cover',
             backgroundPosition: 'center',

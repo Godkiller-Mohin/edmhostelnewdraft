@@ -8,169 +8,77 @@ const { errorResponse, successResponse } = require('../configs/app.response');
 const MyQueryHelper = require('../configs/api.feature');
 
 // TODO: Controller for create new room
+
 const createRoom = async (req, res) => {
   try {
     const {
       room_name, room_slug, room_type, room_price, room_size, room_capacity, room_description, extra_facilities
     } = req.body;
 
-    // check `room_name` filed exits
+    // Function to delete uploaded files if there's an error
+    const deleteUploadedFiles = () => {
+      if (req.files) {
+        req.files.forEach((element) => {
+          fs.unlink(`${appRoot}/public/uploads/rooms/${element.filename}`, (err) => {
+            if (err) {
+              console.error(`Error deleting file ${element.filename}:`, err);
+            }
+          });
+        });
+      }
+    };
+
+    // Check if required fields are provided
     if (!room_name) {
-      for (const element of req.files) {
-        fs.unlink(`${appRoot}/public/uploads/rooms/${element.filename}`, (err) => {
-          if (err) { logger.error(err); }
-        });
-      }
-      return res.status(400).json(errorResponse(
-        1,
-        'FAILED',
-        '`room_name` filed is required'
-      ));
+      deleteUploadedFiles();
+      return res.status(400).json(errorResponse(1, 'FAILED', '`room_name` field is required'));
     }
 
-    // check `room_slug` filed exits
-    // if (!room_slug) {
-    //   for (const element of req.files) {
-    //     fs.unlink(`${appRoot}/public/uploads/rooms/${element.filename}`, (err) => {
-    //       if (err) { logger.error(err); }
-    //     });
-    //   }
-    //   return res.status(400).json(errorResponse(
-    //     1,
-    //     'FAILED',
-    //     '`room_slug` filed is required'
-    //   ));
-    // }
-
-    // check `room_type` filed exits
     if (!room_type) {
-      for (const element of req.files) {
-        fs.unlink(`${appRoot}/public/uploads/rooms/${element.filename}`, (err) => {
-          if (err) { logger.error(err); }
-        });
-      }
-      return res.status(400).json(errorResponse(
-        1,
-        'FAILED',
-        '`room_type` filed is required'
-      ));
+      deleteUploadedFiles();
+      return res.status(400).json(errorResponse(1, 'FAILED', '`room_type` field is required'));
     }
 
-    // check `room_price` filed exits
     if (!room_price) {
-      for (const element of req.files) {
-        fs.unlink(`${appRoot}/public/uploads/rooms/${element.filename}`, (err) => {
-          if (err) { logger.error(err); }
-        });
-      }
-      return res.status(400).json(errorResponse(
-        1,
-        'FAILED',
-        '`room_price` filed is required'
-      ));
+      deleteUploadedFiles();
+      return res.status(400).json(errorResponse(1, 'FAILED', '`room_price` field is required'));
     }
 
-    // check `room_size` filed exits
-    // if (!room_size) {
-    //   for (const element of req.files) {
-    //     fs.unlink(`${appRoot}/public/uploads/rooms/${element.filename}`, (err) => {
-    //       if (err) { logger.error(err); }
-    //     });
-    //   }
-    //   return res.status(400).json(errorResponse(
-    //     1,
-    //     'FAILED',
-    //     '`room_size` filed is required'
-    //   ));
-    // }
-
-    // check `room_capacity` filed exits
     if (!room_capacity) {
-      for (const element of req.files) {
-        fs.unlink(`${appRoot}/public/uploads/rooms/${element.filename}`, (err) => {
-          if (err) { logger.error(err); }
-        });
-      }
-      return res.status(400).json(errorResponse(
-        1,
-        'FAILED',
-        '`room_capacity` filed is required'
-      ));
+      deleteUploadedFiles();
+      return res.status(400).json(errorResponse(1, 'FAILED', '`room_capacity` field is required'));
     }
 
-    //check `room_description` filed exits
     if (!room_description) {
-      for (const element of req.files) {
-        fs.unlink(`${appRoot}/public/uploads/rooms/${element.filename}`, (err) => {
-          if (err) { logger.error(err); }
-        });
-      }
-      return res.status(400).json(errorResponse(
-        1,
-        'FAILED',
-        '`room_description` filed is required'
-      ));
+      deleteUploadedFiles();
+      return res.status(400).json(errorResponse(1, 'FAILED', '`room_description` field is required'));
     }
 
-    // check `extra_facilities[0]` filed exits
-    if (!extra_facilities[0]) {
-      for (const element of req.files) {
-        fs.unlink(`${appRoot}/public/uploads/rooms/${element.filename}`, (err) => {
-          if (err) { logger.error(err); }
-        });
-      }
-      return res.status(400).json(errorResponse(
-        1,
-        'FAILED',
-        'Minimum 1 `extra_facilities` filed is required'
-      ));
+    if (!extra_facilities || extra_facilities.length === 0) {
+      deleteUploadedFiles();
+      return res.status(400).json(errorResponse(1, 'FAILED', 'At least 1 `extra_facilities` field is required'));
     }
 
-    // check `req.files[0]` filed exits
-    if (!req.files[0]) {
-      for (const element of req.files) {
-        fs.unlink(`${appRoot}/public/uploads/rooms/${element.filename}`, (err) => {
-          if (err) { logger.error(err); }
-        });
-      }
-      return res.status(400).json(errorResponse(
-        1,
-        'FAILED',
-        'Minimum 1 `room_images` filed is required '
-      ));
+    if (!req.files || req.files.length === 0) {
+      deleteUploadedFiles();
+      return res.status(400).json(errorResponse(1, 'FAILED', 'At least 1 `room_images` field is required'));
     }
 
-    // check `room_name` already exist in database
+    // Check if room name already exists
     const roomName = await Room.findOne({ room_name });
     if (roomName) {
-      for (const element of req.files) {
-        fs.unlink(`${appRoot}/public/uploads/rooms/${element.filename}`, (err) => {
-          if (err) { logger.error(err); }
-        });
-      }
-      return res.status(409).json(errorResponse(
-        9,
-        'ALREADY EXIST',
-        'Sorry, `room_name` already exists'
-      ));
+      deleteUploadedFiles();
+      return res.status(409).json(errorResponse(9, 'ALREADY EXIST', 'Sorry, `room_name` already exists'));
     }
 
-    // check `room_slug` already exist in database
+    // Check if room slug already exists
     const roomSlug = await Room.findOne({ room_slug });
     if (roomSlug) {
-      for (const element of req.files) {
-        fs.unlink(`${appRoot}/public/uploads/rooms/${element.filename}`, (err) => {
-          if (err) { logger.error(err); }
-        });
-      }
-      return res.status(409).json(errorResponse(
-        9,
-        'ALREADY EXIST',
-        'Sorry, `room_slug` already exists'
-      ));
+      deleteUploadedFiles();
+      return res.status(409).json(errorResponse(9, 'ALREADY EXIST', 'Sorry, `room_slug` already exists'));
     }
 
-    // prepared user input room data to store database
+    // Prepare room data for saving in the database
     const data = {
       room_name,
       room_slug,
@@ -178,39 +86,28 @@ const createRoom = async (req, res) => {
       room_price,
       room_size,
       room_capacity,
-      //allow_pets,
-     // provide_breakfast,
-     // featured_room,
       room_description,
       extra_facilities,
-      room_images: req?.files?.map((file) => ({ url: `/uploads/rooms/${file.filename}` })),
-      created_by: req.user.id
+      room_images: req.files.map((file) => ({
+        url: `${process.env.APP_BASE_URL}/uploads/rooms/${file.filename}` // Using the base URL from environment
+      })),      created_by: req.user.id, // Assuming req.user.id contains the ID of the authenticated user
     };
 
-    // save room data in database
+    // Save room data in the database
     const room = await Room.create(data);
 
-    // success response with register new user
-    res.status(201).json(successResponse(
-      0,
-      'SUCCESS',
-      'New room create successful',
-      room
-    ));
-  } catch (error) {
-    for (const element of req.files) {
-      fs.unlink(`${appRoot}/public/uploads/rooms/${element.filename}`, (err) => {
-        if (err) { logger.error(err); }
-      });
-    }
+    // Success response
+    res.status(201).json(successResponse(0, 'SUCCESS', 'New room created successfully', room));
 
-    res.status(500).json(errorResponse(
-      2,
-      'SERVER SIDE ERROR',
-      error
-    ));
+  } catch (error) {
+    // In case of any server-side error, delete the uploaded files
+    deleteUploadedFiles();
+    console.error('Error creating room:', error);
+    res.status(500).json(errorResponse(2, 'SERVER SIDE ERROR', error.message || error));
   }
 };
+
+module.exports = createRoom;
 
 // TODO: Controller for get all rooms list
 const getRoomsList = async (req, res) => {
@@ -230,14 +127,11 @@ const getRoomsList = async (req, res) => {
       room_price: data.room_price,
       room_size: data.room_size,
       room_capacity: data.room_capacity,
-      // allow_pets: data.allow_pets,
-      // provide_breakfast: data.provide_breakfast,
-      // featured_room: data.featured_room,
       room_description: data.room_description,
       room_status: data.room_status,
       extra_facilities: data.extra_facilities,
       room_images: data?.room_images?.map(
-        (img) => ({ url: process.env.APP_BASE_URL + img.url })
+        (img) => ({ url: img.url })
       ),
       created_by: data.created_by,
       created_at: data.createdAt,
@@ -247,7 +141,7 @@ const getRoomsList = async (req, res) => {
     res.status(200).json(successResponse(
       0,
       'SUCCESS',
-      'Rooms list data found successful',
+      'Rooms list data found successfully',
       {
         rows: mappedRooms,
         total_rows: rooms.length,
@@ -265,7 +159,7 @@ const getRoomsList = async (req, res) => {
   }
 };
 
-// TODO: Controller for find a room by id or room slug_name
+// Controller to find a room by ID or room slug name
 const getRoomByIdOrSlugName = async (req, res) => {
   try {
     let room = null;
@@ -292,14 +186,11 @@ const getRoomByIdOrSlugName = async (req, res) => {
       room_price: room?.room_price,
       room_size: room?.room_size,
       room_capacity: room?.room_capacity,
-      // allow_pets: room?.allow_pets,
-      // provide_breakfast: room?.provide_breakfast,
-      // featured_room: room?.featured_room,
       room_description: room?.room_description,
       room_status: room?.room_status,
       extra_facilities: room?.extra_facilities,
       room_images: room?.room_images?.map(
-        (img) => ({ url: process.env.APP_BASE_URL + img.url })
+        (img) => ({ url: img.url })
       ),
       created_by: {
         id: room?.created_by._id,
@@ -324,7 +215,7 @@ const getRoomByIdOrSlugName = async (req, res) => {
     res.status(200).json(successResponse(
       0,
       'SUCCESS',
-      'User information get successful',
+      'Room information retrieved successfully',
       organizedRoom
     ));
   } catch (error) {

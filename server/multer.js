@@ -1,10 +1,8 @@
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const dotenv = require('dotenv');
-dotenv.config();
 
-// Utility function to create necessary upload directories
+// Function to ensure the upload directories exist
 const uploadPath = () => {
   const UPLOADS_FOLDER = './public/uploads/rooms';
 
@@ -21,34 +19,34 @@ const uploadPath = () => {
   return UPLOADS_FOLDER;
 };
 
-// Multer storage configuration
+// Define the storage engine for multer
 const storage = multer.diskStorage({
   destination: (_req, _file, cb) => {
-    cb(null, uploadPath()); // Destination folder for uploaded files
+    cb(null, uploadPath()); // Set the destination folder for uploads
   },
   filename: (req, file, cb) => {
     const fileExt = path.extname(file.originalname); // Extract file extension
-    const fileName = `${file.originalname.replace(fileExt, '').toLowerCase().split(' ').join('-')}-${Date.now()}`;
-    cb(null, fileName + fileExt); // Unique file name to avoid overwriting
+    const fileName = `${file.originalname.replace(fileExt, '').toLowerCase().split(' ').join('-')}-${Date.now()}`; // Generate a unique file name
+    cb(null, fileName + fileExt); // Store the file with the generated name
   }
 });
 
-// Multer upload configuration
+// Set up the multer upload instance with file size limit and file type filtering
 const roomImageUpload = multer({
   storage,
   limits: {
-    fileSize: 1000000 // 1MB size limit for each image
+    fileSize: 1000000 // Limit file size to 1MB
   },
   fileFilter: (_req, file, cb) => {
-    // Accept only certain file types
+    // Only allow image files with certain mime types
     if (file.fieldname === 'room_images') {
       if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
-        cb(null, true);
+        cb(null, true); // Allow the file
       } else {
-        cb(new Error('Only .jpg, .png or .jpeg format allowed!'));
+        cb(new Error('Only .jpg, .png or .jpeg formats allowed!')); // Reject the file
       }
     } else {
-      cb(new Error('There was an unknown error!'));
+      cb(new Error('There was an unknown error!')); // Reject other fields
     }
   }
 });

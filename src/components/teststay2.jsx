@@ -37,10 +37,15 @@ const AccommodationCard = ({ accommodation, onSelect, isSelected }) => {
   const getPriceText = () => `₹${accommodation?.room_price || 0}/Night`;
 
   const amenities = accommodation?.extra_facilities || [];
-  const imageUrl =
-    accommodation?.room_images?.[0]?.url?.split(" || ")?.[1] ||
-    "/default-image.jpg";
 
+  const imageUrl =
+  accommodation?.room_images?.[0]?.url?.split(" || ")?.[1] ||
+  (accommodation?.room_images?.[0]?.url?.startsWith('http') 
+    ? accommodation?.room_images?.[0]?.url
+    : `${import.meta.env.VITE_BASE_URL}/uploads/rooms/${accommodation?.room_images?.[0]?.url.split('/').pop()}`) ||
+  `/default-image.jpg`; // Fallback to default image
+
+console.log(imageUrl);
   return (
     <>
       <style>
