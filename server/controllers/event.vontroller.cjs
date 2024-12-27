@@ -120,12 +120,10 @@ const getEventById = async (req, res) => {
     if (/^[0-9a-fA-F]{24}$/.test(req.params.id)) {
       // If it's a valid ObjectId, fetch event by ID and populate 'organized_by' and 'created_by'
       event = await Event.findById(req.params.id)
-        .populate('organized_by', 'userName fullName email phone avatar gender dob address role status createdAt updatedAt')
         .populate('created_by', 'userName fullName email phone avatar gender dob address role status createdAt updatedAt');
     } else {
       // If it's not a valid ObjectId, try to fetch event by event_slug
       event = await Event.findOne({ event_slug: req.params.id })
-        .populate('organized_by', 'userName fullName email phone avatar gender dob address role status createdAt updatedAt')
         .populate('created_by', 'userName fullName email phone avatar gender dob address role status createdAt updatedAt');
     }
 
@@ -139,21 +137,22 @@ const getEventById = async (req, res) => {
     }
 
     // If 'organized_by' is a string (e.g., "anant"), replace it with the user's ObjectId
-    if (typeof event.organized_by === 'string') {
-      const user = await User.findOne({ userName: event.organized_by }); // Assuming you have a 'userName' field
-      if (user) {
-        event.organized_by = user._id; // Set the correct ObjectId
-      } else {
-        return res.status(404).json(errorResponse(
-          4,
-          'USER NOT FOUND',
-          'Organizer user not found'
-        ));
-      }
-    }
+    // if (typeof event.organized_by === 'string') {
+    //   const user = await User.findOne({ userName: event.organized_by }); // Assuming you have a 'userName' field
+    //   if (user) {
+    //     event.organized_by = user._id; // Set the correct ObjectId
+    //   } else {
+    //     return res.status(404).json(errorResponse(
+    //       4,
+    //       'USER NOT FOUND',
+    //       'Organizer user not found'
+    //     ));
+    //   }
+    // }
 
     // Build the response object with necessary details
     const organizedEvent = {
+      id: event._id,
       id: event._id,
       event_name: event.event_name,
       event_slug: event.event_slug,
@@ -165,13 +164,11 @@ const getEventById = async (req, res) => {
       provide_meals: event.provide_meals,
       featured_event: event.featured_event,
       event_description: event.event_description,
-      event_theme: event.event_theme,
-      performing_artists: event.performing_artists,
-      event_timings: event.event_timings,
-      event_genre: event.genre,
-      event_status: event.event_status,
-      event_images: event.event_images.map(img => ({ url: process.env.APP_BASE_URL + img.url })),
-      organized_by: event.organized_by,
+      event_genre:event.event_genre,
+      event_price:event.event_price,
+      forming_artists:event.forming_artists,
+      event_timings:event.event_timings,
+      event_images: event.event_images.map((img) => ({ url: process.env.APP_BASE_URL + img.url })),
       created_by: event.created_by,
       created_at: event.createdAt,
       updated_at: event.updatedAt
@@ -202,13 +199,13 @@ const getEventById = async (req, res) => {
 const editEventByAdmin = async (req, res) => {
   try {
     const {
-      event_name, event_slug, event_type, event_date, event_duration, event_capacity, allow_guests, provide_meals,
-      featured_event, event_description, organized_by, forming_artists,event_timings,event_theme,genre
+      event_name, event_slug, event_type, event_date, event_duration, event_capacity, event_description, forming_artists,event_timings,event_genre,event_price
+
     } = req.body;
 
     // Validate required fields
-    if (!event_name || !event_slug || !event_type || !event_date) {
-      return res.status(400).json(errorResponse(1, 'FAILED', '`event_name`, `event_slug`, `event_type`, and `event_date` fields are required'));
+    if (!event_name || !event_date) {
+      return res.status(400).json(errorResponse(1, 'FAILED', '`event_name`,`event_date` fields are required'));
     }
 
     // Check if event exists
@@ -227,15 +224,11 @@ const editEventByAdmin = async (req, res) => {
         event_date,
         event_duration: Number(event_duration),
         event_capacity: Number(event_capacity),
-        allow_guests: Boolean(allow_guests),
-        provide_meals: Boolean(provide_meals),
-        featured_event: Boolean(featured_event),
         event_description,
-        event_theme,
+        event_genre,
+        event_price,
         forming_artists,
         event_timings,
-        genre,
-        organized_by,
         event_images: req.files.map((file) => ({ url: `/uploads/events/${file.filename}` })),
         updatedAt: Date.now()
       },
