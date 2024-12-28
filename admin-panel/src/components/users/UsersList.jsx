@@ -4,7 +4,6 @@ import {
 } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { v4 as uniqueId } from 'uuid';
-import useFetchData from '../../hooks/useFetchData';
 import ApiService from '../../utils/apiService';
 import { getSessionUser } from '../../utils/authentication';
 import notificationWithIcon from '../../utils/notification';
@@ -19,6 +18,9 @@ function UsersList({ add }) {
   const [query, setQuery] = useState({
     search: '', sort: 'asce', page: '1', rows: '10'
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [response, setResponse] = useState(null);
 
   // Ensure token is retrieved properly from localStorage
   const token = 'ajerngnrtg'; // Replace with a valid token for testing
@@ -31,23 +33,31 @@ function UsersList({ add }) {
     }
   }, [token]);
 
-  // Fetch user-list API data with token in headers
-  const [loading, error, response] = useFetchData(
-    `/api/user/all-users-list?keyword=${query.search}&limit=${query.rows}&page=${query.page}&sort=${query.sort}`,
-    {
-      headers: {
-        'Authorization': token ? `Bearer ${token}` : undefined // Ensure the token is passed only if it exists
-      }
-    },
-    fetchAgain
-  );
-
-  // Debugging: Log headers to check if they are set correctly
+  // Fetch user list using ApiService
   useEffect(() => {
-    console.log('Headers:', {
-      'Authorization': token ? `Bearer ${token}` : 'No Token Provided'
-    });
-  }, [token]);
+    const fetchUsers = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await ApiService.get(
+          `/api/user/all-users-list?keyword=${query.search}&limit=${query.rows}&page=${query.page}&sort=${query.sort}`,
+          {
+            headers: {
+              'Authorization': token ? `Bearer ${token}` : undefined
+            }
+          }
+        );
+        setResponse(res?.result);
+      } catch (err) {
+        setError(err?.response?.data?.result?.error?.message || 'Failed to fetch users');
+        setResponse(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, [query, fetchAgain, token]);
 
   // Reset query options on change
   useEffect(() => {
@@ -61,27 +71,26 @@ function UsersList({ add }) {
       icon: <ExclamationCircleFilled />,
       content: 'Are you sure you want to delete this user permanently?',
       onOk() {
-        return new Promise((resolve, reject) => {
-          ApiService.delete(`/api/user/delete-user/${id}`, {
-            headers: {
-              'Authorization': `Bearer ${token}`
+        return ApiService.delete(`/api/user/delete-user/${id}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+          .then((res) => {
+            if (res?.result_code === 0) {
+              notificationWithIcon('success', 'SUCCESS', res?.result?.message || 'User deleted successfully');
+              setFetchAgain(!fetchAgain);
+            } else {
+              notificationWithIcon('error', 'ERROR', 'Sorry! Something went wrong. App server error');
             }
           })
-            .then((res) => {
-              if (res?.result_code === 0) {
-                notificationWithIcon('success', 'SUCCESS', res?.result?.message || 'User deleted successfully');
-                setFetchAgain(!fetchAgain);
-                resolve();
-              } else {
-                notificationWithIcon('error', 'ERROR', 'Sorry! Something went wrong. App server error');
-                reject();
-              }
-            })
-            .catch((err) => {
-              notificationWithIcon('error', 'ERROR', err?.response?.data?.result?.error?.message || err?.response?.data?.result?.error || 'Sorry! Something went wrong. App server error');
-              reject();
-            });
-        }).catch(() => notificationWithIcon('error', 'ERROR', 'Oops! There were errors.'));
+          .catch((err) => {
+            notificationWithIcon(
+              'error',
+              'ERROR',
+              err?.response?.data?.result?.error?.message || 'Sorry! Something went wrong. App server error'
+            );
+          });
       }
     });
   };
