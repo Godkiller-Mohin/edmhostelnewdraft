@@ -221,23 +221,23 @@ const getBookingOrderForAdmin = async (req, res) => {
   try {
     const myBooking = await Booking.find()
       .populate('room_id')
-      .populate('booking_by')
+      // .populate('booking_by')
       .populate({
         path: 'reviews',
         populate: { path: 'user_id', model: 'Users' }
       });
 
-    if (!myBooking || myBooking.length === 0) {
-      return res.status(404).json(errorResponse(
-        4,
-        'UNKNOWN ACCESS',
-        'No bookings found for the specified user'
-      ));
-    }
+    // if (!myBooking || myBooking.length === 0) {
+    //   return res.status(404).json(errorResponse(
+    //     4,
+    //     'UNKNOWN ACCESS',
+    //     'No bookings found for the specified user'
+    //   ));
+    // }
 
     const bookingQuery = new MyQueryHelper(Booking.find()
       .populate('room_id')
-      .populate('booking_by')
+      // .populate('booking_by')
       .populate({ path: 'reviews', populate: { path: 'user_id', model: 'Users' } }), req.query)
       .sort()
       .paginate();

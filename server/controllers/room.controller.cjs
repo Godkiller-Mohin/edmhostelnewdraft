@@ -447,13 +447,13 @@ const deleteRoomById = async (req, res) => {
     await Room.findByIdAndDelete(room.id);
 
     // delete old images
-    (() => {
-      for (const element of room.room_images) {
-        fs.unlink(`${appRoot}/public/${element.url}`, (err) => {
-          if (err) { logger.error(err); }
-        });
-      }
-    })();
+    // (() => {
+    //   for (const element of room.room_images) {
+    //     fs.unlink(`${appRoot}/public/${element.url}`, (err) => {
+    //       if (err) { logger.error(err); }
+    //     });
+    //   }
+    // })();
 
     res.status(200).json(successResponse(
       0,

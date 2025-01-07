@@ -24,7 +24,7 @@ router.get("/get-user-booking-orders",isAuthenticatedUser, isBlocked, getBooking
 router.put("/cancel-booking-order/:id",isAuthenticatedUser, isBlocked, cancelSelfBookingOrder);
 
 // Routes for admin to get all booking lists, reject, approve, and checkout placed orders
-router.get("/get-all-booking-orders",isAuthenticatedUser,  isBlocked, isAdmin, getBookingOrderForAdmin);
+router.get("/get-all-booking-orders", isAdmin, getBookingOrderForAdmin);
 router.put("/updated-booking-order/:id",isAuthenticatedUser,  isBlocked, isAdmin, updatedBookingOrderByAdmin);
 
 module.exports= router;
