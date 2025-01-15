@@ -3,7 +3,7 @@ import { getSessionToken, removeSessionAndLogoutUser } from './authentication';
 
 const ApiService = axios.create({
   // baseURL: process.env.REACT_APP_API_BASE_URL
-  baseURL: 'http://localhost:4000'
+  baseURL: 'http://13.211.77.141'
 });
 
 /**
