@@ -3,7 +3,7 @@ import { getSessionToken, removeSessionAndLogoutUser } from './authentication';
 
 // Create an axios instance with a base URL
 const ApiService = axios.create({
-  baseURL: 'http://localhost:4000', // Adjust according to your API URL
+  baseURL: 'http://13.211.77.141', // Adjust according to your API URL
   headers: {
     'Content-Type': 'application/json',
   },
